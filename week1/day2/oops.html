@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Object-Oriented Programming Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 5px solid #3498db;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* VS Code style code blocks */
+        .code-container {
+            margin: 20px 0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .code-header {
+            background-color: #2d2d30;
+            color: #cccccc;
+            padding: 8px 15px;
+            font-size: 0.85em;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .code-header::before {
+            content: "●●●";
+            color: #6c6c6c;
+            margin-right: 12px;
+            font-size: 0.7em;
+            letter-spacing: 2px;
+        }
+
+        pre {
+            background-color: #1e1e1e;
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        code {
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        /* Syntax highlighting */
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        .class-name {
+            color: #4ec9b0;
+        }
+
+        .preprocessor {
+            color: #c586c0;
+        }
+
+        /* Output box */
+        .output-container {
+            margin: 20px 0;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid #27ae60;
+        }
+
+        .output-header {
+            background-color: #27ae60;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .output-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+
+        /* Key points box */
+        .key-points {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .key-points h4 {
+            color: #2980b9;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        /* Explanation box */
+        .explanation {
+            background-color: #fff9e6;
+            border-left: 4px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .explanation strong {
+            color: #d68910;
+        }
+
+        /* Inline code */
+        code.inline {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #e74c3c;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, #3498db, transparent);
+            margin: 40px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+
+            pre {
+                font-size: 0.8em;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>16. Object Oriented Programming (OOP)</h1>
+        
+        <p>Object-Oriented Programming (OOP) is a programming paradigm that uses "objects" to design applications and computer programs. In C++, OOP revolves around four main pillars: <strong>Encapsulation</strong>, <strong>Abstraction</strong>, <strong>Inheritance</strong>, and <strong>Polymorphism</strong> (we'll cover the last two in later sections). It allows you to create reusable code, organize complex programs, and model real-world entities.</p>
+
+        <h2>Class and Object</h2>
+        
+        <p>A <strong>class</strong> is like a blueprint or template for creating objects. It defines the properties (data members) and behaviors (member functions) that objects of that class will have. An <strong>object</strong> is an instance of a class – it's the actual entity created from the blueprint, with its own data values.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Classes are user-defined data types.</li>
+                <li>You declare a class using the <code class="inline">class</code> keyword.</li>
+                <li>Objects are created like variables, and they occupy memory.</li>
+                <li>Classes promote code reusability – define once, use multiple times.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Simple "Person" class</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="preprocessor">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Person</span> {  <span class="comment">// Class declaration</span>
+<span class="keyword">public</span>:  <span class="comment">// Access specifier (explained next)</span>
+    <span class="class-name">string</span> name;  <span class="comment">// Data member (property)</span>
+    <span class="keyword">int</span> age;      <span class="comment">// Data member</span>
+    
+    <span class="keyword">void</span> <span class="function">display</span>() {  <span class="comment">// Member function (behavior)</span>
+        cout &lt;&lt; <span class="string">"Name: "</span> &lt;&lt; name &lt;&lt; <span class="string">", Age: "</span> &lt;&lt; age &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Person</span> p1;  <span class="comment">// Creating an object (instance)</span>
+    p1.name = <span class="string">"Alice"</span>;  <span class="comment">// Accessing data member</span>
+    p1.age = <span class="number">25</span>;
+    p1.<span class="function">display</span>();  <span class="comment">// Calling member function</span>
+    
+    <span class="class-name">Person</span> p2;  <span class="comment">// Another object</span>
+    p2.name = <span class="string">"Bob"</span>;
+    p2.age = <span class="number">30</span>;
+    p2.<span class="function">display</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Name: Alice, Age: 25
+Name: Bob, Age: 30</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> The class <code class="inline">Person</code> is the template. Objects <code class="inline">p1</code> and <code class="inline">p2</code> are separate instances, each with their own <code class="inline">name</code> and <code class="inline">age</code>. Without classes, you'd have to repeat code for each person.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Access Specifiers</h2>
+        
+        <p>Access specifiers control the visibility and accessibility of class members (data and functions). They enforce encapsulation by restricting how data is accessed.</p>
+
+        <div class="key-points">
+            <h4>Types:</h4>
+            <ul>
+                <li><strong>public:</strong> Members are accessible from outside the class (e.g., in <code class="inline">main()</code>).</li>
+                <li><strong>private:</strong> Members are only accessible within the class (default if no specifier).</li>
+                <li><strong>protected:</strong> Members are accessible within the class and derived classes (useful in inheritance).</li>
+            </ul>
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Use private for sensitive data to prevent direct modification.</li>
+                <li>Public for interfaces (functions users can call).</li>
+                <li>You can have multiple sections in a class.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Access control in Person class</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="preprocessor">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Person</span> {
+<span class="keyword">private</span>:
+    <span class="keyword">int</span> age;  <span class="comment">// Private: Can't access directly outside class</span>
+    
+<span class="keyword">protected</span>:
+    <span class="class-name">string</span> address;  <span class="comment">// Protected: Accessible in derived classes</span>
+    
+<span class="keyword">public</span>:
+    <span class="class-name">string</span> name;  <span class="comment">// Public: Accessible anywhere</span>
+    
+    <span class="keyword">void</span> <span class="function">setAge</span>(<span class="keyword">int</span> a) {  <span class="comment">// Public function to set private member</span>
+        <span class="keyword">if</span> (a &gt; <span class="number">0</span>)
+            age = a;
+        <span class="keyword">else</span>
+            cout &lt;&lt; <span class="string">"Invalid age!"</span> &lt;&lt; endl;
+    }
+    
+    <span class="keyword">int</span> <span class="function">getAge</span>() {  <span class="comment">// Public function to get private member</span>
+        <span class="keyword">return</span> age;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Person</span> p;
+    p.name = <span class="string">"Charlie"</span>;  <span class="comment">// OK, public</span>
+    <span class="comment">// p.age = 35;  // Error: private</span>
+    p.<span class="function">setAge</span>(<span class="number">35</span>);  <span class="comment">// OK, via public function</span>
+    cout &lt;&lt; <span class="string">"Name: "</span> &lt;&lt; p.name &lt;&lt; <span class="string">", Age: "</span> &lt;&lt; p.<span class="function">getAge</span>() &lt;&lt; endl;
+    <span class="comment">// p.address = "Home";  // Error: protected</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Name: Charlie, Age: 35</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">age</code> is hidden (private), so we use "getter" and "setter" functions to control access. This prevents invalid data (e.g., negative age).
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Constructors</h2>
+        
+        <p>Constructors are special member functions called automatically when an object is created. They initialize object data.</p>
+
+        <div class="key-points">
+            <h4>Types:</h4>
+            <ul>
+                <li><strong>Default Constructor:</strong> No parameters, called if no args provided.</li>
+                <li><strong>Parameterized Constructor:</strong> Takes parameters to initialize with values.</li>
+                <li><strong>Copy Constructor:</strong> Copies data from one object to another (explained separately).</li>
+            </ul>
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Same name as class, no return type.</li>
+                <li>Can be overloaded (multiple versions).</li>
+                <li>If not defined, compiler provides a default one.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Default and Parameterized Constructors</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Rectangle</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">int</span> length, width;
+    
+    <span class="function">Rectangle</span>() {  <span class="comment">// Default constructor</span>
+        length = <span class="number">0</span>;
+        width = <span class="number">0</span>;
+        cout &lt;&lt; <span class="string">"Default constructor called."</span> &lt;&lt; endl;
+    }
+    
+    <span class="function">Rectangle</span>(<span class="keyword">int</span> l, <span class="keyword">int</span> w) {  <span class="comment">// Parameterized constructor</span>
+        length = l;
+        width = w;
+        cout &lt;&lt; <span class="string">"Parameterized constructor called."</span> &lt;&lt; endl;
+    }
+    
+    <span class="keyword">int</span> <span class="function">area</span>() {
+        <span class="keyword">return</span> length * width;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Rectangle</span> r1;  <span class="comment">// Default</span>
+    cout &lt;&lt; <span class="string">"Area: "</span> &lt;&lt; r1.<span class="function">area</span>() &lt;&lt; endl;
+    
+    <span class="class-name">Rectangle</span> r2(<span class="number">5</span>, <span class="number">10</span>);  <span class="comment">// Parameterized</span>
+    cout &lt;&lt; <span class="string">"Area: "</span> &lt;&lt; r2.<span class="function">area</span>() &lt;&lt; endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Default constructor called.
+Area: 0
+Parameterized constructor called.
+Area: 50</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Constructors set initial values. Without them, data might be garbage.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Destructor</h2>
+        
+        <p>Destructors are special functions called automatically when an object is destroyed (e.g., end of scope or <code class="inline">delete</code>).</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Name: <code class="inline">~ClassName()</code>, no parameters, no return type.</li>
+                <li>Used to release resources (e.g., memory, files).</li>
+                <li>Only one destructor per class.</li>
+                <li>If not defined, compiler provides default.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Resource management with destructor</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Resource</span> {
+<span class="keyword">public</span>:
+    <span class="function">Resource</span>() {
+        cout &lt;&lt; <span class="string">"Resource acquired."</span> &lt;&lt; endl;
+    }
+    
+    <span class="function">~Resource</span>() {  <span class="comment">// Destructor</span>
+        cout &lt;&lt; <span class="string">"Resource released."</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    {
+        <span class="class-name">Resource</span> r;  <span class="comment">// Object created, constructor called</span>
+    }  <span class="comment">// Scope ends, destructor called automatically</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Resource acquired.
+Resource released.</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Destructors clean up. Useful for dynamic memory to avoid leaks.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Copy Constructor</h2>
+        
+        <p>A copy constructor creates a new object as a copy of an existing object.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Syntax: <code class="inline">ClassName(const ClassName &old_obj)</code>.</li>
+                <li>Used in initialization, assignment, passing by value.</li>
+                <li>Default copy is shallow (copies pointers, not data). User-defined can do deep copy.</li>
+                <li>If not defined, compiler provides default (shallow).</li>
+            </ul>
+        </div>
+
+        <h4>Example: Copy constructor for Point class</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Point</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">int</span> x, y;
+    
+    <span class="function">Point</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {  <span class="comment">// Parameterized</span>
+        x = a;
+        y = b;
+    }
+    
+    <span class="function">Point</span>(<span class="keyword">const</span> <span class="class-name">Point</span> &amp;p) {  <span class="comment">// Copy constructor</span>
+        x = p.x;
+        y = p.y;
+        cout &lt;&lt; <span class="string">"Copy constructor called."</span> &lt;&lt; endl;
+    }
+    
+    <span class="keyword">void</span> <span class="function">display</span>() {
+        cout &lt;&lt; <span class="string">"Point: ("</span> &lt;&lt; x &lt;&lt; <span class="string">", "</span> &lt;&lt; y &lt;&lt; <span class="string">")"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Point</span> p1(<span class="number">10</span>, <span class="number">20</span>);
+    <span class="class-name">Point</span> p2 = p1;  <span class="comment">// Copy constructor called</span>
+    p2.<span class="function">display</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Copy constructor called.
+Point: (10, 20)</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Copies <code class="inline">p1</code> to <code class="inline">p2</code>. For classes with pointers, you'd allocate new memory for deep copy to avoid sharing.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>this Pointer</h2>
+        
+        <p><code class="inline">this</code> is an implicit pointer available in non-static member functions, pointing to the current object.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Resolves ambiguity when local variables have same name as members.</li>
+                <li>Used for chaining function calls.</li>
+                <li>Returns reference to current object.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Using this pointer</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Box</span> {
+<span class="keyword">private</span>:
+    <span class="keyword">int</span> size;
+    
+<span class="keyword">public</span>:
+    <span class="class-name">Box</span>&amp; <span class="function">setSize</span>(<span class="keyword">int</span> size) {  <span class="comment">// Parameter same name as member</span>
+        <span class="keyword">this</span>-&gt;size = size;  <span class="comment">// 'this' resolves ambiguity</span>
+        <span class="keyword">return</span> *<span class="keyword">this</span>;  <span class="comment">// Return current object for chaining</span>
+    }
+    
+    <span class="keyword">void</span> <span class="function">display</span>() {
+        cout &lt;&lt; <span class="string">"Size: "</span> &lt;&lt; size &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Box</span> b;
+    b.<span class="function">setSize</span>(<span class="number">15</span>).<span class="function">display</span>();  <span class="comment">// Chaining</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Size: 15</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Without <code class="inline">this</code>, <code class="inline">size = size</code> would assign local to local. Chaining makes code concise.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Static Data Members</h2>
+        
+        <p>Static data members are shared by all objects of the class.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Declared with <code class="inline">static</code> keyword.</li>
+                <li>Initialized outside class (usually in .cpp file).</li>
+                <li>One copy for the class, not per object.</li>
+                <li>Accessed using <code class="inline">ClassName::member</code>.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Static member for counting objects</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Item</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">static int</span> count;  <span class="comment">// Static data member</span>
+    
+    <span class="function">Item</span>() {
+        count++;
+    }
+};
+
+<span class="keyword">int</span> <span class="class-name">Item</span>::count = <span class="number">0</span>;  <span class="comment">// Initialization</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Item</span> i1, i2, i3;
+    cout &lt;&lt; <span class="string">"Total items: "</span> &lt;&lt; <span class="class-name">Item</span>::count &lt;&lt; endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Total items: 3</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">count</code> is shared; each object increments the same variable.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Static Member Functions</h2>
+        
+        <p>Static member functions can be called without an object and can only access static members.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Declared with <code class="inline">static</code>.</li>
+                <li>No <code class="inline">this</code> pointer.</li>
+                <li>Called using <code class="inline">ClassName::function()</code>.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Static function for utilities</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Math</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">static int</span> <span class="function">add</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {  <span class="comment">// Static function</span>
+        <span class="keyword">return</span> a + b;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cout &lt;&lt; <span class="string">"Sum: "</span> &lt;&lt; <span class="class-name">Math</span>::<span class="function">add</span>(<span class="number">5</span>, <span class="number">7</span>) &lt;&lt; endl;  <span class="comment">// No object needed</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Sum: 12</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Useful for utility functions that don't need object state.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Friend Function</h2>
+        
+        <p>A friend function is a non-member function that can access private and protected members of a class.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Declared inside class with <code class="inline">friend</code> keyword.</li>
+                <li>Defined outside class.</li>
+                <li>Breaks encapsulation but useful for operator overloading or when needed.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Friend function accessing private members</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Distance</span> {
+<span class="keyword">private</span>:
+    <span class="keyword">int</span> meters;
+    
+<span class="keyword">public</span>:
+    <span class="function">Distance</span>(<span class="keyword">int</span> m) : meters(m) {}
+    
+    <span class="keyword">friend void</span> <span class="function">addMeters</span>(<span class="class-name">Distance</span> &amp;d, <span class="keyword">int</span> extra);  <span class="comment">// Friend declaration</span>
+};
+
+<span class="keyword">void</span> <span class="function">addMeters</span>(<span class="class-name">Distance</span> &amp;d, <span class="keyword">int</span> extra) {  <span class="comment">// Definition</span>
+    d.meters += extra;  <span class="comment">// Access private</span>
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Distance</span> d(<span class="number">10</span>);
+    <span class="function">addMeters</span>(d, <span class="number">5</span>);
+    <span class="comment">// cout &lt;&lt; d.meters;  // Error: private</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">addMeters</code> modifies private <code class="inline">meters</code> without being a member.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Friend Class</h2>
+        
+        <p>A friend class can access private and protected members of another class.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Declared with <code class="inline">friend class ClassName;</code>.</li>
+                <li>All functions of friend class get access.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Friend class accessing private data</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">A</span> {
+<span class="keyword">private</span>:
+    <span class="keyword">int</span> secret = <span class="number">42</span>;
+    
+<span class="keyword">public</span>:
+    <span class="keyword">friend class</span> <span class="class-name">B</span>;  <span class="comment">// B is friend</span>
+};
+
+<span class="keyword">class</span> <span class="class-name">B</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">showSecret</span>(<span class="class-name">A</span> &amp;obj) {
+        cout &lt;&lt; <span class="string">"Secret: "</span> &lt;&lt; obj.secret &lt;&lt; endl;  <span class="comment">// Access private</span>
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">A</span> a;
+    <span class="class-name">B</span> b;
+    b.<span class="function">showSecret</span>(a);
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Secret: 42</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Class <code class="inline">B</code> can peek into <code class="inline">A</code>'s private data.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h1>17. Inheritance</h1>
+        
+        <p>Inheritance allows a class (derived/child) to inherit properties and behaviors from another class (base/parent). It promotes code reuse and hierarchy.</p>
+
+        <h2>Single Inheritance</h2>
+        
+        <p>Derived class inherits from one base class.</p>
+
+        <h4>Example: Vehicle and Car</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Vehicle</span>() {
+        cout &lt;&lt; <span class="string">"This is a Vehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Car</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Car</span>() {
+        cout &lt;&lt; <span class="string">"This Vehicle is Car"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Car</span> obj;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">This is a Vehicle
+This Vehicle is Car</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">Car</code> inherits <code class="inline">Vehicle</code>'s constructor call. Use <code class="inline">public</code> for inheritance to keep base public members public.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Multiple Inheritance</h2>
+        
+        <p>Derived class inherits from multiple base classes.</p>
+
+        <h4>Example: Amphibious Vehicle</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">LandVehicle</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">landInfo</span>() {
+        cout &lt;&lt; <span class="string">"This is a LandVehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">WaterVehicle</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">waterInfo</span>() {
+        cout &lt;&lt; <span class="string">"This is a WaterVehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">AmphibiousVehicle</span> : <span class="keyword">public</span> <span class="class-name">LandVehicle</span>, <span class="keyword">public</span> <span class="class-name">WaterVehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">AmphibiousVehicle</span>() {
+        cout &lt;&lt; <span class="string">"This is an AmphibiousVehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">AmphibiousVehicle</span> obj;
+    obj.<span class="function">waterInfo</span>();
+    obj.<span class="function">landInfo</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">This is an AmphibiousVehicle
+This is a WaterVehicle
+This is a LandVehicle</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">AmphibiousVehicle</code> gets functions from both parents. Ambiguity if same function name – resolve with scope (<code class="inline">LandVehicle::func()</code>).
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Multilevel Inheritance</h2>
+        
+        <p>Derived class inherits from another derived class (chain).</p>
+
+        <h4>Example: Vehicle hierarchy</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Vehicle</span>() {
+        cout &lt;&lt; <span class="string">"This is a Vehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">FourWheeler</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">FourWheeler</span>() {
+        cout &lt;&lt; <span class="string">"4 Wheeler Vehicles"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Car</span> : <span class="keyword">public</span> <span class="class-name">FourWheeler</span> {
+<span class="keyword">public</span>:
+    <span class="function">Car</span>() {
+        cout &lt;&lt; <span class="string">"This 4 Wheeler Vehicle is a Car"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Car</span> obj;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">This is a Vehicle
+4 Wheeler Vehicles
+This 4 Wheeler Vehicle is a Car</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">Car</code> inherits from <code class="inline">FourWheeler</code>, which inherits from <code class="inline">Vehicle</code>. Constructors call in order: base to derived.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Hierarchical Inheritance</h2>
+        
+        <p>Multiple derived classes inherit from one base class.</p>
+
+        <h4>Example: Car and Bus from Vehicle</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Vehicle</span>() {
+        cout &lt;&lt; <span class="string">"This is a Vehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Car</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Car</span>() {
+        cout &lt;&lt; <span class="string">"This Vehicle is Car"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Bus</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Bus</span>() {
+        cout &lt;&lt; <span class="string">"This Vehicle is Bus"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Car</span> obj1;
+    <span class="class-name">Bus</span> obj2;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">This is a Vehicle
+This Vehicle is Car
+This is a Vehicle
+This Vehicle is Bus</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Both <code class="inline">Car</code> and <code class="inline">Bus</code> share <code class="inline">Vehicle</code>'s properties. Like a tree structure.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Hybrid Inheritance</h2>
+        
+        <p>Combination of two or more inheritance types (e.g., multiple + multilevel).</p>
+
+        <h4>Example: Hybrid inheritance with Vehicle</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Vehicle</span>() {
+        cout &lt;&lt; <span class="string">"This is a Vehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Fare</span> {
+<span class="keyword">public</span>:
+    <span class="function">Fare</span>() {
+        cout &lt;&lt; <span class="string">"Fare of Vehicle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Car</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> {
+<span class="keyword">public</span>:
+    <span class="function">Car</span>() {
+        cout &lt;&lt; <span class="string">"This Vehicle is a Car"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Bus</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span>, <span class="keyword">public</span> <span class="class-name">Fare</span> {
+<span class="keyword">public</span>:
+    <span class="function">Bus</span>() {
+        cout &lt;&lt; <span class="string">"This Vehicle is a Bus with Fare"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Bus</span> obj2;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">This is a Vehicle
+Fare of Vehicle
+This Vehicle is a Bus with Fare</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">Bus</code> uses multiple inheritance, while <code class="inline">Car</code> uses single. This mix is hybrid.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Virtual Base Class</h2>
+        <img src="https://t4tutorials.com/wp-content/uploads/2020/04/virtual-class-in-C-OOP.webp" alt="">
+        <p>A virtual base class ensures only one copy of a base class is inherited in multiple paths, solving ambiguity.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Use <code class="inline">virtual</code> keyword in inheritance declaration.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Virtual base class</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Base</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">int</span> value = <span class="number">100</span>;
+};
+
+<span class="keyword">class</span> <span class="class-name">Child1</span> : <span class="keyword">virtual public</span> <span class="class-name">Base</span> {};  <span class="comment">// Virtual</span>
+<span class="keyword">class</span> <span class="class-name">Child2</span> : <span class="keyword">virtual public</span> <span class="class-name">Base</span> {};  <span class="comment">// Virtual</span>
+
+<span class="keyword">class</span> <span class="class-name">GrandChild</span> : <span class="keyword">public</span> <span class="class-name">Child1</span>, <span class="keyword">public</span> <span class="class-name">Child2</span> {};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">GrandChild</span> gc;
+    cout &lt;&lt; <span class="string">"Value: "</span> &lt;&lt; gc.value &lt;&lt; endl;  <span class="comment">// No ambiguity</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Value: 100</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Without <code class="inline">virtual</code>, there would be two <code class="inline">value</code>s from <code class="inline">Base</code>.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Diamond Problem</h2>
+        
+        <p>The diamond problem occurs in multiple inheritance when a class inherits from two classes that share a common base, leading to duplicate base members and ambiguity.</p>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Forms a diamond shape in hierarchy. Solved by virtual base classes (as above). Without solution, compiler errors on which base to use.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h1>18. Polymorphism</h1>
+        
+        <p>Polymorphism means "many forms" – same interface for different data types or classes. It allows flexibility.</p>
+
+        <h2>Function Overloading</h2>
+        
+        <p>Same function name with different parameters (compile-time polymorphism).</p>
+
+        <h4>Example: Overloaded add function</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Calc</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">int</span> <span class="function">add</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+        <span class="keyword">return</span> a + b;
+    }
+    
+    <span class="keyword">double</span> <span class="function">add</span>(<span class="keyword">double</span> a, <span class="keyword">double</span> b, <span class="keyword">double</span> c) {  <span class="comment">// Overloaded</span>
+        <span class="keyword">return</span> a + b + c;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Calc</span> c;
+    cout &lt;&lt; c.<span class="function">add</span>(<span class="number">2</span>, <span class="number">3</span>) &lt;&lt; endl;  <span class="comment">// Calls first</span>
+    cout &lt;&lt; c.<span class="function">add</span>(<span class="number">1.5</span>, <span class="number">2.5</span>, <span class="number">3.5</span>) &lt;&lt; endl;  <span class="comment">// Calls second</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">5
+7.5</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Compiler chooses based on args. Number/type/order can differ.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Operator Overloading</h2>
+        
+        <p>Redefine operators (+, -, etc.) for user-defined types.</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Use <code class="inline">operator</code> keyword.</li>
+                <li>For binary: <code class="inline">Type operator+(const Type &other)</code>.</li>
+                <li>Can't overload ::, .*, ., ?:</li>
+            </ul>
+        </div>
+
+        <h4>Example: Overloading + for Complex numbers</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Complex</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">int</span> real, imag;
+    
+    <span class="function">Complex</span>(<span class="keyword">int</span> r = <span class="number">0</span>, <span class="keyword">int</span> i = <span class="number">0</span>) : real(r), imag(i) {}
+    
+    <span class="class-name">Complex</span> <span class="keyword">operator</span>+(<span class="keyword">const</span> <span class="class-name">Complex</span> &amp;other) {  <span class="comment">// Overload +</span>
+        <span class="keyword">return</span> <span class="class-name">Complex</span>(real + other.real, imag + other.imag);
+    }
+    
+    <span class="keyword">void</span> <span class="function">display</span>() {
+        cout &lt;&lt; real &lt;&lt; <span class="string">" + "</span> &lt;&lt; imag &lt;&lt; <span class="string">"i"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Complex</span> c1(<span class="number">3</span>, <span class="number">4</span>), c2(<span class="number">1</span>, <span class="number">2</span>);
+    <span class="class-name">Complex</span> c3 = c1 + c2;  <span class="comment">// Uses overloaded +</span>
+    c3.<span class="function">display</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">4 + 6i</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Makes <code class="inline">+</code> work for <code class="inline">Complex</code> like built-in types.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Virtual Functions & Function Overriding</h2>
+        
+        <p>Functions declared <code class="inline">virtual</code> in base class for runtime resolution. Derived class redefines a virtual function from base (runtime polymorphism).</p>
+
+        <div class="key-points">
+            <h4>Key Points:</h4>
+            <ul>
+                <li>Enables overriding in derived classes.</li>
+                <li>Use with pointers/references for polymorphism.</li>
+            </ul>
+        </div>
+
+        <h4>Example: Virtual function and overriding</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Animal</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual void</span> <span class="function">sound</span>() {  <span class="comment">// Virtual</span>
+        cout &lt;&lt; <span class="string">"Animal sound"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">Dog</span> : <span class="keyword">public</span> <span class="class-name">Animal</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">sound</span>() <span class="keyword">override</span> {  <span class="comment">// Overriding</span>
+        cout &lt;&lt; <span class="string">"Bark"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Animal</span>* a = <span class="keyword">new</span> <span class="class-name">Dog</span>();  <span class="comment">// Base pointer to derived</span>
+    a-&gt;<span class="function">sound</span>();  <span class="comment">// Calls Dog's version (runtime)</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Bark</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Without <code class="inline">virtual</code>, it would call <code class="inline">Animal</code>'s. <code class="inline">override</code> is optional but good for errors.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Compile-time vs Runtime Polymorphism</h2>
+        
+        <p><strong>Compile-time Polymorphism:</strong> Resolved at compile time (e.g., function/operator overloading). Fast, no runtime overhead. Based on signatures.</p>
+        
+        <p><strong>Runtime Polymorphism:</strong> Resolved at runtime (e.g., virtual functions, overriding). Uses vtable (virtual table) for dynamic dispatch. Flexible for hierarchies.</p>
+
+        <div class="section-divider"></div>
+
+        <h1>19. Abstraction & Encapsulation</h1>
+
+        <h2>Data Abstraction</h2>
+        
+        <p>Hiding complex implementation details, showing only essentials. Achieved via abstract classes/interfaces. User sees "what" not "how".</p>
+
+        <h2>Abstract Class & Pure Virtual Function</h2>
+        
+        <p>Class with at least one pure virtual function; can't be instantiated. Pure virtual function set to 0: <code class="inline">virtual void func() = 0;</code>. Makes class abstract.</p>
+
+        <h4>Example: Abstract Shape class</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Shape</span> {  <span class="comment">// Abstract class</span>
+<span class="keyword">public</span>:
+    <span class="keyword">virtual void</span> <span class="function">draw</span>() = <span class="number">0</span>;  <span class="comment">// Pure virtual</span>
+};
+
+<span class="keyword">class</span> <span class="class-name">Circle</span> : <span class="keyword">public</span> <span class="class-name">Shape</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">draw</span>() <span class="keyword">override</span> {
+        cout &lt;&lt; <span class="string">"Drawing Circle"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="comment">// Shape s;  // Error: abstract</span>
+    <span class="class-name">Circle</span> c;
+    c.<span class="function">draw</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Drawing Circle</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Forces derived classes to implement <code class="inline">draw()</code>.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Encapsulation Concept</h2>
+        
+        <p>Wrapping data and functions into a single unit (class), hiding internals. Uses private/protected for data hiding. Prevents unauthorized access, reduces complexity.</p>
+
+        <div class="section-divider"></div>
+
+        <h2>Interface in C++</h2>
+        
+        <p>C++ has no built-in "interface" keyword, but simulated using abstract classes with all pure virtual functions.</p>
+
+        <h4>Example: Interface-like class</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Printable</span> {  <span class="comment">// Interface-like</span>
+<span class="keyword">public</span>:
+    <span class="keyword">virtual void</span> <span class="function">print</span>() = <span class="number">0</span>;
+    <span class="keyword">virtual</span> <span class="function">~Printable</span>() {}  <span class="comment">// Virtual destructor good practice</span>
+};
+
+<span class="keyword">class</span> <span class="class-name">Document</span> : <span class="keyword">public</span> <span class="class-name">Printable</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">print</span>() <span class="keyword">override</span> {
+        cout &lt;&lt; <span class="string">"Printing document"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Printable</span>* p = <span class="keyword">new</span> <span class="class-name">Document</span>();
+    p-&gt;<span class="function">print</span>();
+    <span class="keyword">delete</span> p;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">Printing document</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Defines a contract (<code class="inline">print()</code>) that implementing classes must follow.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h1>20. Templates</h1>
+        
+        <p>Templates enable generic programming – code that works with any data type.</p>
+
+        <h2>Function Templates</h2>
+        
+        <p>Functions that operate on generic types.</p>
+
+        <h4>Example: Generic maxValue function</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="class-name">T</span>&gt;  <span class="comment">// Template</span>
+<span class="class-name">T</span> <span class="function">maxValue</span>(<span class="class-name">T</span> a, <span class="class-name">T</span> b) {
+    <span class="keyword">return</span> (a &gt; b) ? a : b;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cout &lt;&lt; <span class="function">maxValue</span>(<span class="number">5</span>, <span class="number">10</span>) &lt;&lt; endl;  <span class="comment">// int</span>
+    cout &lt;&lt; <span class="function">maxValue</span>(<span class="number">3.5</span>, <span class="number">1.2</span>) &lt;&lt; endl;  <span class="comment">// double</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">10
+3.5</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Compiler generates specific versions for int/double at compile time.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Class Templates</h2>
+        
+        <p>Classes that work with generic types.</p>
+
+        <h4>Example: Generic Stack class</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="class-name">T</span>&gt;
+<span class="keyword">class</span> <span class="class-name">Stack</span> {
+<span class="keyword">private</span>:
+    <span class="class-name">T</span> data[<span class="number">5</span>];
+    <span class="keyword">int</span> top = -<span class="number">1</span>;
+    
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">push</span>(<span class="class-name">T</span> val) {
+        <span class="keyword">if</span> (top &lt; <span class="number">4</span>)
+            data[++top] = val;
+    }
+    
+    <span class="class-name">T</span> <span class="function">pop</span>() {
+        <span class="keyword">return</span> data[top--];
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Stack</span>&lt;<span class="keyword">int</span>&gt; s;
+    s.<span class="function">push</span>(<span class="number">1</span>);
+    s.<span class="function">push</span>(<span class="number">2</span>);
+    cout &lt;&lt; s.<span class="function">pop</span>() &lt;&lt; endl;  <span class="comment">// 2</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">2</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> <code class="inline">Stack&lt;int&gt;</code> can hold int, float, etc., without rewriting.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Template Specialization</h2>
+        
+        <p>Custom implementation for a specific type.</p>
+
+        <h4>Example: Template specialization for char*</h4>
+
+        <div class="code-container">
+            <div class="code-header">main.cpp</div>
+            <pre><code><span class="preprocessor">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="class-name">T</span>&gt;
+<span class="keyword">class</span> <span class="class-name">Printer</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">print</span>(<span class="class-name">T</span> val) {
+        cout &lt;&lt; val &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">template</span> &lt;&gt;  <span class="comment">// Specialization for char*</span>
+<span class="keyword">class</span> <span class="class-name">Printer</span>&lt;<span class="keyword">char</span>*&gt; {
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">print</span>(<span class="keyword">char</span>* val) {
+        cout &lt;&lt; <span class="string">"String: "</span> &lt;&lt; val &lt;&lt; endl;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">Printer</span>&lt;<span class="keyword">int</span>&gt; p1;
+    p1.<span class="function">print</span>(<span class="number">42</span>);
+    
+    <span class="class-name">Printer</span>&lt;<span class="keyword">char</span>*&gt; p2;
+    p2.<span class="function">print</span>(<span class="string">"Hello"</span>);
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="output-container">
+            <div class="output-header">Output</div>
+            <div class="output-content">42
+String: Hello</div>
+        </div>
+
+        <div class="explanation">
+            <strong>Explanation:</strong> Overrides generic for <code class="inline">char*</code> to handle strings differently.
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Generic Programming</h2>
+        
+        <p>Writing algorithms independent of data types using templates. Reduces code duplication, increases flexibility. STL (Standard Template Library) uses this heavily (e.g., vector&lt;T&gt;).</p>
+
+    </div>
+</body>
+</html>

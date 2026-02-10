@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Advanced Concepts - Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #252526;
+            padding: 20px;
+            border-bottom: 1px solid #3c3c3c;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #4ec9b0;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #569cd6;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3c3c3c;
+        }
+
+        h3 {
+            color: #dcdcaa;
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        pre {
+            background-color: #252526;
+            border: 1px solid #3c3c3c;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        code {
+            color: #ce9178;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .type {
+            color: #4ec9b0;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        strong {
+            color: #c586c0;
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .note {
+            background-color: #2d2d30;
+            border-left: 4px solid #569cd6;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #2d2d30;
+            border-left: 4px solid #ce9178;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .tip {
+            background-color: #2d2d30;
+            border-left: 4px solid #4ec9b0;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>C++ Advanced Concepts</h1>
+            <p>A comprehensive guide to Pointers, References, Dynamic Memory, Structures, and Enumerations</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Section 11: Pointers -->
+        <section class="section">
+            <h2>11. Pointers</h2>
+            <p>Pointers are one of the most powerful features in C++, but they can be tricky for beginners. A pointer is essentially a variable that stores the memory address of another variable. This allows you to indirectly access or manipulate data in memory. Pointers are useful for dynamic memory allocation, arrays, functions, and more. Let's break down each subtopic step by step.</p>
+
+            <h3>Pointer Basics</h3>
+            <p>Pointers allow you to work with memory addresses directly. Every variable in C++ has a memory address, and a pointer "points" to that address.</p>
+            <ul>
+                <li><strong>Why use pointers?</strong> They help in efficient memory management, passing large data to functions without copying, and creating dynamic data structures like linked lists.</li>
+                <li><strong>Declaration:</strong> You declare a pointer using the <code>*</code> symbol. For example, <code>int* ptr;</code> means <code>ptr</code> is a pointer to an integer.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Basic pointer usage</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> num = <span class="number">10</span>;  <span class="comment">// A normal integer variable</span>
+    <span class="keyword">int</span>* ptr;      <span class="comment">// Declaration of a pointer to int</span>
+    ptr = &num;    <span class="comment">// Assign the address of num to ptr</span>
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Value of num: "</span> &lt;&lt; num &lt;&lt; <span class="type">std</span>::endl;
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Address of num: "</span> &lt;&lt; &num &lt;&lt; <span class="type">std</span>::endl;
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Value stored in ptr (address): "</span> &lt;&lt; ptr &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="note">
+                <strong>Explanation:</strong> Here, <code>num</code> is stored at some memory address (e.g., 0x7ffd1234 – this varies). <code>ptr</code> holds that address. When you run this, you'll see the value of <code>num</code> (10), its address (a hexadecimal number), and the same address printed from <code>ptr</code>.
+            </div>
+
+            <div class="tip">
+                <strong>Key Point for Beginners:</strong> Pointers don't store values; they store addresses. Think of them like a GPS pointing to a house (the variable).
+            </div>
+
+            <h3>Pointer Syntax</h3>
+            <ul>
+                <li><strong>Declaration:</strong> <code>data_type* pointer_name;</code> (e.g., <code>char* chPtr;</code>). The <code>*</code> indicates it's a pointer.</li>
+                <li><strong>Initialization:</strong> Always initialize pointers to avoid pointing to random memory. You can initialize to <code>nullptr</code>.</li>
+                <li><strong>Common Mistakes:</strong> Forgetting the <code>*</code> or using uninitialized pointers, which can cause crashes.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Pointer syntax</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">double</span> value = <span class="number">3.14</span>;
+    <span class="keyword">double</span>* dblPtr = &value;  <span class="comment">// Declaration and initialization in one line</span>
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Pointer value: "</span> &lt;&lt; dblPtr &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="note">
+                <strong>Explanation:</strong> This declares and initializes <code>dblPtr</code> to point to <code>value</code>. Syntax is strict – mismatched types (e.g., <code>int*</code> pointing to <code>double</code>) can cause errors.
+            </div>
+
+            <h3>Address and Dereference</h3>
+            <ul>
+                <li><strong>Address Operator (&):</strong> The <code>&</code> symbol gets the memory address of a variable. E.g., <code>&var</code> gives the address of <code>var</code>.</li>
+                <li><strong>Dereference Operator (*):</strong> The <code>*</code> symbol (when used on a pointer) accesses the value at the address the pointer holds. It's like "following the pointer" to get the actual data.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Address and dereference operators</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> age = <span class="number">25</span>;
+    <span class="keyword">int</span>* agePtr = &age;  <span class="comment">// &age gets the address</span>
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Address of age: "</span> &lt;&lt; &age &lt;&lt; <span class="type">std</span>::endl;
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Value via dereference: "</span> &lt;&lt; *agePtr &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// *agePtr gives 25</span>
+    
+    *agePtr = <span class="number">30</span>;  <span class="comment">// Change the value through the pointer</span>
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"New value of age: "</span> &lt;&lt; age &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// Now age is 30</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="tip">
+                <strong>Beginner Tip:</strong> Think of <code>&</code> as "address of" and <code>*</code> as "value at".
+            </div>
+
+            <h3>Pointer Arithmetic</h3>
+            <p>Pointers can be incremented or decremented to move to adjacent memory locations. This is useful for arrays (since arrays are contiguous in memory).</p>
+            <ul>
+                <li><strong>Operations:</strong> <code>ptr + n</code> moves the pointer forward by <code>n</code> times the size of the data type (e.g., for <code>int*</code>, +1 moves 4 bytes if int is 4 bytes).</li>
+                <li><strong>Supported:</strong> +, -, ++, --. No multiplication or division.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Pointer arithmetic</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> arr[<span class="number">3</span>] = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>};
+    <span class="keyword">int</span>* ptr = arr;  <span class="comment">// ptr points to arr[0]</span>
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"First element: "</span> &lt;&lt; *ptr &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 10</span>
+    
+    ptr++;  <span class="comment">// Move to next int (arr[1])</span>
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Second element: "</span> &lt;&lt; *ptr &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 20</span>
+    
+    ptr += <span class="number">1</span>;  <span class="comment">// Move to arr[2]</span>
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Third element: "</span> &lt;&lt; *ptr &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 30</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="warning">
+                <strong>Warning:</strong> Don't go beyond array bounds – it leads to undefined behavior (crashes or wrong data).
+            </div>
+
+            <h3>Pointer and Array</h3>
+            <p>In C++, arrays and pointers are closely related. An array name is essentially a pointer to its first element.</p>
+            <ul>
+                <li><strong>Array as Pointer:</strong> <code>int arr[5];</code> means <code>arr</code> is like <code>int* const</code> pointing to <code>arr[0]</code>.</li>
+                <li><strong>Accessing Elements:</strong> <code>arr[i]</code> is equivalent to <code>*(arr + i)</code>.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Pointers and arrays</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">char</span> str[] = <span class="string">"Hello"</span>;  <span class="comment">// Array of chars</span>
+    <span class="keyword">char</span>* ptr = str;       <span class="comment">// ptr points to 'H'</span>
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) {
+        <span class="type">std</span>::cout &lt;&lt; *(ptr + i);  <span class="comment">// Pointer arithmetic to print each char</span>
+    }
+    <span class="type">std</span>::cout &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="note">
+                <strong>Difference:</strong> You can't reassign an array name (e.g., <code>arr = something;</code> is invalid), but you can with pointers.
+            </div>
+
+            <h3>Pointer to Pointer</h3>
+            <p>A pointer to a pointer (double pointer) points to another pointer. Useful for 2D arrays or changing pointer values in functions.</p>
+            <ul>
+                <li><strong>Declaration:</strong> <code>int** pptr;</code></li>
+                <li><strong>Usage:</strong> First <code>*</code> dereferences to a pointer, second to the value.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Pointer to pointer</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> num = <span class="number">100</span>;
+    <span class="keyword">int</span>* ptr = &num;
+    <span class="keyword">int</span>** pptr = &ptr;  <span class="comment">// pptr points to ptr</span>
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Value: "</span> &lt;&lt; **pptr &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 100 (double dereference)</span>
+    
+    **pptr = <span class="number">200</span>;  <span class="comment">// Changes num to 200</span>
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"New value: "</span> &lt;&lt; num &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Null Pointer</h3>
+            <p>A null pointer points to nothing (address 0). It's a safe way to initialize pointers.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>int* ptr = nullptr;</code> (C++11+) or <code>NULL</code> (older).</li>
+                <li><strong>Why?</strong> Prevents accidental dereferencing of invalid memory.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Null pointer</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span>* ptr = <span class="keyword">nullptr</span>;
+    
+    <span class="keyword">if</span> (ptr == <span class="keyword">nullptr</span>) {
+        <span class="type">std</span>::cout &lt;&lt; <span class="string">"Pointer is null, safe!"</span> &lt;&lt; <span class="type">std</span>::endl;
+    }
+    
+    <span class="comment">// Don't do: *ptr = 5; // Crash! Dereferencing null</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Dangling Pointer</h3>
+            <p>A dangling pointer points to memory that has been freed or gone out of scope. It's dangerous as it leads to undefined behavior.</p>
+
+            <pre><code><span class="comment">// Example: Dangling pointer (bad code)</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span>* <span class="function">getPtr</span>() {
+    <span class="keyword">int</span> local = <span class="number">10</span>;
+    <span class="keyword">return</span> &local;  <span class="comment">// Bad! local goes out of scope</span>
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span>* dangPtr = <span class="function">getPtr</span>();
+    <span class="comment">// std::cout &lt;&lt; *dangPtr; // Undefined! Dangling pointer</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="warning">
+                <strong>Solution:</strong> Set to <code>nullptr</code> after freeing memory. Avoid by careful scope management.
+            </div>
+
+            <h3>Void Pointer</h3>
+            <p>A void pointer (<code>void*</code>) can point to any data type. It's generic but can't be dereferenced directly.</p>
+
+            <pre><code><span class="comment">// Example: Void pointer</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> num = <span class="number">42</span>;
+    <span class="keyword">void</span>* vPtr = &num;  <span class="comment">// Can point to int</span>
+    
+    <span class="comment">// std::cout &lt;&lt; *vPtr; // Error! Can't dereference void*</span>
+    <span class="keyword">int</span>* intPtr = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>*&gt;(vPtr);  <span class="comment">// Cast to int*</span>
+    <span class="type">std</span>::cout &lt;&lt; *intPtr &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 42</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+        </section>
+
+        <!-- Section 12: References -->
+        <section class="section">
+            <h2>12. References</h2>
+            <p>References are aliases to existing variables. Unlike pointers, they must be initialized and can't be changed to refer to something else. They're safer and simpler for beginners.</p>
+
+            <h3>Reference Variables</h3>
+            <p>A reference is like a nickname for a variable. Changes to the reference affect the original.</p>
+            <ul>
+                <li><strong>Declaration:</strong> <code>data_type& ref_name = var;</code></li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Reference variables</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> score = <span class="number">90</span>;
+    <span class="keyword">int</span>& ref = score;  <span class="comment">// ref is alias to score</span>
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Score: "</span> &lt;&lt; score &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 90</span>
+    ref = <span class="number">95</span>;  <span class="comment">// Changes score</span>
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"New score: "</span> &lt;&lt; score &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 95</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="note">
+                <strong>Explanation:</strong> <code>ref</code> and <code>score</code> are the same variable under different names. No need for <code>*</code> or <code>&</code> after declaration.
+            </div>
+
+            <h3>Reference vs Pointer</h3>
+            <p><strong>Similarities:</strong> Both provide indirect access.</p>
+            <p><strong>Differences:</strong></p>
+            <ul>
+                <li>References must be initialized; pointers can be null.</li>
+                <li>References can't be reassigned; pointers can.</li>
+                <li>No dereferencing for references; pointers need <code>*</code>.</li>
+                <li>References are safer (no null or dangling issues).</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Reference vs pointer</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> val = <span class="number">5</span>;
+    <span class="keyword">int</span>* ptr = &val;  <span class="comment">// Pointer</span>
+    <span class="keyword">int</span>& ref = val;   <span class="comment">// Reference</span>
+    
+    *ptr = <span class="number">10</span>;  <span class="comment">// Changes val</span>
+    ref = <span class="number">15</span>;   <span class="comment">// Changes val again</span>
+    
+    <span class="type">std</span>::cout &lt;&lt; val &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 15</span>
+    
+    <span class="comment">// ptr = nullptr; // OK for pointer</span>
+    <span class="comment">// ref = something_else; // Error! Can't reassign reference</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Pass by Reference</h3>
+            <p>In functions, passing by reference avoids copying large data and allows modifying the original.</p>
+
+            <pre><code><span class="comment">// Example: Pass by reference</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">void</span> <span class="function">increment</span>(<span class="keyword">int</span>& num) {
+    num++;  <span class="comment">// Modifies original</span>
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> count = <span class="number">1</span>;
+    <span class="function">increment</span>(count);
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Count: "</span> &lt;&lt; count &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 2</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="note">
+                <strong>Explanation:</strong> Without reference (<code>int num</code>), it would copy and not change <code>count</code>. Pass by reference is efficient for big objects like classes.
+            </div>
+
+            <h3>Returning Reference</h3>
+            <p>Functions can return references to allow chaining or modify external data.</p>
+
+            <pre><code><span class="comment">// Example: Returning reference</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span>& <span class="function">getMax</span>(<span class="keyword">int</span>& a, <span class="keyword">int</span>& b) {
+    <span class="keyword">return</span> (a &gt; b) ? a : b;  <span class="comment">// Returns reference to the larger</span>
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> x = <span class="number">10</span>, y = <span class="number">20</span>;
+    <span class="function">getMax</span>(x, y) = <span class="number">30</span>;  <span class="comment">// Sets y to 30</span>
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Y: "</span> &lt;&lt; y &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 30</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="warning">
+                <strong>Warning:</strong> Don't return references to local variables (dangling issue).
+            </div>
+        </section>
+
+        <!-- Section 13: Dynamic Memory Allocation -->
+        <section class="section">
+            <h2>13. Dynamic Memory Allocation</h2>
+            <p>C++ allows allocating memory at runtime using <code>new</code> and freeing with <code>delete</code>. This is for when you don't know sizes at compile time.</p>
+
+            <h3>new Operator</h3>
+            <p>Allocates memory on the heap and returns a pointer.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>data_type* ptr = new data_type;</code></li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: new operator</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span>* dynInt = <span class="keyword">new</span> <span class="keyword">int</span>;  <span class="comment">// Allocates one int</span>
+    *dynInt = <span class="number">50</span>;
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Dynamic int: "</span> &lt;&lt; *dynInt &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="comment">// Don't forget to delete later!</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="note">
+                <strong>Explanation:</strong> Heap memory persists beyond scope, unlike stack (local variables). Initialize with value: <code>new int(50);</code>
+            </div>
+
+            <h3>delete Operator</h3>
+            <p>Frees allocated memory to prevent leaks.</p>
+
+            <pre><code><span class="comment">// Example: delete operator</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">float</span>* dynFloat = <span class="keyword">new</span> <span class="keyword">float</span>(<span class="number">3.14</span>);
+    <span class="type">std</span>::cout &lt;&lt; *dynFloat &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">delete</span> dynFloat;  <span class="comment">// Free memory</span>
+    dynFloat = <span class="keyword">nullptr</span>;  <span class="comment">// Avoid dangling</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="note">
+                <strong>Explanation:</strong> Always pair <code>new</code> with <code>delete</code>. For arrays, use <code>delete[]</code>.
+            </div>
+
+            <h3>Memory Allocation for Array</h3>
+            <p>Use <code>new[]</code> for dynamic arrays.</p>
+
+            <pre><code><span class="comment">// Example: Dynamic array</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> size = <span class="number">4</span>;
+    <span class="keyword">int</span>* dynArr = <span class="keyword">new</span> <span class="keyword">int</span>[size];  <span class="comment">// Dynamic array</span>
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) {
+        dynArr[i] = i * <span class="number">10</span>;
+        <span class="type">std</span>::cout &lt;&lt; dynArr[i] &lt;&lt; <span class="string">" "</span>;
+    }
+    <span class="type">std</span>::cout &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">delete</span>[] dynArr;  <span class="comment">// Note the []</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Memory Leaks</h3>
+            <p>A leak happens when you allocate memory but forget to delete it. It wastes memory and can crash programs over time.</p>
+            <ul>
+                <li><strong>Cause:</strong> Missing <code>delete</code>, or losing the pointer.</li>
+                <li><strong>Prevention:</strong> Always delete, use smart pointers (advanced topic like <code>std::unique_ptr</code>).</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example of Leak (Bad Code)</span>
+<span class="keyword">void</span> <span class="function">leakyFunc</span>() {
+    <span class="keyword">int</span>* ptr = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>);
+    <span class="comment">// No delete! Memory lost when function ends</span>
+}</code></pre>
+
+            <div class="warning">
+                <strong>Warning:</strong> Call <code>leakyFunc()</code> many times, and memory builds up. Tools like Valgrind detect leaks.
+            </div>
+        </section>
+
+        <!-- Section 14: Structures & Unions -->
+        <section class="section">
+            <h2>14. Structures & Unions</h2>
+            <p>Structures and unions group related data. Structures are like custom types; unions save space by sharing memory.</p>
+
+            <h3>Structure Definition</h3>
+            <p>A <code>struct</code> defines a user-defined type with members.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>struct Name { type member1; type member2; };</code></li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Structure definition</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string&gt;</span>
+
+<span class="keyword">struct</span> Person {
+    <span class="type">std</span>::<span class="type">string</span> name;
+    <span class="keyword">int</span> age;
+    <span class="keyword">float</span> height;
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    Person p1;  <span class="comment">// Create instance</span>
+    p1.name = <span class="string">"Alice"</span>;
+    p1.age = <span class="number">28</span>;
+    p1.height = <span class="number">1.65</span>;
+    
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Name: "</span> &lt;&lt; p1.name &lt;&lt; <span class="string">", Age: "</span> &lt;&lt; p1.age &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Accessing Structure Members</h3>
+            <p>Use <code>.</code> for objects, <code>-&gt;</code> for pointers to structs.</p>
+
+            <pre><code><span class="comment">// Example: Accessing members</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">struct</span> Book {
+    <span class="type">std</span>::<span class="type">string</span> title;
+    <span class="keyword">int</span> pages;
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    Book b = {<span class="string">"C++ Guide"</span>, <span class="number">300</span>};
+    <span class="type">std</span>::cout &lt;&lt; b.title &lt;&lt; <span class="type">std</span>::endl;
+    
+    Book* bPtr = &b;
+    <span class="type">std</span>::cout &lt;&lt; bPtr-&gt;pages &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// Equivalent to (*bPtr).pages</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Array of Structures</h3>
+            <p>You can have arrays of structs for collections.</p>
+
+            <pre><code><span class="comment">// Example: Array of structures</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">struct</span> Point {
+    <span class="keyword">int</span> x, y;
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    Point points[<span class="number">3</span>] = {{<span class="number">1</span>,<span class="number">2</span>}, {<span class="number">3</span>,<span class="number">4</span>}, {<span class="number">5</span>,<span class="number">6</span>}};
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) {
+        <span class="type">std</span>::cout &lt;&lt; <span class="string">"Point "</span> &lt;&lt; i &lt;&lt; <span class="string">": ("</span> &lt;&lt; points[i].x &lt;&lt; <span class="string">", "</span> &lt;&lt; points[i].y &lt;&lt; <span class="string">")"</span> &lt;&lt; <span class="type">std</span>::endl;
+    }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Structure vs Class</h3>
+            <p><strong>Similarities:</strong> Both can have members, methods.</p>
+            <p><strong>Differences:</strong></p>
+            <ul>
+                <li>In <code>struct</code>, members are public by default; in <code>class</code>, private.</li>
+                <li>Structs are for plain data; classes for objects with behavior.</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Struct vs class</span>
+<span class="keyword">struct</span> Simple {  <span class="comment">// Public by default</span>
+    <span class="keyword">int</span> data;
+};
+
+<span class="keyword">class</span> Complex {  <span class="comment">// Private by default</span>
+<span class="keyword">private</span>:
+    <span class="keyword">int</span> data;
+<span class="keyword">public</span>:
+    <span class="keyword">void</span> <span class="function">setData</span>(<span class="keyword">int</span> d) { data = d; }
+};</code></pre>
+
+            <h3>Union Basics</h3>
+            <p>A <code>union</code> is like struct but members share the same memory location. Only one member active at a time.</p>
+
+            <pre><code><span class="comment">// Example: Union</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">union</span> Data {
+    <span class="keyword">int</span> i;
+    <span class="keyword">float</span> f;
+    <span class="keyword">char</span> c;
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    Data d;
+    d.i = <span class="number">10</span>;
+    <span class="type">std</span>::cout &lt;&lt; d.i &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 10</span>
+    
+    d.f = <span class="number">3.14</span>;  <span class="comment">// Overwrites i</span>
+    <span class="type">std</span>::cout &lt;&lt; d.f &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 3.14</span>
+    <span class="type">std</span>::cout &lt;&lt; d.i &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// Garbage (shared memory)</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Difference Between Structure and Union</h3>
+            <ul>
+                <li><strong>Memory:</strong> Struct allocates for all members separately; union shares memory for all.</li>
+                <li><strong>Usage:</strong> Struct for "all at once"; union for "one at a time".</li>
+                <li><strong>Size:</strong> <code>sizeof(struct)</code> = sum of members; <code>sizeof(union)</code> = max member.</li>
+                <li><strong>Access:</strong> Both use <code>.</code>, but union risks overwriting data.</li>
+            </ul>
+        </section>
+
+        <!-- Section 15: Enumerations & Typedef -->
+        <section class="section">
+            <h2>15. Enumerations & Typedef</h2>
+            <p>These help make code readable by defining custom types or aliases.</p>
+
+            <h3>enum</h3>
+            <p>An <code>enum</code> defines a set of named integer constants.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>enum Name { val1, val2 = 5, ... };</code> (starts from 0 by default).</li>
+            </ul>
+
+            <pre><code><span class="comment">// Example: Enumeration</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">enum</span> Color { Red, Green = <span class="number">10</span>, Blue };
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    Color c = Green;
+    <span class="type">std</span>::cout &lt;&lt; <span class="string">"Green value: "</span> &lt;&lt; c &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 10</span>
+    
+    <span class="keyword">if</span> (c == <span class="number">10</span>) {
+        <span class="type">std</span>::cout &lt;&lt; <span class="string">"It's Green!"</span> &lt;&lt; <span class="type">std</span>::endl;
+    }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>Scoped enum</h3>
+            <p>C++11 <code>enum class</code> avoids name clashes and requires scoping.</p>
+
+            <pre><code><span class="comment">// Example: Scoped enum</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">enum class</span> Status { Active, Inactive };
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    Status s = Status::Active;
+    <span class="comment">// std::cout &lt;&lt; s; // Error! Can't implicit cast to int</span>
+    <span class="type">std</span>::cout &lt;&lt; <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(s) &lt;&lt; <span class="type">std</span>::endl;  <span class="comment">// 0</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>typedef</h3>
+            <p>Creates an alias for a type to simplify code.</p>
+
+            <pre><code><span class="comment">// Example: typedef</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+
+<span class="keyword">typedef</span> <span class="keyword">unsigned long</span> ulong;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    ulong bigNum = <span class="number">1234567890</span>UL;
+    <span class="type">std</span>::cout &lt;&lt; bigNum &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <h3>using Keyword</h3>
+            <p>C++11 <code>using</code> is like typedef but more flexible (e.g., for templates).</p>
+
+            <pre><code><span class="comment">// Example: using keyword</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+
+<span class="keyword">using</span> vecInt = <span class="type">std</span>::<span class="type">vector</span>&lt;<span class="keyword">int</span>&gt;;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vecInt numbers = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>};
+    <span class="keyword">for</span> (<span class="keyword">int</span> n : numbers) {
+        <span class="type">std</span>::cout &lt;&lt; n &lt;&lt; <span class="string">" "</span>;
+    }
+    <span class="type">std</span>::cout &lt;&lt; <span class="type">std</span>::endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+            <div class="tip">
+                <strong>Note:</strong> These topics build on each other, so practice with small programs. Compile and run the examples using a C++ compiler like g++ to see them in action! If something's unclear, ask for more details.
+            </div>
+        </section>
+    </div>
+</body>
+</html>

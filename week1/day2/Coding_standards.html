@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Guide to Coding Standards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #2a5298;
+            font-size: 2em;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            padding: 20px;
+            border-left: 4px solid #17a2b8;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #f8d7da;
+            padding: 20px;
+            border-left: 4px solid #dc3545;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            padding: 20px;
+            border-left: 4px solid #28a745;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        pre {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            color: #c7254e;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .good {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+
+        .bad {
+            background: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .good h4::before {
+            content: "✅ ";
+            color: #28a745;
+        }
+
+        .bad h4::before {
+            content: "❌ ";
+            color: #dc3545;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #2a5298;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+        }
+
+        .toc h3 {
+            color: #2a5298;
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            padding: 5px 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .key-point {
+            background: #e7f3ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        footer {
+            background: #2a5298;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Complete Guide to Coding Standards</h1>
+            <p>Best Practices, Guidelines & Real-World Examples</p>
+        </header>
+
+        <div class="content">
+            <div class="toc">
+                <h3>📑 Table of Contents</h3>
+                <ul>
+                    <li><a href="#what-is">1. What is a Coding Standard?</a></li>
+                    <li><a href="#why">2. Why Coding Standards Matter</a></li>
+                    <li><a href="#naming">3. Naming Conventions</a></li>
+                    <li><a href="#formatting">4. Code Formatting & Style</a></li>
+                    <li><a href="#comments">5. Comments & Documentation</a></li>
+                    <li><a href="#variables">6. Variable Usage Rules</a></li>
+                    <li><a href="#functions">7. Function Standards</a></li>
+                    <li><a href="#error">8. Error Handling & Validation</a></li>
+                    <li><a href="#memory">9. Memory Management</a></li>
+                    <li><a href="#structure">10. File & Project Structure</a></li>
+                    <li><a href="#security">11. Security Standards</a></li>
+                    <li><a href="#performance">12. Performance & Optimization</a></li>
+                    <li><a href="#testing">13. Testing Standards</a></li>
+                    <li><a href="#version">14. Version Control Best Practices</a></li>
+                    <li><a href="#industry">15. Industry Standards</a></li>
+                    <li><a href="#interview">16. Interview Perspective</a></li>
+                </ul>
+            </div>
+
+            <section id="what-is">
+                <h2>1. What is a Coding Standard?</h2>
+                <p>A <strong>coding standard</strong> is a comprehensive set of rules, guidelines, and best practices that developers follow while writing code to ensure:</p>
+                <ul>
+                    <li>Code <strong>readability</strong> and clarity</li>
+                    <li>Easy <strong>understanding</strong> for all team members</li>
+                    <li>Simple <strong>maintenance</strong> and updates</li>
+                    <li><strong>Consistency</strong> across the entire codebase</li>
+                    <li>Reduced <strong>bug-prone</strong> code</li>
+                    <li>Better <strong>collaboration</strong> in teams</li>
+                </ul>
+
+                <div class="highlight">
+                    <strong>🚦 Think of it like traffic rules for code:</strong>
+                    <p>Anyone can drive, but rules make it safe, organized, and predictable for everyone on the road.</p>
+                </div>
+            </section>
+
+            <section id="why">
+                <h2>2. Why Coding Standards Are Important</h2>
+
+                <h3>2.1 Readability</h3>
+                <div class="key-point">
+                    <p><strong>Code is read 10x more than it is written.</strong> Good standards make code readable even after years, by different developers, or even by yourself!</p>
+                </div>
+
+                <h3>2.2 Team Collaboration</h3>
+                <p>When multiple developers work together, standards ensure consistency in:</p>
+                <ul>
+                    <li>Naming styles</li>
+                    <li>Code formatting</li>
+                    <li>Project structure</li>
+                    <li>Documentation approach</li>
+                </ul>
+
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Without Standards</h4>
+<pre>
+calcVal()
+calculate_value()
+CALCULATEVALUE()
+CalcValue()
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>With Standards</h4>
+<pre>
+calculateValue()
+calculateValue()
+calculateValue()
+calculateValue()
+</pre>
+                    </div>
+                </div>
+
+                <h3>2.3 Maintainability</h3>
+                <p>If a bug appears after 6 months, clean standardized code is much easier to debug and fix. It saves significant development time and reduces frustration.</p>
+
+                <h3>2.4 Fewer Bugs</h3>
+                <p>Standards enforce:</p>
+                <ul>
+                    <li>Proper error handling mechanisms</li>
+                    <li>Safer coding practices</li>
+                    <li>Prevention of undefined behavior</li>
+                    <li>Input validation</li>
+                </ul>
+
+                <h3>2.5 Professional & Industry Ready</h3>
+                <div class="info-box">
+                    <p><strong>Important:</strong> Almost every company follows coding standards in interviews and real-world projects. Companies like Google, Microsoft, Amazon, and Facebook have their own strict coding guidelines.</p>
+                </div>
+
+                <h3>2.6 Onboarding New Developers</h3>
+                <p>New team members can understand and contribute to the codebase much faster when consistent standards are followed.</p>
+
+                <h3>2.7 Code Review Efficiency</h3>
+                <p>Standardized code makes code reviews faster and more focused on logic rather than style issues.</p>
+            </section>
+
+            <section id="naming">
+                <h2>3. Naming Conventions</h2>
+                <p>Proper naming is one of the most critical aspects of coding standards. Names should be <strong>descriptive, meaningful, and consistent</strong>.</p>
+
+                <h3>3.1 General Naming Rules</h3>
+                <table>
+                    <tr>
+                        <th>Element</th>
+                        <th>Convention</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>Variables</td>
+                        <td>camelCase</td>
+                        <td>totalMarks, studentName</td>
+                    </tr>
+                    <tr>
+                        <td>Functions</td>
+                        <td>camelCase</td>
+                        <td>calculateSalary(), getUserData()</td>
+                    </tr>
+                    <tr>
+                        <td>Classes</td>
+                        <td>PascalCase</td>
+                        <td>StudentDetails, BankAccount</td>
+                    </tr>
+                    <tr>
+                        <td>Constants</td>
+                        <td>UPPER_CASE</td>
+                        <td>MAX_USERS, PI_VALUE</td>
+                    </tr>
+                    <tr>
+                        <td>Private Members</td>
+                        <td>_camelCase or m_camelCase</td>
+                        <td>_privateVar, m_count</td>
+                    </tr>
+                    <tr>
+                        <td>Namespaces</td>
+                        <td>lowercase</td>
+                        <td>utils, database</td>
+                    </tr>
+                </table>
+
+                <h3>3.2 Examples</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Bad Naming</h4>
+<pre>
+int tm;
+float a;
+void cal();
+string n;
+int x1, x2, x3;
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Good Naming</h4>
+<pre>
+int totalMarks;
+float averageScore;
+void calculateSalary();
+string studentName;
+int firstScore, secondScore, thirdScore;
+</pre>
+                    </div>
+                </div>
+
+                <h3>3.3 Complete Example</h3>
+<pre>
+const int MAX_STUDENTS = 100;
+const double PI_VALUE = 3.14159;
+
+class StudentManagement {
+private:
+    int _studentCount;
+    string m_schoolName;
+
+public:
+    void addStudent();
+    double calculateAverageMarks();
+    bool isEligibleForScholarship();
+};
+</pre>
+
+                <h3>3.4 Boolean Naming Convention</h3>
+                <p>Boolean variables and functions should clearly indicate yes/no or true/false answers:</p>
+<pre>
+// Good boolean names
+bool isActive;
+bool hasPermission;
+bool canEdit;
+bool shouldUpdate;
+
+// Bad boolean names
+bool status;
+bool flag;
+bool check;
+</pre>
+            </section>
+
+            <section id="formatting">
+                <h2>4. Code Formatting & Style</h2>
+
+                <h3>4.1 Indentation</h3>
+                <p>Consistent indentation is crucial for readability. Most standards use either 2 or 4 spaces (never mix tabs and spaces).</p>
+
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Bad Indentation</h4>
+<pre>
+if(age>18){
+cout<<"Adult";
+if(age>65){
+cout<<"Senior";
+}
+}
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Good Indentation</h4>
+<pre>
+if (age > 18) {
+    cout << "Adult";
+    if (age > 65) {
+        cout << "Senior";
+    }
+}
+</pre>
+                    </div>
+                </div>
+
+                <h3>4.2 Brace Styles</h3>
+                <p>Choose one style and stick to it throughout the project:</p>
+
+                <h4>K&R Style (Kernighan & Ritchie)</h4>
+<pre>
+if (condition) {
+    // code
+} else {
+    // code
+}
+</pre>
+
+                <h4>Allman Style</h4>
+<pre>
+if (condition)
+{
+    // code
+}
+else
+{
+    // code
+}
+</pre>
+
+                <h3>4.3 Line Length</h3>
+                <div class="info-box">
+                    <p><strong>Best Practice:</strong> Keep lines under 80-120 characters. This ensures code is readable without horizontal scrolling.</p>
+                </div>
+
+                <h3>4.4 Spacing</h3>
+<pre>
+// Good spacing
+int result = a + b * c;
+for (int i = 0; i < n; i++) {
+    processData(array[i]);
+}
+
+// Bad spacing
+int result=a+b*c;
+for(int i=0;i<n;i++){
+    processData(array[i]);
+}
+</pre>
+
+                <h3>4.5 Blank Lines</h3>
+                <p>Use blank lines to separate logical blocks of code:</p>
+<pre>
+void processStudent() {
+    // Input section
+    string name = getInput();
+    int marks = getMarks();
+
+    // Processing section
+    double percentage = calculatePercentage(marks);
+    char grade = assignGrade(percentage);
+
+    // Output section
+    displayResult(name, percentage, grade);
+}
+</pre>
+            </section>
+
+            <section id="comments">
+                <h2>5. Comments & Documentation</h2>
+
+                <h3>5.1 Why Comments Matter</h3>
+                <div class="key-point">
+                    <p><strong>Golden Rule:</strong> Comments should explain <strong>WHY</strong>, not <strong>WHAT</strong>. The code itself should show what it does.</p>
+                </div>
+
+                <h3>5.2 Types of Comments</h3>
+
+                <h4>Single-line Comments</h4>
+<pre>
+// Calculate tax based on annual income slab
+double calculateTax(double income);
+</pre>
+
+                <h4>Multi-line Comments</h4>
+<pre>
+/*
+ * This function validates user input
+ * and prevents SQL injection attacks
+ * Returns: true if valid, false otherwise
+ */
+bool validateInput(string input);
+</pre>
+
+                <h4>Documentation Comments (Doxygen style)</h4>
+<pre>
+/**
+ * @brief Calculates the factorial of a number
+ * @param n The input number (must be non-negative)
+ * @return The factorial of n
+ * @throws invalid_argument if n is negative
+ */
+long long factorial(int n);
+</pre>
+
+                <h3>5.3 Comment Examples</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Bad Comments</h4>
+<pre>
+// increment i
+i++;
+
+// function
+void calc();
+
+// loop
+for (int i = 0; i < n; i++) {
+    // code
+}
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Good Comments</h4>
+<pre>
+// Skip invalid entries before processing
+i++;
+
+// Calculate compound interest with annual compounding
+void calculateInterest();
+
+// Process each student record in the database
+for (int i = 0; i < studentCount; i++) {
+    processStudent(students[i]);
+}
+</pre>
+                    </div>
+                </div>
+
+                <h3>5.4 TODO Comments</h3>
+<pre>
+// TODO: Add error handling for network failures
+// FIXME: Memory leak in this function
+// HACK: Temporary solution until API is fixed
+// NOTE: This assumes input is already validated
+</pre>
+
+                <h3>5.5 File Headers</h3>
+<pre>
+/**
+ * File: student_management.cpp
+ * Author: John Doe
+ * Date: 2024-01-15
+ * Description: Handles student data operations including
+ *              CRUD operations and grade calculations
+ * Version: 2.1.0
+ */
+</pre>
+            </section>
+
+            <section id="variables">
+                <h2>6. Variable Usage Rules</h2>
+
+                <h3>6.1 Always Initialize Variables</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Bad Practice</h4>
+<pre>
+int count;
+float average;
+cout << count; // Undefined behavior!
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Good Practice</h4>
+<pre>
+int count = 0;
+float average = 0.0;
+cout << count; // Safe and predictable
+</pre>
+                    </div>
+                </div>
+
+                <h3>6.2 Avoid Magic Numbers</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Bad - Magic Numbers</h4>
+<pre>
+if (marks > 33) {
+    cout << "Pass";
+}
+
+double area = 3.14159 * radius * radius;
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Good - Named Constants</h4>
+<pre>
+const int PASS_MARKS = 33;
+if (marks > PASS_MARKS) {
+    cout << "Pass";
+}
+
+const double PI = 3.14159;
+double area = PI * radius * radius;
+</pre>
+                    </div>
+                </div>
+
+                <h3>6.3 Minimize Variable Scope</h3>
+<pre>
+// Good - Variable declared close to usage
+void processData() {
+    // ... some code ...
+    
+    for (int i = 0; i < size; i++) {  // i only exists in loop
+        int tempValue = calculate(i);  // temp only exists in loop
+        process(tempValue);
+    }
+}
+</pre>
+
+                <h3>6.4 Use Const Where Possible</h3>
+<pre>
+// Mark variables as const if they shouldn't change
+const string CONFIG_FILE = "config.txt";
+const int MAX_RETRY_ATTEMPTS = 3;
+
+void displayData(const vector&lt;int&gt;& data) {  // Can't modify data
+    // Function body
+}
+</pre>
+
+                <h3>6.5 One Variable Per Line</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Bad</h4>
+<pre>
+int a, b, c, *p, &r;
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Good</h4>
+<pre>
+int a;
+int b;
+int c;
+int* p;
+int& r;
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="functions">
+                <h2>7. Function Standards</h2>
+
+                <h3>7.1 Single Responsibility Principle</h3>
+                <div class="key-point">
+                    <p><strong>Rule:</strong> One function should do ONE thing and do it well.</p>
+                </div>
+
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Bad - Multiple Responsibilities</h4>
+<pre>
+void processStudent() {
+    // Get input
+    cin >> name >> marks;
+    
+    // Validate
+    if (marks < 0) return;
+    
+    // Calculate
+    percentage = (marks / 500.0) * 100;
+    
+    // Display
+    cout << name << ": " << percentage;
+    
+    // Save to file
+    saveToFile(name, percentage);
+}
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Good - Single Responsibilities</h4>
+<pre>
+void processStudent() {
+    StudentData data = getStudentInput();
+    
+    if (!validateMarks(data.marks)) {
+        return;
+    }
+    
+    double percentage = calculatePercentage(data.marks);
+    displayResult(data.name, percentage);
+    saveToFile(data.name, percentage);
+}
+</pre>
+                    </div>
+                </div>
+
+                <h3>7.2 Function Length</h3>
+                <div class="info-box">
+                    <p><strong>Ideal Length:</strong> 10-30 lines per function. If longer, consider breaking it into smaller functions.</p>
+                </div>
+
+                <h3>7.3 Function Parameters</h3>
+                <ul>
+                    <li>Limit parameters to 3-5 (ideally 3 or fewer)</li>
+                    <li>Use structures/classes for multiple related parameters</li>
+                    <li>Pass large objects by reference</li>
+                    <li>Use const reference for read-only parameters</li>
+                </ul>
+
+<pre>
+// Bad - Too many parameters
+void createStudent(string name, int age, string address, 
+                   string phone, string email, int grade);
+
+// Good - Use a structure
+struct StudentInfo {
+    string name;
+    int age;
+    string address;
+    string phone;
+    string email;
+    int grade;
+};
+
+void createStudent(const StudentInfo& info);
+</pre>
+
+                <h3>7.4 Return Values</h3>
+<pre>
+// Clear return values
+bool isValid(int value);        // Returns true/false
+int findIndex(int value);       // Returns -1 if not found
+Student* getStudent(int id);    // Returns nullptr if not found
+
+// Use optional (C++17) for clearer intent
+optional&lt;Student&gt; findStudent(int id);
+</pre>
+
+                <h3>7.5 Function Naming</h3>
+                <p>Function names should be verbs or verb phrases that clearly indicate what they do:</p>
+<pre>
+// Good function names
+calculateTotal()
+saveToDatabase()
+getUserInput()
+validateEmail()
+isEligible()
+hasPermission()
+</pre>
+            </section>
+
+            <section id="error">
+                <h2>8. Error Handling & Validation</h2>
+
+                <h3>8.1 Input Validation</h3>
+                <div class="warning-box">
+                    <p><strong>Security Rule:</strong> Never trust user input. Always validate!</p>
+                </div>
+
+<pre>
+void processAge() {
+    int age;
+    cout << "Enter age: ";
+    cin >> age;
+    
+    // Validate input
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits&lt;streamsize&gt;::max(), '\n');
+        cout << "Invalid input! Please enter a number.\n";
+        return;
+    }
+    
+    if (age < 0 || age > 150) {
+        cout << "Age must be between 0 and 150.\n";
+        return;
+    }
+    
+    // Process valid age
+    processValidAge(age);
+}
+</pre>
+
+                <h3>8.2 Division by Zero</h3>
+<pre>
+double divide(int numerator, int denominator) {
+    if (denominator == 0) {
+        cerr << "Error: Division by zero!\n";
+        return 0.0;  // Or throw an exception
+    }
+    return static_cast&lt;double&gt;(numerator) / denominator;
+}
+</pre>
+
+                <h3>8.3 File Operations</h3>
+<pre>
+void readFile(const string& filename) {
+    ifstream file(filename);
+    
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file " << filename << "\n";
+        return;
+    }
+    
+    // Process file
+    string line;
+    while (getline(file, line)) {
+        processLine(line);
+    }
+    
+    file.close();
+}
+</pre>
+
+                <h3>8.4 Exception Handling</h3>
+<pre>
+try {
+    int result = riskyOperation();
+    processResult(result);
+}
+catch (const out_of_range& e) {
+    cerr << "Range error: " << e.what() << "\n";
+}
+catch (const invalid_argument& e) {
+    cerr << "Invalid argument: " << e.what() << "\n";
+}
+catch (const exception& e) {
+    cerr << "Error: " << e.what() << "\n";
+}
+catch (...) {
+    cerr << "Unknown error occurred!\n";
+}
+</pre>
+
+                <h3>8.5 Array Bounds Checking</h3>
+<pre>
+int getElement(const vector&lt;int&gt;& arr, int index) {
+    if (index < 0 || index >= arr.size()) {
+        throw out_of_range("Index out of bounds");
+    }
+    return arr[index];
+}
+</pre>
+            </section>
+
+            <section id="memory">
+                <h2>9. Memory Management</h2>
+
+                <h3>9.1 Avoid Memory Leaks</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Memory Leak</h4>
+<pre>
+void badFunction() {
+    int* p = new int(10);
+    // ... do something ...
+    // Forgot to delete - MEMORY LEAK!
+}
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Proper Cleanup</h4>
+<pre>
+void goodFunction() {
+    int* p = new int(10);
+    // ... do something ...
+    delete p;
+    p = nullptr;  // Good practice
+}
+</pre>
+                    </div>
+                </div>
+
+                <h3>9.2 Use Smart Pointers (Modern C++)</h3>
+                <div class="success-box">
+                    <p><strong>Best Practice:</strong> Prefer smart pointers over raw pointers. They automatically manage memory!</p>
+                </div>
+
+<pre>
+// unique_ptr - Single ownership
+unique_ptr&lt;Student&gt; student = make_unique&lt;Student&gt;("John", 20);
+// No need to delete, automatically cleaned up
+
+// shared_ptr - Shared ownership
+shared_ptr&lt;Resource&gt; resource = make_shared&lt;Resource&gt;();
+
+// weak_ptr - Non-owning reference
+weak_ptr&lt;Resource&gt; weakRef = resource;
+</pre>
+
+                <h3>9.3 RAII Pattern</h3>
+                <p><strong>Resource Acquisition Is Initialization</strong> - Resources are tied to object lifetime:</p>
+<pre>
+class FileHandler {
+private:
+    ifstream file;
+
+public:
+    FileHandler(const string& filename) : file(filename) {
+        if (!file.is_open()) {
+            throw runtime_error("Could not open file");
+        }
+    }
+    
+    ~FileHandler() {
+        if (file.is_open()) {
+            file.close();  // Automatic cleanup
+        }
+    }
+    
+    // Delete copy operations
+    FileHandler(const FileHandler&) = delete;
+    FileHandler& operator=(const FileHandler&) = delete;
+};
+</pre>
+
+                <h3>9.4 Array vs Vector</h3>
+<pre>
+// Avoid raw arrays
+int arr[100];  // Fixed size, no bounds checking
+
+// Prefer vector
+vector&lt;int&gt; vec(100);  // Dynamic, safe, convenient
+vec.push_back(42);     // Automatic resizing
+</pre>
+            </section>
+
+            <section id="structure">
+                <h2>10. File & Project Structure</h2>
+
+                <h3>10.1 Typical C++ Project Structure</h3>
+<pre>
+project_name/
+│
+├── src/                    # Source files
+│   ├── main.cpp
+│   ├── student.cpp
+│   └── utils.cpp
+│
+├── include/                # Header files
+│   ├── student.h
+│   └── utils.h
+│
+├── lib/                    # Libraries
+│
+├── tests/                  # Test files
+│   └── test_student.cpp
+│
+├── docs/                   # Documentation
+│   └── README.md
+│
+├── build/                  # Build output
+│
+└── CMakeLists.txt         # Build configuration
+</pre>
+
+                <h3>10.2 Header Files (.h)</h3>
+<pre>
+// student.h
+#ifndef STUDENT_H
+#define STUDENT_H
+
+#include &lt;string&gt;
+using namespace std;
+
+class Student {
+private:
+    string name;
+    int rollNumber;
+
+public:
+    Student(string n, int r);
+    void display() const;
+    int getRollNumber() const;
+};
+
+#endif // STUDENT_H
+</pre>
+
+                <h3>10.3 Implementation Files (.cpp)</h3>
+<pre>
+// student.cpp
+#include "student.h"
+#include &lt;iostream&gt;
+
+Student::Student(string n, int r) : name(n), rollNumber(r) {}
+
+void Student::display() const {
+    cout << "Name: " << name << ", Roll: " << rollNumber << "\n";
+}
+
+int Student::getRollNumber() const {
+    return rollNumber;
+}
+</pre>
+
+                <h3>10.4 Include Guards vs #pragma once</h3>
+                <div class="comparison">
+                    <div class="good">
+                        <h4>Traditional Include Guards</h4>
+<pre>
+#ifndef MY_HEADER_H
+#define MY_HEADER_H
+
+// declarations
+
+#endif
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Modern Pragma</h4>
+<pre>
+#pragma once
+
+// declarations
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="security">
+                <h2>11. Security Coding Standards</h2>
+
+                <h3>11.1 Never Trust User Input</h3>
+<pre>
+// Bad - SQL Injection vulnerability
+string query = "SELECT * FROM users WHERE name = '" + userName + "'";
+
+// Good - Use parameterized queries
+preparedStatement.setString(1, userName);
+</pre>
+
+                <h3>11.2 Avoid Buffer Overflow</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Vulnerable</h4>
+<pre>
+char buffer[10];
+gets(buffer);  // NEVER use gets()
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Safe</h4>
+<pre>
+char buffer[10];
+fgets(buffer, sizeof(buffer), stdin);
+
+// Or better, use string
+string input;
+getline(cin, input);
+</pre>
+                    </div>
+                </div>
+
+                <h3>11.3 Sensitive Data Handling</h3>
+<pre>
+// Never hard-code credentials
+// Bad
+const string PASSWORD = "admin123";
+
+// Good - Use environment variables or secure storage
+const string PASSWORD = getenv("DB_PASSWORD");
+
+// Clear sensitive data after use
+string password = getUserPassword();
+// ... use password ...
+password.clear();  // Clear from memory
+</pre>
+
+                <h3>11.4 Integer Overflow Prevention</h3>
+<pre>
+// Check for overflow before operations
+bool safeAdd(int a, int b, int& result) {
+    if (a > 0 && b > INT_MAX - a) {
+        return false;  // Overflow would occur
+    }
+    if (a < 0 && b < INT_MIN - a) {
+        return false;  // Underflow would occur
+    }
+    result = a + b;
+    return true;
+}
+</pre>
+            </section>
+
+            <section id="performance">
+                <h2>12. Performance & Optimization</h2>
+
+                <h3>12.1 Pass by Reference</h3>
+<pre>
+// Bad - Copies entire vector
+void processData(vector&lt;int&gt; data) {
+    // Process
+}
+
+// Good - No copy, read-only
+void processData(const vector&lt;int&gt;& data) {
+    // Process
+}
+
+// Good - Can modify
+void modifyData(vector&lt;int&gt;& data) {
+    // Modify
+}
+</pre>
+
+                <h3>12.2 Reserve Vector Capacity</h3>
+<pre>
+// Bad - Multiple reallocations
+vector&lt;int&gt; vec;
+for (int i = 0; i < 1000; i++) {
+    vec.push_back(i);
+}
+
+// Good - One allocation
+vector&lt;int&gt; vec;
+vec.reserve(1000);
+for (int i = 0; i < 1000; i++) {
+    vec.push_back(i);
+}
+</pre>
+
+                <h3>12.3 Use Const Where Possible</h3>
+<pre>
+// Enables compiler optimizations
+void displayStudent(const Student& student) {
+    cout << student.getName();  // Compiler knows student won't change
+}
+</pre>
+
+                <h3>12.4 Avoid Unnecessary Copies</h3>
+<pre>
+// Bad
+for (int i = 0; i < students.size(); i++) {
+    Student s = students[i];  // Copy!
+    s.display();
+}
+
+// Good
+for (const auto& s : students) {  // Reference, no copy
+    s.display();
+}
+</pre>
+
+                <h3>12.5 Pre-increment vs Post-increment</h3>
+<pre>
+// For iterators and custom types, prefer pre-increment
+for (auto it = vec.begin(); it != vec.end(); ++it) {  // Faster
+    // Process
+}
+
+// Post-increment creates a temporary copy
+for (auto it = vec.begin(); it != vec.end(); it++) {  // Slower
+    // Process
+}
+</pre>
+            </section>
+
+            <section id="testing">
+                <h2>13. Testing Standards</h2>
+
+                <h3>13.1 Unit Testing</h3>
+<pre>
+// Example using a simple testing approach
+void testCalculatePercentage() {
+    assert(calculatePercentage(450, 500) == 90.0);
+    assert(calculatePercentage(0, 500) == 0.0);
+    assert(calculatePercentage(500, 500) == 100.0);
+    cout << "All percentage tests passed!\n";
+}
+</pre>
+
+                <h3>13.2 Test Coverage</h3>
+                <div class="info-box">
+                    <p><strong>Aim for:</strong></p>
+                    <ul>
+                        <li>Critical functions: 100% coverage</li>
+                        <li>Overall project: 80%+ coverage</li>
+                        <li>Test edge cases and error conditions</li>
+                    </ul>
+                </div>
+
+                <h3>13.3 Test Organization</h3>
+<pre>
+// Arrange - Set up test data
+Student student("John", 85);
+
+// Act - Perform action
+bool result = student.isPassed();
+
+// Assert - Verify result
+assert(result == true);
+</pre>
+            </section>
+
+            <section id="version">
+                <h2>14. Version Control Best Practices</h2>
+
+                <h3>14.1 Commit Messages</h3>
+                <div class="success-box">
+                    <p><strong>Format:</strong> [Type] Short description (50 chars max)</p>
+                </div>
+
+<pre>
+✅ Good commit messages:
+[Feature] Add user authentication module
+[Fix] Resolve memory leak in data processor
+[Refactor] Simplify calculation logic
+[Docs] Update README with installation steps
+
+❌ Bad commit messages:
+fixed stuff
+update
+changes
+asdfgh
+</pre>
+
+                <h3>14.2 Branching Strategy</h3>
+<pre>
+main (production)
+  ├── develop (integration)
+  │   ├── feature/user-auth
+  │   ├── feature/payment-gateway
+  │   └── bugfix/login-issue
+</pre>
+
+                <h3>14.3 .gitignore</h3>
+<pre>
+# Compiled files
+*.o
+*.exe
+*.out
+
+# Build directories
+build/
+bin/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+</pre>
+            </section>
+
+            <section id="industry">
+                <h2>15. Industry Standards</h2>
+
+                <table>
+                    <tr>
+                        <th>Standard</th>
+                        <th>Industry</th>
+                        <th>Focus</th>
+                    </tr>
+                    <tr>
+                        <td>Google C++ Style Guide</td>
+                        <td>Tech</td>
+                        <td>General purpose, readability</td>
+                    </tr>
+                    <tr>
+                        <td>MISRA C/C++</td>
+                        <td>Automotive, Aerospace</td>
+                        <td>Safety-critical systems</td>
+                    </tr>
+                    <tr>
+                        <td>CERT C/C++</td>
+                        <td>Security</td>
+                        <td>Secure coding practices</td>
+                    </tr>
+                    <tr>
+                        <td>JSF C++</td>
+                        <td>Aviation</td>
+                        <td>Safety, reliability</td>
+                    </tr>
+                    <tr>
+                        <td>ISO/IEC Standards</td>
+                        <td>International</td>
+                        <td>Quality, portability</td>
+                    </tr>
+                </table>
+
+                <h3>15.1 Company-Specific Guidelines</h3>
+                <ul>
+                    <li><strong>Google:</strong> Emphasizes readability and consistency</li>
+                    <li><strong>Microsoft:</strong> Focuses on security and performance</li>
+                    <li><strong>Airbus:</strong> Strict MISRA compliance for safety</li>
+                    <li><strong>NASA:</strong> Extensive documentation and verification</li>
+                </ul>
+            </section>
+
+            <section id="interview">
+                <h2>16. Interview Perspective</h2>
+
+                <h3>16.1 Common Interview Questions</h3>
+
+                <div class="key-point">
+                    <p><strong>Q: What are coding standards?</strong></p>
+                    <p><strong>Answer:</strong> "Coding standards are a comprehensive set of guidelines and best practices that ensure code consistency, readability, maintainability, and safety across a team or organization. They cover aspects like naming conventions, code formatting, documentation, error handling, and security practices."</p>
+                </div>
+
+                <div class="key-point">
+                    <p><strong>Q: Why are coding standards important?</strong></p>
+                    <p><strong>Answer:</strong> "They are crucial for team collaboration, reducing bugs, making code easier to maintain, faster onboarding of new developers, and ensuring professional quality. They also make code reviews more efficient and help catch potential issues early."</p>
+                </div>
+
+                <h3>16.2 What Interviewers Look For</h3>
+                <ul>
+                    <li>Consistent naming conventions</li>
+                    <li>Proper indentation and formatting</li>
+                    <li>Meaningful variable and function names</li>
+                    <li>Appropriate comments</li>
+                    <li>Error handling</li>
+                    <li>Memory management (for C++)</li>
+                    <li>Clean, readable code structure</li>
+                </ul>
+
+                <h3>16.3 Before & After Example</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>Interview Fail</h4>
+<pre>
+int f(int a,int b){
+if(b==0)return 0;
+return a/b;
+}
+</pre>
+                    </div>
+                    <div class="good">
+                        <h4>Interview Pass</h4>
+<pre>
+/**
+ * Divides two numbers safely
+ * @param numerator - the dividend
+ * @param denominator - the divisor
+ * @return result of division or 0 if error
+ */
+int divideNumbers(int numerator, int denominator) {
+    if (denominator == 0) {
+        cerr << "Error: Division by zero\n";
+        return 0;
+    }
+    return numerator / denominator;
+}
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎯 Key Takeaways</h2>
+                <div class="success-box">
+                    <ol>
+                        <li><strong>Code is read more than written</strong> - prioritize readability</li>
+                        <li><strong>Be consistent</strong> - follow one style throughout</li>
+                        <li><strong>Use meaningful names</strong> - avoid single letters and abbreviations</li>
+                        <li><strong>Comment the WHY, not the WHAT</strong></li>
+                        <li><strong>Always validate input</strong> - never trust user data</li>
+                        <li><strong>Handle errors gracefully</strong> - don't let programs crash</li>
+                        <li><strong>Keep functions small</strong> - single responsibility principle</li>
+                        <li><strong>Use modern C++ features</strong> - smart pointers, auto, range-based loops</li>
+                        <li><strong>Test your code</strong> - write unit tests for critical functions</li>
+                        <li><strong>Follow industry standards</strong> - especially in professional environments</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section>
+                <h2>📚 Additional Resources</h2>
+                <ul>
+                    <li><a href="https://google.github.io/styleguide/cppguide.html" target="_blank">Google C++ Style Guide</a></li>
+                    <li><a href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines" target="_blank">C++ Core Guidelines</a></li>
+                    <li><a href="https://www.misra.org.uk/" target="_blank">MISRA C/C++ Guidelines</a></li>
+                    <li><a href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard" target="_blank">CERT C Coding Standard</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <footer>
+            <p>💻 Master coding standards to become a professional developer</p>
+            <p>Remember: Good code is not just working code, it's maintainable code!</p>
+        </footer>
+    </div>
+</body>
+</html>
