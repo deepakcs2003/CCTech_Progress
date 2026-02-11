@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLID Principles - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252526;
+            --bg-tertiary: #2d2d30;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent-blue: #569cd6;
+            --accent-green: #4ec9b0;
+            --accent-yellow: #dcdcaa;
+            --accent-orange: #ce9178;
+            --accent-purple: #c586c0;
+            --accent-red: #f48771;
+            --border-color: #3e3e42;
+            --success-bg: #1e3a1e;
+            --success-border: #4ec9b0;
+            --error-bg: #3a1e1e;
+            --error-border: #f48771;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 40px 20px;
+            border-bottom: 2px solid var(--accent-blue);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--accent-blue);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1em;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .toc h2 {
+            color: var(--accent-yellow);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin: 10px 0;
+        }
+
+        .toc a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .toc a:hover {
+            background-color: var(--bg-tertiary);
+            padding-left: 20px;
+        }
+
+        /* Section Styles */
+        section {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--accent-green);
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            color: var(--accent-yellow);
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        h4 {
+            color: var(--accent-purple);
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* Blockquote Styles */
+        blockquote {
+            background-color: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-blue);
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: var(--accent-blue);
+            font-size: 1.1em;
+        }
+
+        /* List Styles */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Code Block Styles - VS Code Like */
+        pre {
+            background-color: #1e1e1e;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Syntax Highlighting */
+        .keyword {
+            color: #569cd6;
+        }
+
+        .class-name {
+            color: #4ec9b0;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .type {
+            color: #4ec9b0;
+        }
+
+        .operator {
+            color: #d4d4d4;
+        }
+
+        /* Badge Styles */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin: 5px 5px 5px 0;
+        }
+
+        .badge-good {
+            background-color: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-border);
+        }
+
+        .badge-bad {
+            background-color: var(--error-bg);
+            border: 1px solid var(--error-border);
+            color: var(--error-border);
+        }
+
+        .badge-info {
+            background-color: rgba(86, 156, 214, 0.2);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* Alert Box Styles */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background-color: var(--success-bg);
+            border-color: var(--success-border);
+            color: var(--success-border);
+        }
+
+        .alert-error {
+            background-color: var(--error-bg);
+            border-color: var(--error-border);
+            color: var(--error-border);
+        }
+
+        .alert-info {
+            background-color: rgba(86, 156, 214, 0.1);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--bg-tertiary);
+        }
+
+        th {
+            background-color: var(--bg-primary);
+            color: var(--accent-yellow);
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background-color: rgba(86, 156, 214, 0.1);
+        }
+
+        /* Benefits List */
+        .benefits {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .benefits h4 {
+            color: var(--accent-green);
+            margin-bottom: 15px;
+        }
+
+        .benefits ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .benefits li::before {
+            content: "✓";
+            color: var(--accent-green);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            pre {
+                font-size: 12px;
+                padding: 15px;
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>SOLID Principles</h1>
+            <p class="subtitle">Complete Guide with Real-Life Examples</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>📑 Table of Contents</h2>
+            <ul>
+                <li><a href="#introduction">1. Introduction to SOLID Principles</a></li>
+                <li><a href="#srp">2. Single Responsibility Principle (SRP)</a></li>
+                <li><a href="#ocp">3. Open/Closed Principle (OCP)</a></li>
+                <li><a href="#lsp">4. Liskov's Substitution Principle (LSP)</a></li>
+                <li><a href="#isp">5. Interface Segregation Principle (ISP)</a></li>
+                <li><a href="#dip">6. Dependency Inversion Principle (DIP)</a></li>
+                <li><a href="#importance">7. Why SOLID Principles Matter</a></li>
+                <li><a href="#summary">8. Quick Reference Summary</a></li>
+            </ul>
+        </div>
+
+        <!-- Introduction Section -->
+        <section id="introduction">
+            <h2>Introduction to SOLID Principles</h2>
+            
+            <h3>What are SOLID Principles?</h3>
+            <p>SOLID is an acronym representing <strong>five fundamental design principles</strong> in object-oriented programming that help developers create:</p>
+            
+            <ul>
+                <li><strong>Maintainable</strong> code (easy to modify)</li>
+                <li><strong>Scalable</strong> code (easy to expand)</li>
+                <li><strong>Flexible</strong> code (easy to adapt)</li>
+                <li><strong>Reusable</strong> code (components can be used elsewhere)</li>
+            </ul>
+
+            <h3>Key Concept: Loose Coupling</h3>
+            <div class="alert alert-info">
+                <strong>Loose coupling</strong> means classes have minimal dependencies on each other
+            </div>
+            
+            <p>When classes are loosely coupled:</p>
+            <ul>
+                <li>Changes in one class minimally affect other classes</li>
+                <li>Code becomes more stable and flexible</li>
+                <li>Testing becomes easier</li>
+                <li>Maintenance is simplified</li>
+            </ul>
+        </section>
+
+        <!-- Single Responsibility Principle -->
+        <section id="srp">
+            <h2>1. Single Responsibility Principle (SRP)</h2>
+            
+            <blockquote>
+                "A class should have only one reason to change"
+            </blockquote>
+
+            <p>This means every class should have:</p>
+            <ul>
+                <li><strong>One job</strong> or <strong>one purpose</strong></li>
+                <li><strong>One responsibility</strong> within the system</li>
+                <li><strong>One reason to be modified</strong></li>
+            </ul>
+
+            <h3>Real-Life Example: The Baker</h3>
+            
+            <h4><span class="badge badge-bad">❌ Violating SRP</span> Bad Design:</h4>
+            <p>The baker is responsible for:</p>
+            <ol>
+                <li>Baking bread</li>
+                <li>Managing inventory</li>
+                <li>Ordering supplies</li>
+                <li>Serving customers</li>
+                <li>Cleaning the bakery</li>
+            </ol>
+            <div class="alert alert-error">
+                <strong>Problem:</strong> The baker cannot focus properly on baking quality bread because they're overwhelmed with multiple responsibilities.
+            </div>
+
+            <h4><span class="badge badge-good">✅ Following SRP</span> Good Design:</h4>
+            <p>Separate responsibilities into different roles:</p>
+            <ol>
+                <li><strong>Baker</strong> → Only bakes bread</li>
+                <li><strong>Inventory Manager</strong> → Manages stock</li>
+                <li><strong>Supply Orderer</strong> → Orders ingredients</li>
+                <li><strong>Customer Service</strong> → Serves customers</li>
+                <li><strong>Cleaner</strong> → Maintains hygiene</li>
+            </ol>
+
+            <h3>Code Implementation</h3>
+            <pre data-lang="cpp"><span class="comment">// Each class has ONE specific responsibility</span>
+
+<span class="keyword">class</span> <span class="class-name">BreadBaker</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">bakeBread</span>() {
+        <span class="comment">// Only responsible for baking</span>
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">InventoryManager</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">manageInventory</span>() {
+        <span class="comment">// Only responsible for inventory</span>
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">SupplyOrder</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">orderSupplies</span>() {
+        <span class="comment">// Only responsible for ordering</span>
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">CustomerService</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">serveCustomer</span>() {
+        <span class="comment">// Only responsible for customer service</span>
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">BakeryCleaner</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">cleanBakery</span>() {
+        <span class="comment">// Only responsible for cleaning</span>
+    }
+};</pre>
+
+            <div class="benefits">
+                <h4>Benefits of SRP</h4>
+                <ul>
+                    <li><strong>Easier debugging:</strong> Know exactly where to look for issues</li>
+                    <li><strong>Better organization:</strong> Code structure is clear</li>
+                    <li><strong>Simplified testing:</strong> Test one responsibility at a time</li>
+                    <li><strong>Reduced risk:</strong> Changes don't cascade unexpectedly</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Open/Closed Principle -->
+        <section id="ocp">
+            <h2>2. Open/Closed Principle (OCP)</h2>
+            
+            <blockquote>
+                "Software entities should be open for extension, but closed for modification"
+            </blockquote>
+
+            <p>This means:</p>
+            <ul>
+                <li><strong>Open for extension:</strong> You can add new functionality</li>
+                <li><strong>Closed for modification:</strong> Don't change existing, working code</li>
+            </ul>
+
+            <h3>Real-Life Example: Payment Processing System</h3>
+            <p><strong>Initial Requirement:</strong> Process credit card payments</p>
+            <p><strong>New Requirement:</strong> Add PayPal support</p>
+
+            <h4><span class="badge badge-bad">❌ Bad Approach</span> (Violates OCP):</h4>
+            <pre data-lang="cpp"><span class="comment">// Modifying existing class - BAD!</span>
+<span class="keyword">class</span> <span class="class-name">PaymentProcessor</span> {
+    <span class="type">void</span> <span class="function">processPayment</span>(<span class="type">string</span> type, <span class="type">double</span> amount) {
+        <span class="keyword">if</span> (type == <span class="string">"CreditCard"</span>) {
+            <span class="comment">// process credit card</span>
+        }
+        <span class="keyword">else if</span> (type == <span class="string">"PayPal"</span>) {  <span class="comment">// Modified existing code</span>
+            <span class="comment">// process PayPal</span>
+        }
+    }
+};</pre>
+
+            <h4><span class="badge badge-good">✅ Good Approach</span> (Follows OCP):</h4>
+            <pre data-lang="cpp"><span class="comment">// Step 1: Create abstract base class (closed for modification)</span>
+<span class="keyword">class</span> <span class="class-name">PaymentProcessor</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">processPayment</span>(<span class="type">double</span> amount) = <span class="keyword">0</span>;
+};
+
+<span class="comment">// Step 2: Original implementation</span>
+<span class="keyword">class</span> <span class="class-name">CreditCardPaymentProcessor</span> : <span class="keyword">public</span> <span class="class-name">PaymentProcessor</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">processPayment</span>(<span class="type">double</span> amount) <span class="keyword">override</span> {
+        cout << <span class="string">"Processing credit card payment of $"</span> << amount;
+    }
+};
+
+<span class="comment">// Step 3: EXTEND functionality without modifying existing code</span>
+<span class="keyword">class</span> <span class="class-name">PayPalPaymentProcessor</span> : <span class="keyword">public</span> <span class="class-name">PaymentProcessor</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">processPayment</span>(<span class="type">double</span> amount) <span class="keyword">override</span> {
+        cout << <span class="string">"Processing PayPal payment of $"</span> << amount;
+    }
+};
+
+<span class="comment">// Step 4: Usage - works with any payment processor</span>
+<span class="type">void</span> <span class="function">processPayment</span>(<span class="class-name">PaymentProcessor</span>* processor, <span class="type">double</span> amount) {
+    processor-><span class="function">processPayment</span>(amount);
+}
+
+<span class="type">int</span> <span class="function">main</span>() {
+    <span class="class-name">CreditCardPaymentProcessor</span> creditCard;
+    <span class="class-name">PayPalPaymentProcessor</span> payPal;
+    
+    <span class="function">processPayment</span>(&creditCard, <span class="keyword">100.00</span>);  <span class="comment">// Works!</span>
+    <span class="function">processPayment</span>(&payPal, <span class="keyword">150.00</span>);      <span class="comment">// Works!</span>
+}</pre>
+
+            <div class="benefits">
+                <h4>Benefits of OCP</h4>
+                <ul>
+                    <li><strong>No risk of breaking existing code:</strong> Original code remains untouched</li>
+                    <li><strong>Easy to add features:</strong> Just create new classes</li>
+                    <li><strong>Better stability:</strong> Tested code stays tested</li>
+                    <li><strong>Scalability:</strong> System grows without modification</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Liskov's Substitution Principle -->
+        <section id="lsp">
+            <h2>3. Liskov's Substitution Principle (LSP)</h2>
+            
+            <blockquote>
+                "Derived classes must be substitutable for their base classes"
+            </blockquote>
+
+            <p><em>Introduced by <strong>Barbara Liskov in 1987</strong></em></p>
+
+            <p>This means:</p>
+            <ul>
+                <li>Child classes should work perfectly when used in place of parent classes</li>
+                <li>Substituting a child for a parent shouldn't cause unexpected behavior</li>
+                <li>The child class shouldn't break the parent class's contract</li>
+            </ul>
+
+            <div class="alert alert-info">
+                <strong>Simple Explanation:</strong> If you can use a child class wherever you use a parent class without breaking anything, you're following LSP!
+            </div>
+
+            <h3>🎮 Real-Life Example: Bird System</h3>
+            <p>Imagine you're building a bird system for a game or simulation.</p>
+
+            <h4><span class="badge badge-bad">❌ BAD DESIGN</span> (LSP Violation):</h4>
+            
+            <p><strong>Step 1: Parent Class</strong></p>
+            <pre data-lang="cpp"><span class="keyword">#include</span> &lt;iostream&gt;
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">class</span> <span class="class-name">Bird</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">fly</span>() {
+        cout &lt;&lt; <span class="string">"Bird is flying"</span> &lt;&lt; endl;
+    }
+};</pre>
+
+            <p><strong>Assumption:</strong> Every Bird can fly.</p>
+
+            <p><strong>Step 2: Sparrow Class</strong></p>
+            <pre data-lang="cpp"><span class="keyword">class</span> <span class="class-name">Sparrow</span> : <span class="keyword">public</span> <span class="class-name">Bird</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">fly</span>() <span class="keyword">override</span> {
+        cout &lt;&lt; <span class="string">"Sparrow is flying"</span> &lt;&lt; endl;
+    }
+};</pre>
+
+            <p>✅ Perfect! Sparrows can fly.</p>
+
+            <p><strong>Step 3: Penguin Class</strong></p>
+            <pre data-lang="cpp"><span class="keyword">class</span> <span class="class-name">Penguin</span> : <span class="keyword">public</span> <span class="class-name">Bird</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">fly</span>() <span class="keyword">override</span> {
+        <span class="keyword">throw</span> runtime_error(<span class="string">"Penguin cannot fly!"</span>);
+    }
+};</pre>
+
+            <div class="alert alert-error">
+                <strong>Problem:</strong> Penguin is a bird... but it can't fly! 😬
+            </div>
+
+            <p><strong>🔥 Now See The Problem:</strong></p>
+            <pre data-lang="cpp"><span class="type">void</span> <span class="function">makeBirdFly</span>(<span class="class-name">Bird</span>* bird) {
+    bird-&gt;<span class="function">fly</span>();
+}
+
+<span class="type">int</span> <span class="function">main</span>() {
+    <span class="class-name">Sparrow</span> sparrow;
+    <span class="class-name">Penguin</span> penguin;
+
+    <span class="function">makeBirdFly</span>(&sparrow);   <span class="comment">// ✅ Works fine</span>
+    <span class="function">makeBirdFly</span>(&penguin);   <span class="comment">// ❌ CRASH! Program throws exception</span>
+}</pre>
+
+            <div class="alert alert-error">
+                <strong>Why This Violates LSP:</strong>
+                <ul>
+                    <li>The function expects: "Any Bird can fly"</li>
+                    <li>Sparrow works fine ✅</li>
+                    <li>Penguin crashes the program ❌</li>
+                    <li><strong>Penguin broke the parent class contract!</strong></li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Parent's Contract:</strong> "Bird can fly"<br>
+                <strong>Penguin's Reality:</strong> "I can't fly" → Contract broken!</p>
+            </div>
+
+            <h4><span class="badge badge-good">✅ GOOD DESIGN</span> (Following LSP):</h4>
+            
+            <p>Let's create a better design that respects what each bird can actually do.</p>
+
+            <p><strong>Step 1: Improve Base Class</strong></p>
+            <pre data-lang="cpp"><span class="keyword">class</span> <span class="class-name">Bird</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">eat</span>() {
+        cout &lt;&lt; <span class="string">"Bird is eating"</span> &lt;&lt; endl;
+    }
+};</pre>
+
+            <p>Now Bird only contains <strong>common behavior</strong> that ALL birds share.</p>
+
+            <p><strong>Step 2: Create FlyingBird Class</strong></p>
+            <pre data-lang="cpp"><span class="keyword">class</span> <span class="class-name">FlyingBird</span> : <span class="keyword">public</span> <span class="class-name">Bird</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">fly</span>() {
+        cout &lt;&lt; <span class="string">"Flying bird is flying"</span> &lt;&lt; endl;
+    }
+};</pre>
+
+            <p><strong>Step 3: Sparrow Inherits from FlyingBird</strong></p>
+            <pre data-lang="cpp"><span class="keyword">class</span> <span class="class-name">Sparrow</span> : <span class="keyword">public</span> <span class="class-name">FlyingBird</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">fly</span>() <span class="keyword">override</span> {
+        cout &lt;&lt; <span class="string">"Sparrow is flying"</span> &lt;&lt; endl;
+    }
+};</pre>
+
+            <p><strong>Step 4: Penguin Inherits from Bird Only</strong></p>
+            <pre data-lang="cpp"><span class="keyword">class</span> <span class="class-name">Penguin</span> : <span class="keyword">public</span> <span class="class-name">Bird</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">swim</span>() {
+        cout &lt;&lt; <span class="string">"Penguin is swimming"</span> &lt;&lt; endl;
+    }
+};</pre>
+
+            <p>🎯 <strong>Notice:</strong> Penguin doesn't inherit from FlyingBird!</p>
+
+            <p><strong>🎯 Now Test the Design:</strong></p>
+            <pre data-lang="cpp"><span class="type">void</span> <span class="function">makeBirdEat</span>(<span class="class-name">Bird</span>* bird) {
+    bird-&gt;<span class="function">eat</span>();
+}
+
+<span class="type">void</span> <span class="function">makeBirdFly</span>(<span class="class-name">FlyingBird</span>* bird) {
+    bird-&gt;<span class="function">fly</span>();
+}
+
+<span class="type">int</span> <span class="function">main</span>() {
+    <span class="class-name">Sparrow</span> sparrow;
+    <span class="class-name">Penguin</span> penguin;
+
+    <span class="function">makeBirdEat</span>(&sparrow);  <span class="comment">// ✅ Works</span>
+    <span class="function">makeBirdEat</span>(&penguin);  <span class="comment">// ✅ Works</span>
+
+    <span class="function">makeBirdFly</span>(&sparrow);  <span class="comment">// ✅ Works</span>
+    <span class="comment">// makeBirdFly(&penguin); // ❌ Compile error (Good! Prevents mistakes)</span>
+}</pre>
+
+            <div class="alert alert-success">
+                <strong>Success! Now:</strong>
+                <ul>
+                    <li>✅ Penguin is not forced to implement fly()</li>
+                    <li>✅ System is safe - no runtime crashes</li>
+                    <li>✅ Compiler prevents wrong usage</li>
+                    <li>✅ Each class does only what it logically should do</li>
+                </ul>
+            </div>
+
+            <h3>🧠 Understanding LSP in One Line</h3>
+            <div class="alert alert-error">
+                <strong>❌ Bad Design:</strong><br>
+                Parent says: "All birds can fly"<br>
+                Child says: "I can't fly"<br>
+                → Contract broken!
+            </div>
+
+            <div class="alert alert-success">
+                <strong>✅ Good Design:</strong><br>
+                Parent defines only common behavior<br>
+                Child does only what makes logical sense<br>
+                → Contract preserved!
+            </div>
+
+            <h3>🏠 Another Real-Life Example: Vehicles</h3>
+            <pre data-lang="cpp"><span class="comment">// Bad Design</span>
+<span class="keyword">class</span> <span class="class-name">Vehicle</span> {
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">startEngine</span>();
+};
+
+<span class="keyword">class</span> <span class="class-name">Car</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> { }; <span class="comment">// ✅ OK</span>
+<span class="keyword">class</span> <span class="class-name">Bike</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> { }; <span class="comment">// ✅ OK</span>
+<span class="keyword">class</span> <span class="class-name">Bicycle</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> { }; <span class="comment">// ❌ No engine! LSP violation</span></pre>
+
+            <pre data-lang="cpp"><span class="comment">// Good Design</span>
+<span class="keyword">class</span> <span class="class-name">Vehicle</span> {
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">move</span>();
+};
+
+<span class="keyword">class</span> <span class="class-name">EngineVehicle</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> {
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">startEngine</span>();
+};
+
+<span class="keyword">class</span> <span class="class-name">NonEngineVehicle</span> : <span class="keyword">public</span> <span class="class-name">Vehicle</span> { };
+
+<span class="keyword">class</span> <span class="class-name">Car</span> : <span class="keyword">public</span> <span class="class-name">EngineVehicle</span> { }; <span class="comment">// ✅ Perfect</span>
+<span class="keyword">class</span> <span class="class-name">Bicycle</span> : <span class="keyword">public</span> <span class="class-name">NonEngineVehicle</span> { }; <span class="comment">// ✅ Perfect</span></pre>
+
+            <h3>💎 LSP Memory Trick</h3>
+            <div class="alert alert-info">
+                <strong>Quick Test:</strong> Can you write this code?
+                <pre data-lang="cpp"><span class="class-name">Parent</span>* obj = <span class="keyword">new</span> <span class="class-name">Child</span>();
+obj-&gt;<span class="function">someMethod</span>();</pre>
+                <p style="margin-top: 10px;">
+                ✅ If program works perfectly → <strong>LSP followed</strong><br>
+                ❌ If unexpected behavior or crash → <strong>LSP violated</strong>
+                </p>
+            </div>
+
+            <div class="benefits">
+                <h4>Key Points of LSP</h4>
+                <ul>
+                    <li><strong>Behavioral consistency:</strong> Child classes must maintain parent behavior</li>
+                    <li><strong>No surprises:</strong> Substitution shouldn't cause unexpected results</li>
+                    <li><strong>Contract preservation:</strong> Child must honor parent's contract</li>
+                    <li><strong>Proper inheritance:</strong> Only inherit when truly IS-A relationship exists</li>
+                    <li><strong>Design hierarchy correctly:</strong> Group classes based on actual capabilities</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Interface Segregation Principle -->
+        <section id="isp">
+            <h2>4. Interface Segregation Principle (ISP)</h2>
+            
+            <blockquote>
+                "Clients should not be forced to implement interfaces they don't use"
+            </blockquote>
+
+            <p>This means:</p>
+            <ul>
+                <li><strong>No fat interfaces:</strong> Don't create one large interface with everything</li>
+                <li><strong>Specific interfaces:</strong> Create small, focused interfaces</li>
+                <li><strong>Client-specific:</strong> Each interface serves specific client needs</li>
+            </ul>
+
+            <h3>Real-Life Example: Restaurant Menu</h3>
+
+            <h4><span class="badge badge-bad">❌ Bad Design</span> (Violates ISP):</h4>
+            <pre data-lang="cpp"><span class="comment">// One big interface - forces everyone to see everything</span>
+<span class="keyword">class</span> <span class="class-name">IMenu</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> vector&lt;<span class="type">string</span>&gt; <span class="function">getVegetarianItems</span>() = <span class="keyword">0</span>;
+    <span class="keyword">virtual</span> vector&lt;<span class="type">string</span>&gt; <span class="function">getNonVegetarianItems</span>() = <span class="keyword">0</span>;
+    <span class="keyword">virtual</span> vector&lt;<span class="type">string</span>&gt; <span class="function">getDrinkItems</span>() = <span class="keyword">0</span>;
+    <span class="keyword">virtual</span> vector&lt;<span class="type">string</span>&gt; <span class="function">getSweets</span>() = <span class="keyword">0</span>;
+};
+
+<span class="comment">// Vegetarian customer forced to see non-veg items!</span>
+<span class="keyword">class</span> <span class="class-name">VegetarianCustomer</span> : <span class="keyword">public</span> <span class="class-name">IMenu</span> {
+    <span class="comment">// Must implement ALL methods even if not needed</span>
+};</pre>
+
+            <div class="alert alert-error">
+                <strong>Problems:</strong>
+                <ul>
+                    <li>Vegetarian sees non-vegetarian items (unnecessary)</li>
+                    <li>Non-vegetarian sees vegetarian-only items (cluttered)</li>
+                    <li>Changes to drinks affect everyone</li>
+                </ul>
+            </div>
+
+            <h4><span class="badge badge-good">✅ Good Design</span> (Follows ISP):</h4>
+            <pre data-lang="cpp"><span class="comment">// Separate interfaces for different needs</span>
+
+<span class="comment">// Interface 1: Only vegetarian items</span>
+<span class="keyword">class</span> <span class="class-name">IVegetarianMenu</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> vector&lt;<span class="type">string</span>&gt; <span class="function">getVegetarianItems</span>() = <span class="keyword">0</span>;
+};
+
+<span class="comment">// Interface 2: Only non-vegetarian items</span>
+<span class="keyword">class</span> <span class="class-name">INonVegetarianMenu</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> vector&lt;<span class="type">string</span>&gt; <span class="function">getNonVegetarianItems</span>() = <span class="keyword">0</span>;
+};
+
+<span class="comment">// Interface 3: Only drinks</span>
+<span class="keyword">class</span> <span class="class-name">IDrinkMenu</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> vector&lt;<span class="type">string</span>&gt; <span class="function">getDrinkItems</span>() = <span class="keyword">0</span>;
+};
+
+<span class="comment">// Implementation classes</span>
+
+<span class="keyword">class</span> <span class="class-name">VegetarianMenu</span> : <span class="keyword">public</span> <span class="class-name">IVegetarianMenu</span> {
+<span class="keyword">public</span>:
+    vector&lt;<span class="type">string</span>&gt; <span class="function">getVegetarianItems</span>() <span class="keyword">override</span> {
+        <span class="keyword">return</span> {<span class="string">"Vegetable Curry"</span>, <span class="string">"Paneer Tikka"</span>, <span class="string">"Salad"</span>};
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">NonVegetarianMenu</span> : <span class="keyword">public</span> <span class="class-name">INonVegetarianMenu</span> {
+<span class="keyword">public</span>:
+    vector&lt;<span class="type">string</span>&gt; <span class="function">getNonVegetarianItems</span>() <span class="keyword">override</span> {
+        <span class="keyword">return</span> {<span class="string">"Chicken Curry"</span>, <span class="string">"Fish Fry"</span>, <span class="string">"Mutton Biryani"</span>};
+    }
+};
+
+<span class="keyword">class</span> <span class="class-name">DrinkMenu</span> : <span class="keyword">public</span> <span class="class-name">IDrinkMenu</span> {
+<span class="keyword">public</span>:
+    vector&lt;<span class="type">string</span>&gt; <span class="function">getDrinkItems</span>() <span class="keyword">override</span> {
+        <span class="keyword">return</span> {<span class="string">"Water"</span>, <span class="string">"Soda"</span>, <span class="string">"Juice"</span>};
+    }
+};
+
+<span class="comment">// Customer-specific display functions</span>
+
+<span class="type">void</span> <span class="function">displayVegetarianMenu</span>(<span class="class-name">IVegetarianMenu</span>* menu) {
+    cout << <span class="string">"Vegetarian Menu:\n"</span>;
+    <span class="keyword">for</span> (<span class="keyword">const auto</span>& item : menu-><span class="function">getVegetarianItems</span>()) {
+        cout << <span class="string">"- "</span> << item << endl;
+    }
+}
+
+<span class="type">void</span> <span class="function">displayNonVegetarianMenu</span>(<span class="class-name">INonVegetarianMenu</span>* menu) {
+    cout << <span class="string">"Non-Vegetarian Menu:\n"</span>;
+    <span class="keyword">for</span> (<span class="keyword">const auto</span>& item : menu-><span class="function">getNonVegetarianItems</span>()) {
+        cout << <span class="string">"- "</span> << item << endl;
+    }
+}</pre>
+
+            <div class="benefits">
+                <h4>Benefits of ISP</h4>
+                <ul>
+                    <li><strong>No unnecessary dependencies:</strong> Classes only depend on what they need</li>
+                    <li><strong>Easier to understand:</strong> Smaller, focused interfaces</li>
+                    <li><strong>Reduced coupling:</strong> Changes affect fewer classes</li>
+                    <li><strong>Better organization:</strong> Clear separation of concerns</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Dependency Inversion Principle -->
+        <section id="dip">
+            <h2>5. Dependency Inversion Principle (DIP)</h2>
+            
+            <blockquote>
+                "High-level modules should not depend on low-level modules. Both should depend on abstractions."
+            </blockquote>
+
+            <p>Additional rule:</p>
+            <blockquote>
+                "Abstractions should not depend on details. Details should depend on abstractions."
+            </blockquote>
+
+            <h3>Simple Explanation</h3>
+            <ul>
+                <li><strong>Don't depend on concrete classes:</strong> Depend on interfaces/abstractions</li>
+                <li><strong>Use contracts, not implementations:</strong> Work with what something DOES, not HOW it does it</li>
+                <li><strong>Flexibility:</strong> Easy to swap implementations</li>
+            </ul>
+
+            <h3>Real-Life Example: Version Control System</h3>
+
+            <h4><span class="badge badge-bad">❌ Bad Design</span> (Violates DIP):</h4>
+            <pre data-lang="cpp"><span class="comment">// High-level class depends directly on low-level Git implementation</span>
+<span class="keyword">class</span> <span class="class-name">DevelopmentTeam</span> {
+<span class="keyword">private</span>:
+    <span class="class-name">GitVersionControl</span> git;  <span class="comment">// Direct dependency on Git!</span>
+    
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">saveWork</span>() {
+        git.<span class="function">commit</span>(<span class="string">"message"</span>);  <span class="comment">// Tied to Git specifically</span>
+        git.<span class="function">push</span>();
+    }
+};</pre>
+
+            <div class="alert alert-error">
+                <strong>Problems:</strong>
+                <ul>
+                    <li>If you want to switch from Git to SVN, you must modify DevelopmentTeam</li>
+                    <li>Team is tightly coupled to Git implementation</li>
+                    <li>Hard to test without actual Git</li>
+                </ul>
+            </div>
+
+            <h4><span class="badge badge-good">✅ Good Design</span> (Follows DIP):</h4>
+            <pre data-lang="cpp"><span class="comment">// Step 1: Define abstraction (interface)</span>
+<span class="keyword">class</span> <span class="class-name">IVersionControl</span> {
+<span class="keyword">public</span>:
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">commit</span>(<span class="keyword">const</span> <span class="type">string</span>& message) = <span class="keyword">0</span>;
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">push</span>() = <span class="keyword">0</span>;
+    <span class="keyword">virtual</span> <span class="type">void</span> <span class="function">pull</span>() = <span class="keyword">0</span>;
+};
+
+<span class="comment">// Step 2: Implement concrete class (low-level detail)</span>
+<span class="keyword">class</span> <span class="class-name">GitVersionControl</span> : <span class="keyword">public</span> <span class="class-name">IVersionControl</span> {
+<span class="keyword">public</span>:
+    <span class="type">void</span> <span class="function">commit</span>(<span class="keyword">const</span> <span class="type">string</span>& message) <span class="keyword">override</span> {
+        cout << <span class="string">"Committing to Git: "</span> << message << endl;
+    }
+    
+    <span class="type">void</span> <span class="function">push</span>() <span class="keyword">override</span> {
+        cout << <span class="string">"Pushing to Git repository"</span> << endl;
+    }
+    
+    <span class="type">void</span> <span class="function">pull</span>() <span class="keyword">override</span> {
+        cout << <span class="string">"Pulling from Git repository"</span> << endl;
+    }
+};
+
+<span class="comment">// Step 3: High-level class depends on abstraction</span>
+<span class="keyword">class</span> <span class="class-name">DevelopmentTeam</span> {
+<span class="keyword">private</span>:
+    <span class="class-name">IVersionControl</span>* versionControl;  <span class="comment">// Depends on interface!</span>
+    
+<span class="keyword">public</span>:
+    <span class="comment">// Dependency is injected</span>
+    <span class="function">DevelopmentTeam</span>(<span class="class-name">IVersionControl</span>* vc) : versionControl(vc) {}
+    
+    <span class="type">void</span> <span class="function">makeCommit</span>(<span class="keyword">const</span> <span class="type">string</span>& message) {
+        versionControl-><span class="function">commit</span>(message);
+    }
+    
+    <span class="type">void</span> <span class="function">performPush</span>() {
+        versionControl-><span class="function">push</span>();
+    }
+    
+    <span class="type">void</span> <span class="function">performPull</span>() {
+        versionControl-><span class="function">pull</span>();
+    }
+};
+
+<span class="comment">// Step 4: Usage</span>
+<span class="type">int</span> <span class="function">main</span>() {
+    <span class="class-name">GitVersionControl</span> git;
+    <span class="class-name">DevelopmentTeam</span> team(&git);  <span class="comment">// Inject dependency</span>
+    
+    team.<span class="function">makeCommit</span>(<span class="string">"Initial commit"</span>);
+    team.<span class="function">performPush</span>();
+    
+    <span class="comment">// Easy to switch to different version control!</span>
+    <span class="comment">// SVNVersionControl svn;</span>
+    <span class="comment">// DevelopmentTeam team2(&svn);</span>
+}</pre>
+
+            <div class="benefits">
+                <h4>Benefits of DIP</h4>
+                <ul>
+                    <li><strong>Easy to swap implementations:</strong> Change Git to SVN without changing team code</li>
+                    <li><strong>Better testability:</strong> Inject mock objects for testing</li>
+                    <li><strong>Loose coupling:</strong> High-level code doesn't know about low-level details</li>
+                    <li><strong>Flexibility:</strong> Add new implementations without modifying existing code</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Why SOLID Principles Matter -->
+        <section id="importance">
+            <h2>Why SOLID Principles Matter</h2>
+
+            <h3>1. Maintainability</h3>
+            <ul>
+                <li>Clear responsibilities make code easier to understand</li>
+                <li>Know exactly where to make changes</li>
+                <li>Reduces risk of breaking existing functionality</li>
+            </ul>
+
+            <h3>2. Scalability</h3>
+            <ul>
+                <li>Easy to add new features without modifying existing code (OCP)</li>
+                <li>System can grow organically</li>
+                <li>No need to rewrite core functionality</li>
+            </ul>
+
+            <h3>3. Flexibility</h3>
+            <ul>
+                <li>Swap implementations easily (DIP)</li>
+                <li>Adapt to changing requirements</li>
+                <li>Multiple variations of behavior possible</li>
+            </ul>
+
+            <h3>4. Testability</h3>
+            <ul>
+                <li>Isolated responsibilities are easier to test (SRP)</li>
+                <li>Can mock dependencies (DIP)</li>
+                <li>Test each component independently</li>
+            </ul>
+
+            <h3>5. Reusability</h3>
+            <ul>
+                <li>Well-designed components can be used in different contexts</li>
+                <li>Interface-based design promotes reuse (ISP)</li>
+                <li>Generic abstractions work across projects</li>
+            </ul>
+
+            <h3>6. Team Collaboration</h3>
+            <ul>
+                <li>Clear boundaries between components</li>
+                <li>Multiple developers can work on different classes</li>
+                <li>Less merge conflicts and integration issues</li>
+            </ul>
+        </section>
+
+        <!-- Quick Reference Summary -->
+        <section id="summary">
+            <h2>Quick Reference Summary</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Principle</th>
+                        <th>Key Question</th>
+                        <th>Focus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SRP</strong></td>
+                        <td>Does this class have only one reason to change?</td>
+                        <td><strong>Responsibility</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>OCP</strong></td>
+                        <td>Can I add features without modifying existing code?</td>
+                        <td><strong>Extension</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>LSP</strong></td>
+                        <td>Can I substitute child for parent without issues?</td>
+                        <td><strong>Substitutability</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>ISP</strong></td>
+                        <td>Am I forced to implement methods I don't need?</td>
+                        <td><strong>Interface Size</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>DIP</strong></td>
+                        <td>Do I depend on abstractions or concrete classes?</td>
+                        <td><strong>Dependencies</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert alert-success" style="margin-top: 30px;">
+                <h3>Final Thoughts</h3>
+                <p>SOLID principles are <strong>guidelines, not strict rules</strong>. The goal is to write:</p>
+                <ul>
+                    <li><strong>Clean code</strong> that's easy to understand</li>
+                    <li><strong>Flexible code</strong> that adapts to change</li>
+                    <li><strong>Robust code</strong> that's reliable and testable</li>
+                </ul>
+                <p style="margin-top: 15px;">Start applying these principles gradually in your projects, and you'll see significant improvements in code quality and development speed over time!</p>
+            </div>
+        </section>
+    </div>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Back to Top Button Functionality
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth Scrolling for TOC Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

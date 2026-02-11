@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Header Files - Complete Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0e27;
+            --secondary-bg: #1a1f3a;
+            --accent-color: #00d4ff;
+            --accent-secondary: #ff6b9d;
+            --text-primary: #e8e8f5;
+            --text-secondary: #a8aac5;
+            --code-bg: #0f1423;
+            --border-color: #2a2f4a;
+            --success-color: #00ff88;
+            --warning-color: #ffaa00;
+            --error-color: #ff4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Animated background effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .toc h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .toc li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .toc a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .toc a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        /* Sections */
+        section {
+            background: var(--secondary-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.1);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2 .emoji {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--accent-secondary);
+            font-weight: 700;
+        }
+
+        h4 {
+            font-size: 1.3rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--success-color);
+        }
+
+        pre code {
+            display: block;
+            color: var(--text-primary);
+        }
+
+        /* Inline code */
+        p code, li code {
+            background: var(--code-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: var(--accent-color);
+            font-size: 0.9em;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--text-primary);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            color: var(--primary-bg);
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(255, 107, 157, 0.1) 100%);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .info-box.warning {
+            border-left-color: var(--warning-color);
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.1) 0%, rgba(255, 107, 157, 0.1) 100%);
+        }
+
+        .info-box.error {
+            border-left-color: var(--error-color);
+            background: linear-gradient(135deg, rgba(255, 68, 68, 0.1) 0%, rgba(255, 107, 157, 0.1) 100%);
+        }
+
+        .info-box.success {
+            border-left-color: var(--success-color);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+        }
+
+        .info-box strong {
+            color: var(--accent-color);
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Images */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .image-wrapper {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--code-bg);
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Step indicators */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin: 30px 0;
+            gap: 20px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            color: var(--primary-bg);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        /* Output boxes */
+        .output {
+            background: var(--code-bg);
+            border: 2px solid var(--success-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .output::before {
+            content: 'Output';
+            display: block;
+            color: var(--success-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            margin-top: 80px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            .toc {
+                padding: 20px;
+            }
+        }
+
+        /* Scroll animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        section {
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        /* Syntax highlighting classes */
+        .keyword { color: #ff79c6; }
+        .string { color: #50fa7b; }
+        .comment { color: #6272a4; font-style: italic; }
+        .function { color: #00d4ff; }
+        .number { color: #bd93f9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>C++ Header Files</h1>
+            <p class="subtitle">Complete Guide to Understanding and Using Header Files in C++</p>
+        </header>
+
+        <div class="toc">
+            <h2>📚 Table of Contents</h2>
+            <ul>
+                <li><a href="#what-is-header">What is a Header File?</a></li>
+                <li><a href="#standard-headers">Standard Header Files</a></li>
+                <li><a href="#include-directive">Understanding #include Directive</a></li>
+                <li><a href="#include-types">Types of Include</a></li>
+                <li><a href="#user-defined">User-Defined Header Files</a></li>
+                <li><a href="#include-guards">Include Guards (Critical Concept)</a></li>
+                <li><a href="#pragma-once">Alternative: #pragma once</a></li>
+                <li><a href="#complete-flow">C++ Program - Complete Flow (New! 🚀)</a></li>
+                <li><a href="#compilation">Compilation Process - Command Level</a></li>
+                <li><a href="#how-to-run">How to Compile and Run Code</a></li>
+                <li><a href="#common-errors">Common Errors and Solutions</a></li>
+                <li><a href="#key-concepts">Final Deep Concepts</a></li>
+            </ul>
+        </div>
+
+        <section id="what-is-header">
+            <h2><span class="emoji">🔹</span> What is a Header File?</h2>
+            
+            <div class="info-box">
+                <strong>Simple Definition:</strong>
+                <p>A header file is a file that contains <strong>declarations and ready-made code</strong> that we can reuse in our programs. Think of it as a library of pre-written functionality.</p>
+            </div>
+
+            <h3>File Extensions</h3>
+            <pre data-lang="extensions"><code>.h    // C-style header
+.hpp  // C++ style header</code></pre>
+
+            <h3>Common Examples</h3>
+            <pre data-lang="cpp"><code>#include &lt;iostream&gt;  // For input/output operations
+#include &lt;cmath&gt;      // For mathematical functions
+#include &lt;vector&gt;     // For dynamic arrays
+#include &lt;string&gt;     // For string manipulation</code></pre>
+
+            <h3>What Header Files Contain</h3>
+            <ul>
+                <li><strong>Function Declarations:</strong> Prototypes that tell the compiler about functions</li>
+                <li><strong>Function Definitions:</strong> Actual implementation of functions</li>
+                <li><strong>Class Declarations:</strong> Blueprints for objects</li>
+                <li><strong>Data Type Definitions:</strong> Custom types and structures</li>
+                <li><strong>Macros:</strong> Text replacements for code reusability</li>
+                <li><strong>Constants:</strong> Global constant values</li>
+            </ul>
+        </section>
+
+        <section id="standard-headers">
+            <h2><span class="emoji">🔹</span> Standard Header Files</h2>
+            
+            <p>These are built-in header files that come with the C++ standard library. They provide commonly used functions and classes so you don't have to write everything from scratch.</p>
+
+            <h3>&lt;iostream&gt; - Input/Output Streams</h3>
+            <div class="info-box success">
+                <strong>Use Case:</strong>
+                <p>Console input/output operations</p>
+            </div>
+
+            <p><strong>Provides:</strong></p>
+            <ul>
+                <li><code>std::cout</code> - Output to console</li>
+                <li><code>std::cin</code> - Input from console</li>
+                <li><code>std::endl</code> - End line and flush buffer</li>
+                <li><code>std::cerr</code> - Error output stream</li>
+            </ul>
+
+            <pre data-lang="cpp"><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    cout &lt;&lt; "Hello, Deepak!" &lt;&lt; endl;
+    
+    string name;
+    cout &lt;&lt; "Enter your name: ";
+    cin &gt;&gt; name;
+    cout &lt;&lt; "Welcome, " &lt;&lt; name &lt;&lt; endl;
+    
+    return 0;
+}</code></pre>
+
+            <h3>&lt;cmath&gt; - Mathematical Functions</h3>
+            <p><strong>Common Functions:</strong></p>
+            <ul>
+                <li><code>sqrt(x)</code> - Square root</li>
+                <li><code>pow(base, exponent)</code> - Power calculation</li>
+                <li><code>abs(x)</code> - Absolute value</li>
+                <li><code>ceil(x)</code> - Round up</li>
+                <li><code>floor(x)</code> - Round down</li>
+                <li><code>sin(x), cos(x), tan(x)</code> - Trigonometric functions</li>
+                <li><code>log(x), log10(x)</code> - Logarithmic functions</li>
+            </ul>
+
+            <pre data-lang="cpp"><code>#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main() {
+    double sqrt_result = sqrt(25);      // 5
+    double pow_result = pow(2, 3);      // 8
+    double abs_result = abs(-42);       // 42
+    
+    cout &lt;&lt; "Square root of 25: " &lt;&lt; sqrt_result &lt;&lt; endl;
+    cout &lt;&lt; "2^3: " &lt;&lt; pow_result &lt;&lt; endl;
+    cout &lt;&lt; "Absolute of -42: " &lt;&lt; abs_result &lt;&lt; endl;
+    
+    return 0;
+}</code></pre>
+
+            <div class="output"><code>Square root of 25: 5
+2^3: 8
+Absolute of -42: 42</code></div>
+
+            <h3>&lt;vector&gt; - Dynamic Arrays</h3>
+            <pre data-lang="cpp"><code>#include &lt;vector&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main() {
+    vector&lt;int&gt; numbers = {1, 2, 3, 4, 5};
+    
+    // Add element
+    numbers.push_back(6);
+    
+    // Access elements
+    cout &lt;&lt; "First element: " &lt;&lt; numbers[0] &lt;&lt; endl;
+    
+    // Iterate
+    for(int num : numbers) {
+        cout &lt;&lt; num &lt;&lt; " ";
+    }
+    
+    return 0;
+}</code></pre>
+
+            <h3>&lt;string&gt; - String Manipulation</h3>
+            <pre data-lang="cpp"><code>#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main() {
+    string greeting = "Hello";
+    string name = "Programmer";
+    
+    string full = greeting + ", " + name + "!";
+    cout &lt;&lt; full &lt;&lt; endl;
+    cout &lt;&lt; "Length: " &lt;&lt; full.length() &lt;&lt; endl;
+    
+    return 0;
+}</code></pre>
+
+            <h3>Other Important Standard Headers</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Header</th>
+                        <th>Purpose</th>
+                        <th>Common Functions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>&lt;cstdlib&gt;</code></td>
+                        <td>Memory & system utilities</td>
+                        <td>malloc(), exit(), rand()</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;cstring&gt;</code></td>
+                        <td>C-style string manipulation</td>
+                        <td>strlen(), strcmp(), strcpy()</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;iomanip&gt;</code></td>
+                        <td>I/O formatting</td>
+                        <td>setprecision(), setw()</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;fstream&gt;</code></td>
+                        <td>File operations</td>
+                        <td>ifstream, ofstream</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;algorithm&gt;</code></td>
+                        <td>Sorting & searching</td>
+                        <td>sort(), find(), reverse()</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;ctime&gt;</code></td>
+                        <td>Date and time</td>
+                        <td>time(), clock()</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Comprehensive Example Using Multiple Headers</h3>
+            <pre data-lang="cpp"><code>#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+int main() {
+    // Using &lt;iostream&gt;
+    cout &lt;&lt; "Hello, Geek!" &lt;&lt; endl;
+
+    // Using &lt;cmath&gt;
+    double squareRoot = sqrt(25);
+    cout &lt;&lt; "Square root of 25: " &lt;&lt; squareRoot &lt;&lt; endl;
+
+    // Using &lt;cstdlib&gt;
+    int randomNum = rand() % 100;
+    cout &lt;&lt; "Random number: " &lt;&lt; randomNum &lt;&lt; endl;
+
+    // Using &lt;cstring&gt;
+    char str1[20] = "Hello";
+    char str2[] = " World";
+    strcat(str1, str2);
+    cout &lt;&lt; "Concatenated string: " &lt;&lt; str1 &lt;&lt; endl;
+
+    // Using &lt;vector&gt;
+    vector&lt;int&gt; numbers = {1, 2, 3, 4, 5};
+    cout &lt;&lt; "Vector elements: ";
+    for (int num : numbers) {
+        cout &lt;&lt; num &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+
+    // Using &lt;string&gt;
+    string greeting = "Hello, ";
+    string name = "Programmer";
+    string fullGreeting = greeting + name;
+    cout &lt;&lt; "Greeting message: " &lt;&lt; fullGreeting &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+
+            <div class="output"><code>Hello, Geek!
+Square root of 25: 5
+Random number: 83
+Concatenated string: Hello World
+Vector elements: 1 2 3 4 5 
+Greeting message: Hello, Programmer</code></div>
+        </section>
+
+        <section id="include-directive">
+            <h2><span class="emoji">🔹</span> Understanding #include Directive</h2>
+            
+            <div class="info-box">
+                <strong>What is #include?</strong>
+                <p><code>#include</code> is a <strong>preprocessor directive</strong>. It works BEFORE compilation begins.</p>
+            </div>
+
+            <h3>How It Works</h3>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Preprocessing Stage</h4>
+                    <p>When you write <code>#include &lt;iostream&gt;</code>, the preprocessor literally copies the entire contents of the iostream file and pastes it into your source file.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>File Replacement</h4>
+                    <pre data-lang="cpp"><code>// Your code:
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; "Hello";
+}
+
+// After preprocessing (simplified):
+// [Entire iostream header content pasted here - thousands of lines]
+
+int main() {
+    std::cout &lt;&lt; "Hello";
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Then Compilation Begins</h4>
+                    <p>Only after all <code>#include</code> directives are processed does the actual compilation start.</p>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <strong>Important:</strong>
+                <p><code>#include</code> is NOT a C++ statement - it's a preprocessor command. It doesn't end with a semicolon!</p>
+            </div>
+        </section>
+
+        <section id="include-types">
+            <h2><span class="emoji">🔹</span> Types of Include</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Syntax</th>
+                        <th>Type</th>
+                        <th>Search Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>#include &lt;file&gt;</code></td>
+                        <td>Standard Library</td>
+                        <td>System/compiler directories</td>
+                    </tr>
+                    <tr>
+                        <td><code>#include "file"</code></td>
+                        <td>User-Defined</td>
+                        <td>Current directory first, then system</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Angle Brackets &lt; &gt; - Standard Headers</h3>
+            <pre data-lang="cpp"><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;</code></pre>
+            <p>The compiler searches in standard system directories (like <code>/usr/include</code> on Linux or compiler installation folders).</p>
+
+            <h3>Double Quotes " " - User-Defined Headers</h3>
+            <pre data-lang="cpp"><code>#include "mathutils.h"
+#include "myclass.h"
+#include "config.h"</code></pre>
+            <p>The compiler first searches in the current directory. If not found, it searches in system directories.</p>
+
+            <div class="info-box success">
+                <strong>Best Practice:</strong>
+                <p>Use angle brackets for standard library headers and double quotes for your own headers.</p>
+            </div>
+        </section>
+
+        <section id="user-defined">
+            <h2><span class="emoji">🔹</span> User-Defined Header Files</h2>
+            
+            <p>Creating your own header files helps organize code, improves reusability, and makes large projects manageable.</p>
+
+            <h3>Complete Example: Creating mathutils Header</h3>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Create mathutils.h (Header File)</h4>
+                    <p>This file contains function <strong>declarations</strong> (prototypes).</p>
+                    <pre data-lang="cpp"><code>// mathutils.h
+// If MATHUTILS_H is not defined, define it (start of header guard)
+#ifndef MATHUTILS_H
+#define MATHUTILS_H
+
+// Function declarations (only the function names and parameters)
+int add(int a, int b);
+int subtract(int a, int b);
+int multiply(int a, int b);
+double divide(double a, double b);
+int power(int base, int exponent);
+
+#endif // MATHUTILS_H</code></pre>
+                    <div class="info-box">
+                        <strong>Why only declarations?</strong>
+                        <p>The header file acts as an <strong>interface</strong> - it tells other files what functions are available, but not how they work.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Create mathutils.cpp (Implementation File)</h4>
+                    <p>This file contains function <strong>definitions</strong> (actual logic).</p>
+                    <pre data-lang="cpp"><code>// mathutils.cpp
+#include "mathutils.h"
+
+// Function definitions
+int add(int a, int b) {
+    return a + b;
+}
+
+int subtract(int a, int b) {
+    return a - b;
+}
+
+int multiply(int a, int b) {
+    return a * b;
+}
+
+double divide(double a, double b) {
+    if (b != 0) {
+        return a / b;
+    }
+    return 0; // Handle division by zero
+}
+
+int power(int base, int exponent) {
+    int result = 1;
+    for (int i = 0; i &lt; exponent; i++) {
+        result *= base;
+    }
+    return result;
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Create main.cpp (Main Program)</h4>
+                    <p>This file uses the functions from your header.</p>
+                    <pre data-lang="cpp"><code>// main.cpp
+#include &lt;iostream&gt;
+#include "mathutils.h"  // Include our header
+
+using namespace std;
+
+int main() {
+    cout &lt;&lt; "Add: " &lt;&lt; add(5, 3) &lt;&lt; endl;
+    cout &lt;&lt; "Subtract: " &lt;&lt; subtract(10, 4) &lt;&lt; endl;
+    cout &lt;&lt; "Multiply: " &lt;&lt; multiply(4, 6) &lt;&lt; endl;
+    cout &lt;&lt; "Divide: " &lt;&lt; divide(20.0, 4.0) &lt;&lt; endl;
+    cout &lt;&lt; "Power: " &lt;&lt; power(2, 5) &lt;&lt; endl;
+    
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                <strong>File Structure:</strong>
+                <pre><code>project/
+├── mathutils.h      (Declarations)
+├── mathutils.cpp    (Definitions)
+└── main.cpp         (Main program)</code></pre>
+            </div>
+        </section>
+
+        <section id="include-guards">
+            <h2><span class="emoji">🔹</span> Include Guards - Critical Concept</h2>
+            
+            <h3>The Problem: Multiple Inclusion</h3>
+            <div class="info-box error">
+                <strong>What happens if a header is included multiple times?</strong>
+                <p>Consider this scenario:</p>
+            </div>
+
+            <pre data-lang="cpp"><code>// utils.h
+struct Point {
+    int x, y;
+};
+
+// geometry.h
+#include "utils.h"
+
+// main.cpp
+#include "utils.h"
+#include "geometry.h"</code></pre>
+
+            <p>After preprocessing, main.cpp becomes:</p>
+            <pre data-lang="cpp"><code>// First include of utils.h
+struct Point {
+    int x, y;
+};
+
+// Second include via geometry.h
+struct Point {  // ERROR! Redefinition!
+    int x, y;
+};</code></pre>
+
+            <div class="output" style="border-color: var(--error-color);"><code>Error: redefinition of 'struct Point'</code></div>
+
+            <h3>The Solution: Include Guards</h3>
+            <pre data-lang="cpp"><code>#ifndef MATHUTILS_H  // If not defined
+#define MATHUTILS_H  // Define it
+
+// Your code here
+int add(int a, int b);
+int multiply(int a, int b);
+
+#endif  // End if</code></pre>
+
+            <h3>How Include Guards Work</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>First Inclusion</h4>
+                    <pre data-lang="cpp"><code>#ifndef MATHUTILS_H  // MATHUTILS_H is NOT defined → Condition TRUE
+#define MATHUTILS_H  // Now define MATHUTILS_H
+
+// This code RUNS
+int add(int a, int b);
+
+#endif</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Second Inclusion (Same File)</h4>
+                    <pre data-lang="cpp"><code>#ifndef MATHUTILS_H  // MATHUTILS_H IS defined → Condition FALSE
+#define MATHUTILS_H  
+
+// This code is SKIPPED
+int add(int a, int b);
+
+#endif</code></pre>
+                    <p>Result: No duplicate code, no errors!</p>
+                </div>
+            </div>
+
+            <h3>Naming Convention for Include Guards</h3>
+            <div class="info-box">
+                <strong>Best Practice:</strong>
+                <ul>
+                    <li>Use ALL CAPS</li>
+                    <li>Include filename in the guard name</li>
+                    <li>Replace dots with underscores</li>
+                    <li>Make it unique to avoid conflicts</li>
+                </ul>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Include Guard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>mathutils.h</td>
+                        <td>MATHUTILS_H</td>
+                    </tr>
+                    <tr>
+                        <td>string_utils.h</td>
+                        <td>STRING_UTILS_H</td>
+                    </tr>
+                    <tr>
+                        <td>graphics.engine.h</td>
+                        <td>GRAPHICS_ENGINE_H</td>
+                    </tr>
+                    <tr>
+                        <td>myproject/utils.h</td>
+                        <td>MYPROJECT_UTILS_H</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Complete Template</h3>
+            <pre data-lang="cpp"><code>// filename.h
+#ifndef FILENAME_H
+#define FILENAME_H
+
+// All your declarations and code here
+
+class MyClass {
+    // class definition
+};
+
+void myFunction();
+
+#endif // FILENAME_H</code></pre>
+        </section>
+
+        <section id="pragma-once">
+            <h2><span class="emoji">🔹</span> Alternative: #pragma once</h2>
+            
+            <p>Modern compilers support a simpler alternative to include guards.</p>
+
+            <pre data-lang="cpp"><code>// mathutils.h
+#pragma once
+
+// Your code here
+int add(int a, int b);
+int multiply(int a, int b);</code></pre>
+
+            <h3>Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>#ifndef Guards</th>
+                        <th>#pragma once</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Lines of Code</td>
+                        <td>3 lines</td>
+                        <td>1 line</td>
+                    </tr>
+                    <tr>
+                        <td>Compatibility</td>
+                        <td>100% portable</td>
+                        <td>Most modern compilers</td>
+                    </tr>
+                    <tr>
+                        <td>Speed</td>
+                        <td>Slightly slower</td>
+                        <td>Slightly faster</td>
+                    </tr>
+                    <tr>
+                        <td>Error Prone</td>
+                        <td>Can have naming conflicts</td>
+                        <td>No naming issues</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box success">
+                <strong>Recommendation:</strong>
+                <p>Use <code>#pragma once</code> for modern projects. Use traditional guards for maximum portability or legacy systems.</p>
+            </div>
+        </section>
+
+        <section id="complete-flow">
+            <h2><span class="emoji">🚀</span> C++ Program - Complete Flow</h2>
+            
+            <p>When you write a C++ program, it goes through multiple stages before it becomes an executable. Understanding this flow is crucial for debugging errors and writing better code.</p>
+
+            <div class="info-box">
+                <strong>The Four Major Stages:</strong>
+                <pre><code>Source Code → Preprocessing → Compilation → Linking → Execution</code></pre>
+            </div>
+
+            <h3>Let's Break Down Each Stage Microscopically</h3>
+
+            <!-- PREPROCESSING STAGE -->
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>PREPROCESSING</h4>
+                    <p>The preprocessor is a program that runs <strong>before compilation</strong> begins. It modifies your source code.</p>
+                    
+                    <h4 style="color: var(--accent-color); margin-top: 20px;">What Happens in Preprocessing?</h4>
+                    <ul>
+                        <li>Header files are included (copied)</li>
+                        <li>Macros are expanded</li>
+                        <li>Comments are removed</li>
+                        <li>Conditional compilation is processed</li>
+                    </ul>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(A) Header File Expansion</h4>
+                    <pre data-lang="cpp"><code>#include &lt;iostream&gt;</code></pre>
+                    <p><strong>What the preprocessor does:</strong></p>
+                    <p>It literally copies the ENTIRE content of the <code>iostream</code> file and pastes it at this location.</p>
+                    
+                    <div class="info-box success">
+                        <strong>This is called: File Inclusion</strong>
+                        <p>The preprocessor replaces the #include line with thousands of lines from the header file!</p>
+                    </div>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(B) Macro Expansion</h4>
+                    <pre data-lang="cpp"><code>#define PI 3.14
+#define SQUARE(x) ((x) * (x))
+
+int main() {
+    cout &lt;&lt; PI;           // Becomes: cout &lt;&lt; 3.14;
+    cout &lt;&lt; SQUARE(5);    // Becomes: cout &lt;&lt; ((5) * (5));
+}</code></pre>
+                    
+                    <p><strong>Types of Macros:</strong></p>
+                    <ul>
+                        <li><strong>Object-like macro:</strong> <code>#define PI 3.14</code></li>
+                        <li><strong>Function-like macro:</strong> <code>#define SQUARE(x) ((x) * (x))</code></li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>This is called: Macro Expansion</strong>
+                        <p>Simple text replacement - wherever PI appears, it becomes 3.14</p>
+                    </div>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(C) Comments Removal</h4>
+                    <pre data-lang="cpp"><code>int x = 5;  // This is a comment
+/* This is also a comment */</code></pre>
+                    <p>All comments are completely removed during preprocessing. The compiler never sees them!</p>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(D) Conditional Compilation</h4>
+                    <pre data-lang="cpp"><code>#ifdef DEBUG
+    cout &lt;&lt; "Debug Mode Active" &lt;&lt; endl;
+#endif
+
+#ifndef RELEASE
+    cout &lt;&lt; "Not in release mode" &lt;&lt; endl;
+#endif</code></pre>
+                    <p>Code inside these blocks is only compiled if the condition is true.</p>
+
+                    <div class="info-box warning">
+                        <strong>Output of Preprocessing:</strong>
+                        <p>A file with extension <code>.i</code> (e.g., <code>main.i</code>) is created. This is the expanded source code.</p>
+                        <pre data-lang="bash"><code>g++ -E main.cpp -o main.i  // Generate preprocessed file</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPILATION STAGE -->
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>COMPILATION</h4>
+                    <p>Now the actual compiler starts working on the preprocessed code.</p>
+                    
+                    <h4 style="color: var(--accent-color); margin-top: 20px;">What the Compiler Does:</h4>
+                    <ul>
+                        <li>Checks syntax (grammar rules)</li>
+                        <li>Detects errors</li>
+                        <li>Converts code to machine language</li>
+                        <li>Performs optimizations</li>
+                    </ul>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(A) Lexical Analysis - Tokenization</h4>
+                    <p>The code is broken down into smallest units called <strong>tokens</strong>.</p>
+                    
+                    <pre data-lang="cpp"><code>int x = 5;</code></pre>
+                    
+                    <p><strong>Tokens generated:</strong></p>
+                    <ul>
+                        <li><code>int</code> → Keyword</li>
+                        <li><code>x</code> → Identifier</li>
+                        <li><code>=</code> → Operator</li>
+                        <li><code>5</code> → Literal</li>
+                        <li><code>;</code> → Delimiter</li>
+                    </ul>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(B) Syntax Analysis (Parsing)</h4>
+                    <p>Checks if the grammar is correct according to C++ rules.</p>
+                    
+                    <pre data-lang="cpp"><code>// Correct syntax:
+int x = 5;
+
+// ❌ Syntax Error:
+int = x 5;  // Wrong order!</code></pre>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(C) Semantic Analysis</h4>
+                    <p>Checks if the code makes <strong>logical sense</strong>.</p>
+                    
+                    <pre data-lang="cpp"><code>int x;
+x = "hello";  // ❌ Semantic Error!
+// Can't assign string to integer variable</code></pre>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(D) Intermediate Code Generation</h4>
+                    <p>Compiler creates an intermediate representation (often assembly-like code).</p>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">(E) Code Optimization</h4>
+                    <p>Removes unnecessary code and improves performance.</p>
+                    
+                    <pre data-lang="cpp"><code>// Your code:
+int x = 5;
+int y = x + 0;  // Adding 0 is useless
+
+// After optimization:
+int x = 5;
+int y = x;  // Optimizer removes + 0</code></pre>
+
+                    <div class="info-box warning">
+                        <strong>Output of Compilation:</strong>
+                        <p>An <strong>Object File</strong> with extension <code>.o</code> or <code>.obj</code> is created (e.g., <code>main.o</code>).</p>
+                        <pre data-lang="bash"><code>g++ -c main.cpp -o main.o  // Generate object file</code></pre>
+                        <p><strong>Important:</strong> The object file contains machine code, but it's NOT a complete executable program yet!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LINKING STAGE -->
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>LINKING - The Critical Stage 🔥</h4>
+                    <p>This is where everything comes together!</p>
+                    
+                    <h4 style="color: var(--accent-color); margin-top: 20px;">The Problem:</h4>
+                    <p>Your object file has machine code, but some functions are still missing!</p>
+                    
+                    <pre data-lang="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; "Hello";  // Where is cout's actual code?
+    return 0;
+}</code></pre>
+                    
+                    <p>The <code>cout</code> function is declared in <code>iostream</code>, but its actual implementation is in the C++ standard library.</p>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">What the Linker Does:</h4>
+                    <ul>
+                        <li>Connects your object file with library files</li>
+                        <li>Resolves external references (finds where functions are defined)</li>
+                        <li>Combines multiple object files together</li>
+                        <li>Creates the final executable</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>This is called: Symbol Resolution</strong>
+                        <p>The linker finds where each function/variable is actually defined and connects everything.</p>
+                    </div>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">Example: Multi-File Linking</h4>
+                    <pre data-lang="cpp"><code>// mathutils.cpp
+int add(int a, int b) {
+    return a + b;
+}
+
+// main.cpp
+#include "mathutils.h"
+int main() {
+    add(5, 3);  // Linker connects this call to mathutils.cpp
+}</code></pre>
+
+                    <h4 style="color: var(--error-color); margin-top: 25px;">Common Linker Error: Undefined Reference</h4>
+                    <div class="info-box error">
+                        <strong>Error Message:</strong>
+                        <pre><code>undefined reference to `add(int, int)'</code></pre>
+                        <p><strong>Reason:</strong> You declared the function but didn't compile the file containing its definition!</p>
+                        <p><strong>Solution:</strong> Compile all required .cpp files together</p>
+                        <pre data-lang="bash"><code>g++ main.cpp mathutils.cpp -o app</code></pre>
+                    </div>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">Types of Linking:</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>When Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Static Linking</strong></td>
+                                <td>Library code is copied into executable</td>
+                                <td>Larger file size, no external dependencies</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dynamic Linking</strong></td>
+                                <td>Library loaded at runtime (.dll, .so files)</td>
+                                <td>Smaller file size, needs library at runtime</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="info-box success">
+                        <strong>Output of Linking:</strong>
+                        <p>A fully executable program!</p>
+                        <ul>
+                            <li><code>main.exe</code> (Windows)</li>
+                            <li><code>a.out</code> or custom name (Linux/Mac)</li>
+                        </ul>
+                        <pre data-lang="bash"><code>g++ main.o mathutils.o -o app  // Link object files</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXECUTION STAGE -->
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>EXECUTION</h4>
+                    <p>Now the CPU takes over!</p>
+                    
+                    <h4 style="color: var(--accent-color); margin-top: 20px;">Execution Steps:</h4>
+                    <ol>
+                        <li><strong>Loading:</strong> OS loads the program into RAM (memory)</li>
+                        <li><strong>Memory Allocation:</strong> Stack and Heap memory are allocated</li>
+                        <li><strong>Entry Point:</strong> <code>main()</code> function is called</li>
+                        <li><strong>Instruction Execution:</strong> CPU executes instructions one by one</li>
+                        <li><strong>Output:</strong> Results appear on screen or are saved to files</li>
+                        <li><strong>Termination:</strong> Program exits, memory is freed</li>
+                    </ol>
+
+                    <h4 style="color: var(--accent-secondary); margin-top: 25px;">Memory Structure During Execution</h4>
+                    <p>When your program runs, memory is divided into 4 parts:</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Memory Section</th>
+                                <th>Purpose</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Stack</strong></td>
+                                <td>Local variables, function calls</td>
+                                <td>Variables inside functions</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Heap</strong></td>
+                                <td>Dynamic memory allocation</td>
+                                <td>new, malloc</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Segment</strong></td>
+                                <td>Global & static variables</td>
+                                <td>Global variables</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Code Segment</strong></td>
+                                <td>Program instructions</td>
+                                <td>Compiled machine code</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 50px;">🧠 Important Terms Explained</h3>
+            
+            <div class="info-box">
+                <strong>Token:</strong>
+                <p>The smallest unit of code (e.g., int, x, =, 5, ;)</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Identifier:</strong>
+                <p>Name of a variable or function (e.g., myVariable, calculateSum)</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Literal:</strong>
+                <p>Direct value in code (e.g., 5, 3.14, "Hello", 'A')</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Object File (.o, .obj):</strong>
+                <p>Machine code that's not yet a complete program - needs linking</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Executable File:</strong>
+                <p>Fully linked and runnable program (.exe, a.out)</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Symbol:</strong>
+                <p>Name of a function or variable that the linker needs to resolve</p>
+            </div>
+
+            <h3 style="margin-top: 40px;">🧩 Complete Flow Visualization</h3>
+            <pre data-lang="flow"><code>main.cpp (Source Code)
+    ↓
+Preprocessor (#include, #define, remove comments)
+    ↓
+main.i (Preprocessed File - Expanded)
+    ↓
+Compiler (Lexical → Syntax → Semantic → Code Gen)
+    ↓
+main.o (Object File - Machine Code but Incomplete)
+    ↓
+Linker (Connect libraries, resolve symbols)
+    ↓
+main.exe or a.out (Executable - Complete Program)
+    ↓
+Loader (OS loads into memory)
+    ↓
+CPU Execution
+    ↓
+Output / Results</code></pre>
+
+            <h3 style="margin-top: 40px;">🎯 Summary in One Line Each</h3>
+            <ul style="font-size: 1.1rem; line-height: 2;">
+                <li><strong>Preprocessing:</strong> Code is modified and expanded</li>
+                <li><strong>Compilation:</strong> Source code becomes machine code</li>
+                <li><strong>Linking:</strong> Libraries and object files are connected</li>
+                <li><strong>Execution:</strong> CPU runs the program</li>
+            </ul>
+
+            <div class="info-box success" style="margin-top: 40px;">
+                <strong>Why Understanding This Flow Matters:</strong>
+                <ul>
+                    <li>✓ You'll understand linker errors</li>
+                    <li>✓ You'll know why header files are needed</li>
+                    <li>✓ You'll understand "undefined reference" errors</li>
+                    <li>✓ You'll grasp static vs dynamic linking</li>
+                    <li>✓ You'll debug compilation issues faster</li>
+                </ul>
+            </div>
+        </section>
+
+  
+
+        <section id="how-to-run">
+            <h2><span class="emoji">🔹</span> How to Compile and Run Code</h2>
+            
+            <h3>Project Structure</h3>
+            <pre><code>myproject/
+├── mathutils.h
+├── mathutils.cpp
+└── main.cpp</code></pre>
+
+            <h3>Windows (VS Code / Command Prompt / PowerShell)</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Navigate to Project Folder</h4>
+                    <pre data-lang="cmd"><code>cd path\to\myproject</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Compile All Files</h4>
+                    <pre data-lang="cmd"><code>g++ main.cpp mathutils.cpp -o app</code></pre>
+                    <p>This creates <code>app.exe</code></p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Run the Program</h4>
+                    <pre data-lang="cmd"><code>app.exe
+// Or simply:
+app</code></pre>
+                </div>
+            </div>
+
+            <h3>Linux / Mac (Terminal)</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Navigate to Project Folder</h4>
+                    <pre data-lang="bash"><code>cd /path/to/myproject</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Compile All Files</h4>
+                    <pre data-lang="bash"><code>g++ main.cpp mathutils.cpp -o app</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Run the Program</h4>
+                    <pre data-lang="bash"><code>./app</code></pre>
+                </div>
+            </div>
+
+            <h3>Compiler Flags (Advanced)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Flag</th>
+                        <th>Purpose</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>-o</code></td>
+                        <td>Specify output file name</td>
+                        <td><code>g++ main.cpp -o myapp</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-Wall</code></td>
+                        <td>Enable all warnings</td>
+                        <td><code>g++ -Wall main.cpp</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-std=c++17</code></td>
+                        <td>Use C++17 standard</td>
+                        <td><code>g++ -std=c++17 main.cpp</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-g</code></td>
+                        <td>Include debug symbols</td>
+                        <td><code>g++ -g main.cpp</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-O2</code></td>
+                        <td>Optimization level 2</td>
+                        <td><code>g++ -O2 main.cpp</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Full Command Example</h3>
+            <pre data-lang="bash"><code>g++ -std=c++17 -Wall -O2 main.cpp mathutils.cpp -o app</code></pre>
+        </section>
+
+        <section id="common-errors">
+            <h2><span class="emoji">🔹</span> Common Errors and Solutions</h2>
+            
+            <h3>❌ Error 1: Undefined Reference</h3>
+            <div class="info-box error">
+                <strong>Error Message:</strong>
+                <pre><code>undefined reference to `add(int, int)'</code></pre>
+            </div>
+
+            <p><strong>Cause:</strong> Function is declared in header but implementation file wasn't compiled.</p>
+
+            <p><strong>Solution:</strong> Include ALL .cpp files in compilation:</p>
+            <pre data-lang="bash"><code>// Wrong:
+g++ main.cpp -o app
+
+// Correct:
+g++ main.cpp mathutils.cpp -o app</code></pre>
+
+            <h3>❌ Error 2: No Such File or Directory</h3>
+            <div class="info-box error">
+                <strong>Error Message:</strong>
+                <pre><code>fatal error: mathutils.h: No such file or directory</code></pre>
+            </div>
+
+            <p><strong>Cause:</strong> Header file not found.</p>
+
+            <p><strong>Solutions:</strong></p>
+            <ul>
+                <li>Make sure header file is in the same directory as source file</li>
+                <li>Use correct path: <code>#include "subfolder/header.h"</code></li>
+                <li>Use angle brackets only for system headers: <code>#include &lt;iostream&gt;</code></li>
+                <li>Use quotes for your headers: <code>#include "mathutils.h"</code></li>
+            </ul>
+
+            <h3>❌ Error 3: Multiple Definition</h3>
+            <div class="info-box error">
+                <strong>Error Message:</strong>
+                <pre><code>multiple definition of `add(int, int)'</code></pre>
+            </div>
+
+            <p><strong>Cause:</strong> Missing include guards or defining functions in header files.</p>
+
+            <p><strong>Solution:</strong> Add include guards:</p>
+            <pre data-lang="cpp"><code>#ifndef MATHUTILS_H
+#define MATHUTILS_H
+
+// Your code
+
+#endif</code></pre>
+
+            <h3>❌ Error 4: Redefinition</h3>
+            <div class="info-box error">
+                <strong>Error Message:</strong>
+                <pre><code>redefinition of 'struct Point'</code></pre>
+            </div>
+
+            <p><strong>Cause:</strong> Header included multiple times without guards.</p>
+
+            <p><strong>Solution:</strong> Always use include guards or <code>#pragma once</code>.</p>
+
+            <h3>❌ Error 5: Wrong Include Syntax</h3>
+            <pre data-lang="cpp"><code>// Wrong:
+#include &lt;mathutils.h&gt;  // System path
+
+// Correct:
+#include "mathutils.h"  // Current directory</code></pre>
+
+            <h3>Debugging Checklist</h3>
+            <div class="info-box success">
+                <strong>When compilation fails, check:</strong>
+                <ol>
+                    <li>Are all .cpp files included in compilation command?</li>
+                    <li>Are header guards present in all .h files?</li>
+                    <li>Is the correct include syntax used (&lt; &gt; vs " ")?</li>
+                    <li>Are file paths correct?</li>
+                    <li>Are function declarations and definitions matching?</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="key-concepts">
+            <h2><span class="emoji">🔥</span> Final Deep Concepts</h2>
+            
+            <h3>Key Takeaways for Interviews</h3>
+
+            <div class="info-box">
+                <strong>Header File = Interface</strong>
+                <p>Tells other code what functions/classes are available, not how they work.</p>
+            </div>
+
+            <div class="info-box">
+                <strong>CPP File = Implementation</strong>
+                <p>Contains the actual logic and function bodies.</p>
+            </div>
+
+            <div class="info-box">
+                <strong>#include = Copy Mechanism</strong>
+                <p>Literally copies file contents before compilation.</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Include Guard = Safety Lock</strong>
+                <p>Prevents duplicate code from multiple inclusions.</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Compilation = Convert</strong>
+                <p>Transforms human-readable code to machine code.</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Linking = Join</strong>
+                <p>Connects multiple object files into one executable.</p>
+            </div>
+
+            <h3>Best Practices Summary</h3>
+            <ol>
+                <li><strong>Always use include guards</strong> or <code>#pragma once</code> in header files</li>
+                <li><strong>Separate declaration and definition</strong> - declarations in .h, definitions in .cpp</li>
+                <li><strong>Use meaningful names</strong> for header guards (e.g., FILENAME_H)</li>
+                <li><strong>Include only what you need</strong> - avoid unnecessary includes</li>
+                <li><strong>Use angle brackets for system headers</strong>, quotes for your own</li>
+                <li><strong>Never put <code>using namespace</code> in headers</strong> - it pollutes global scope</li>
+                <li><strong>Document your headers</strong> with comments explaining purpose and usage</li>
+                <li><strong>Keep headers minimal</strong> - only declarations, not implementations</li>
+            </ol>
+
+            <h3>Advanced Tip: Forward Declarations</h3>
+            <p>Sometimes you don't need to include a full header - just declare that a class exists:</p>
+            <pre data-lang="cpp"><code>// Instead of:
+#include "BigClass.h"
+
+// You can use:
+class BigClass;  // Forward declaration
+
+// Then include in .cpp file only where needed</code></pre>
+            <p>This reduces compilation time and dependencies.</p>
+
+            <h3>What You Should Never Do</h3>
+            <div class="info-box error">
+                <strong>Don't:</strong>
+                <ul>
+                    <li>Define functions in header files (except inline/template)</li>
+                    <li>Include .cpp files</li>
+                    <li>Forget include guards</li>
+                    <li>Use <code>using namespace std;</code> in headers</li>
+                    <li>Create circular dependencies (A.h includes B.h, B.h includes A.h)</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>Created with 💙 for Deepak | Master C++ Header Files</p>
+            <p>Keep coding, keep learning! 🚀</p>
+        </footer>
+    </div>
+</body>
+</html>
