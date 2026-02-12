@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete C++ STL & Advanced Concepts Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #2d3748;
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: #4a5568;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        section {
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #4a5568;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        code {
+            background: #f7fafc;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #e53e3e;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #fffaf0;
+            border-left: 4px solid #ed8936;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .danger-box {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box {
+            background: #f0fff4;
+            border-left: 4px solid #38a169;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:hover {
+            background: #f7fafc;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .output {
+            background: #f7fafc;
+            padding: 10px;
+            border-left: 3px solid #38a169;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Complete C++ STL & Advanced Concepts</h1>
+            <p>Master Data Structures, Algorithms, Templates, and Modern C++ Features</p>
+        </header>
+        
+        <nav>
+            <a href="#sorting">Sorting</a>
+            <a href="#searching">Searching</a>
+            <a href="#containers">Containers</a>
+            <a href="#preprocessing">Preprocessing</a>
+            <a href="#references">References</a>
+            <a href="#const-inline">Const & Inline</a>
+        </nav>
+        
+        <div class="content">
+            <!-- MODULE 1: SORTING AND ALGORITHMS -->
+            <section id="sorting">
+                <h2>📊 Module 1: Sorting Algorithms</h2>
+                
+                <h3>1️⃣ Why Sorting Is Important</h3>
+                <p>Sorting is one of the most fundamental algorithms in computer science. When data is sorted:</p>
+                <ul>
+                    <li><strong>Searching becomes fast:</strong> Binary Search achieves O(log n) time complexity</li>
+                    <li><strong>Data becomes organized:</strong> Easier to analyze and process</li>
+                    <li><strong>Many algorithms depend on sorted data:</strong> Merge algorithms, finding duplicates, etc.</li>
+                </ul>
+                
+                <div class="info-box">
+                    <strong>Example:</strong><br>
+                    Unsorted: 5 2 8 1 3<br>
+                    Sorted: 1 2 3 5 8
+                </div>
+                
+                <h3>2️⃣ Bubble Sort - The Simple Approach</h3>
+                
+                <h4>🔹 How It Works:</h4>
+                <ol>
+                    <li>Scan array from left to right</li>
+                    <li>Compare consecutive elements</li>
+                    <li>Swap if they are in wrong order</li>
+                    <li>Repeat until no swaps occur</li>
+                </ol>
+                
+                <h4>🔹 Why Inefficient?</h4>
+                <p>Every element is compared with others repeatedly, resulting in <strong>O(n²)</strong> time complexity.</p>
+                
+                <h4>🔹 Implementation:</h4>
+                <pre>
+#include &lt;iostream&gt;
+using namespace std;
+
+void bubbleSort(int arr[], int n)
+{
+    for(int i = 0; i &lt; n - 1; i++)
+    {
+        bool swapped = false;
+        
+        // Last i elements are already in place
+        for(int j = 0; j &lt; n - i - 1; j++)
+        {
+            if(arr[j] &gt; arr[j + 1])
+            {
+                swap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+        
+        // If no swap occurred, array is sorted
+        if(!swapped)
+            break;
+    }
+}
+
+int main()
+{
+    int arr[] = {5, 2, 8, 1, 3};
+    int n = 5;
+    
+    cout &lt;&lt; "Before sorting: ";
+    for(int i = 0; i &lt; n; i++)
+        cout &lt;&lt; arr[i] &lt;&lt; " ";
+    
+    bubbleSort(arr, n);
+    
+    cout &lt;&lt; "\nAfter sorting: ";
+    for(int i = 0; i &lt; n; i++)
+        cout &lt;&lt; arr[i] &lt;&lt; " ";
+    
+    return 0;
+}
+</pre>
+                <div class="output">
+                    Output:<br>
+                    Before sorting: 5 2 8 1 3<br>
+                    After sorting: 1 2 3 5 8
+                </div>
+                
+                <h3>3️⃣ Problem with C-Style Sorting</h3>
+                <p>In C, the <code>qsort()</code> function had several issues:</p>
+                <ul>
+                    <li>Didn't know element type (treated array as raw bytes)</li>
+                    <li>Required base address, number of elements, and size of each element</li>
+                    <li>Required compare function using <code>void*</code></li>
+                    <li>Required manual type casting (unsafe)</li>
+                    <li>No compile-time type checking</li>
+                </ul>
+                
+                <h3>4️⃣ How C++ Solves This - Templates</h3>
+                <div class="success-box">
+                    <strong>Templates</strong> allow the compiler to generate type-specific code at compile time.
+                </div>
+                
+                <p>When you sort different types:</p>
+                <ul>
+                    <li><code>int</code> → compiler creates int-specific version</li>
+                    <li><code>double</code> → compiler creates double-specific version</li>
+                    <li><code>Student</code> → compiler creates Student-specific version</li>
+                </ul>
+                
+                <p><strong>Advantages:</strong></p>
+                <ul>
+                    <li>✅ No need to pass element size</li>
+                    <li>✅ No manual casting required</li>
+                    <li>✅ Type safe at compile time</li>
+                    <li>✅ Better performance</li>
+                </ul>
+                
+                <h3>5️⃣ std::sort() - The Modern Way</h3>
+                
+                <h4>🔹 Header Required:</h4>
+                <pre>
+#include &lt;algorithm&gt;
+</pre>
+                
+                <h4>🔹 Basic Syntax:</h4>
+                <pre>
+sort(first_iterator, last_iterator);
+</pre>
+                
+                <div class="warning-box">
+                    <strong>Important:</strong> The range is <strong>[first, last)</strong><br>
+                    • First iterator is <strong>included</strong><br>
+                    • Last iterator is <strong>excluded</strong>
+                </div>
+                
+                <h4>🔹 Example:</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main()
+{
+    int arr[] = {5, 2, 8, 1, 3};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    // arr points to first element
+    // arr + n points to position after last element
+    sort(arr, arr + n);
+    
+    cout &lt;&lt; "Sorted array: ";
+    for(int i = 0; i &lt; n; i++)
+        cout &lt;&lt; arr[i] &lt;&lt; " ";
+    
+    return 0;
+}
+</pre>
+                <div class="output">
+                    Output: Sorted array: 1 2 3 5 8
+                </div>
+                
+                <h3>6️⃣ Default Sorting Behavior</h3>
+                <p>By default, <code>std::sort()</code>:</p>
+                <ul>
+                    <li>Sorts in <strong>ascending order</strong></li>
+                    <li>Uses the <code>&lt;</code> operator internally</li>
+                    <li>Works with any type that has <code>&lt;</code> defined</li>
+                </ul>
+                
+                <h3>7️⃣ Custom Compare Function</h3>
+                <p>The library cannot guess your sorting requirements. You can provide a custom comparator:</p>
+                
+                <div class="info-box">
+                    <strong>Rule:</strong> <code>bool compare(a, b)</code><br>
+                    Returns <code>true</code> if <code>a</code> should come before <code>b</code><br>
+                    Returns <code>false</code> otherwise
+                </div>
+                
+                <h4>🔹 Descending Order Example:</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+// Custom comparator for descending order
+bool compare(int a, int b)
+{
+    return a &gt; b;  // a should come before b if a is greater
+}
+
+int main()
+{
+    int arr[] = {5, 2, 8, 1, 3};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    sort(arr, arr + n, compare);
+    
+    cout &lt;&lt; "Descending order: ";
+    for(int i = 0; i &lt; n; i++)
+        cout &lt;&lt; arr[i] &lt;&lt; " ";
+    
+    return 0;
+}
+</pre>
+                <div class="output">
+                    Output: Descending order: 8 5 3 2 1
+                </div>
+                
+                <h3>8️⃣ Sorting User-Defined Structures</h3>
+                <p>The library doesn't know how to compare custom structures. You must define the comparison logic.</p>
+                
+                <h4>🔹 Sort Students by Marks:</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+using namespace std;
+
+struct Student
+{
+    string name;
+    int marks;
+    int rollNo;
+};
+
+// Sort by marks (ascending)
+bool compareByMarks(Student a, Student b)
+{
+    return a.marks &lt; b.marks;
+}
+
+// Sort by name (alphabetical)
+bool compareByName(Student a, Student b)
+{
+    return a.name &lt; b.name;
+}
+
+// Sort by marks descending, if equal then by name
+bool compareAdvanced(Student a, Student b)
+{
+    if(a.marks != b.marks)
+        return a.marks &gt; b.marks;  // Higher marks first
+    return a.name &lt; b.name;        // Then alphabetically
+}
+
+int main()
+{
+    Student s[] = {
+        {"Rahul", 85, 101},
+        {"Amit", 72, 102},
+        {"Priya", 90, 103},
+        {"Amit", 90, 104}
+    };
+    
+    int n = 4;
+    
+    cout &lt;&lt; "Sorted by marks:\n";
+    sort(s, s + n, compareByMarks);
+    for(int i = 0; i &lt; n; i++)
+        cout &lt;&lt; s[i].name &lt;&lt; " - " &lt;&lt; s[i].marks &lt;&lt; endl;
+    
+    cout &lt;&lt; "\nSorted by name:\n";
+    sort(s, s + n, compareByName);
+    for(int i = 0; i &lt; n; i++)
+        cout &lt;&lt; s[i].name &lt;&lt; " - " &lt;&lt; s[i].marks &lt;&lt; endl;
+    
+    cout &lt;&lt; "\nAdvanced sorting:\n";
+    sort(s, s + n, compareAdvanced);
+    for(int i = 0; i &lt; n; i++)
+        cout &lt;&lt; s[i].name &lt;&lt; " - " &lt;&lt; s[i].marks &lt;&lt; endl;
+    
+    return 0;
+}
+</pre>
+                
+                <h3>9️⃣ Additional Sorting Algorithms</h3>
+                
+                <table>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Time Complexity</th>
+                        <th>Space Complexity</th>
+                        <th>Stable?</th>
+                        <th>Use Case</th>
+                    </tr>
+                    <tr>
+                        <td>Bubble Sort</td>
+                        <td>O(n²)</td>
+                        <td>O(1)</td>
+                        <td>Yes</td>
+                        <td>Educational purposes</td>
+                    </tr>
+                    <tr>
+                        <td>Selection Sort</td>
+                        <td>O(n²)</td>
+                        <td>O(1)</td>
+                        <td>No</td>
+                        <td>Small arrays</td>
+                    </tr>
+                    <tr>
+                        <td>Insertion Sort</td>
+                        <td>O(n²)</td>
+                        <td>O(1)</td>
+                        <td>Yes</td>
+                        <td>Nearly sorted data</td>
+                    </tr>
+                    <tr>
+                        <td>Merge Sort</td>
+                        <td>O(n log n)</td>
+                        <td>O(n)</td>
+                        <td>Yes</td>
+                        <td>Guaranteed O(n log n)</td>
+                    </tr>
+                    <tr>
+                        <td>Quick Sort</td>
+                        <td>O(n log n) avg</td>
+                        <td>O(log n)</td>
+                        <td>No</td>
+                        <td>General purpose (std::sort uses this)</td>
+                    </tr>
+                    <tr>
+                        <td>Heap Sort</td>
+                        <td>O(n log n)</td>
+                        <td>O(1)</td>
+                        <td>No</td>
+                        <td>Memory constrained</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- MODULE 2: SEARCHING -->
+            <section id="searching">
+                <h2>🔍 Module 2: Searching Algorithms</h2>
+                
+                <h3>1️⃣ Binary Search Theory</h3>
+                <div class="warning-box">
+                    <strong>Critical Requirement:</strong> Binary search works <strong>only on sorted arrays</strong>
+                </div>
+                
+                <h4>🔹 How It Works:</h4>
+                <ol>
+                    <li>Find the middle element</li>
+                    <li>If equal to target → Found!</li>
+                    <li>If target is smaller → search left half</li>
+                    <li>If target is larger → search right half</li>
+                    <li>Repeat until found or search space is empty</li>
+                </ol>
+                
+                <h4>🔹 Time Complexity:</h4>
+                <p><strong>O(log n)</strong> - Much faster than linear search O(n)</p>
+                
+                <div class="info-box">
+                    <strong>Example:</strong> In an array of 1 million elements:<br>
+                    Linear Search: Up to 1,000,000 comparisons<br>
+                    Binary Search: Maximum 20 comparisons
+                </div>
+                
+                <h3>2️⃣ std::binary_search()</h3>
+                <p>Returns <code>true</code> if element is found, <code>false</code> otherwise.</p>
+                
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main()
+{
+    int arr[] = {1, 3, 5, 7, 9, 11, 13};
+    int n = 7;
+    
+    int target = 7;
+    
+    bool found = binary_search(arr, arr + n, target);
+    
+    if(found)
+        cout &lt;&lt; target &lt;&lt; " found in the array";
+    else
+        cout &lt;&lt; target &lt;&lt; " not found in the array";
+    
+    return 0;
+}
+</pre>
+                <div class="output">
+                    Output: 7 found in the array
+                </div>
+                
+                <h3>3️⃣ lower_bound() and upper_bound()</h3>
+                <p>These are powerful functions for finding positions in sorted arrays.</p>
+                
+                <table>
+                    <tr>
+                        <th>Function</th>
+                        <th>Returns</th>
+                        <th>Use Case</th>
+                    </tr>
+                    <tr>
+                        <td><code>lower_bound()</code></td>
+                        <td>Iterator to first element ≥ value</td>
+                        <td>Find insertion position, count elements ≥ x</td>
+                    </tr>
+                    <tr>
+                        <td><code>upper_bound()</code></td>
+                        <td>Iterator to first element &gt; value</td>
+                        <td>Find range of values, count elements &gt; x</td>
+                    </tr>
+                </table>
+                
+                <h4>🔹 Example:</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main()
+{
+    int arr[] = {1, 2, 3, 3, 3, 5, 7, 8};
+    int n = 8;
+    
+    int value = 3;
+    
+    // Find first occurrence of 3 or greater
+    int* lb = lower_bound(arr, arr + n, value);
+    
+    // Find first element greater than 3
+    int* ub = upper_bound(arr, arr + n, value);
+    
+    cout &lt;&lt; "Lower bound index: " &lt;&lt; (lb - arr) &lt;&lt; endl;
+    cout &lt;&lt; "Upper bound index: " &lt;&lt; (ub - arr) &lt;&lt; endl;
+    cout &lt;&lt; "Count of " &lt;&lt; value &lt;&lt; ": " &lt;&lt; (ub - lb) &lt;&lt; endl;
+    
+    // Check if element exists
+    if(lb != arr + n &amp;&amp; *lb == value)
+        cout &lt;&lt; value &lt;&lt; " exists in array" &lt;&lt; endl;
+    
+    return 0;
+}
+</pre>
+                <div class="output">
+                    Output:<br>
+                    Lower bound index: 2<br>
+                    Upper bound index: 5<br>
+                    Count of 3: 3<br>
+                    3 exists in array
+                </div>
+                
+                <h3>4️⃣ Other Useful STL Algorithms</h3>
+                
+                <h4>🔹 find()</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main()
+{
+    int arr[] = {5, 2, 8, 1, 3};
+    int n = 5;
+    
+    int* result = find(arr, arr + n, 8);
+    
+    if(result != arr + n)
+        cout &lt;&lt; "Found at index: " &lt;&lt; (result - arr);
+    else
+        cout &lt;&lt; "Not found";
+    
+    return 0;
+}
+</pre>
+                
+                <h4>🔹 count()</h4>
+                <pre>
+int arr[] = {1, 2, 3, 2, 2, 5};
+int occurrences = count(arr, arr + 6, 2);
+cout &lt;&lt; "2 appears " &lt;&lt; occurrences &lt;&lt; " times";  // Output: 3
+</pre>
+                
+                <h4>🔹 reverse()</h4>
+                <pre>
+int arr[] = {1, 2, 3, 4, 5};
+reverse(arr, arr + 5);
+// arr is now {5, 4, 3, 2, 1}
+</pre>
+                
+                <h4>🔹 rotate()</h4>
+                <pre>
+int arr[] = {1, 2, 3, 4, 5};
+rotate(arr, arr + 2, arr + 5);
+// arr is now {3, 4, 5, 1, 2}
+// Rotates so that arr[2] becomes the first element
+</pre>
+                
+                <h4>🔹 replace()</h4>
+                <pre>
+int arr[] = {1, 2, 3, 2, 5};
+replace(arr, arr + 5, 2, 99);
+// arr is now {1, 99, 3, 99, 5}
+</pre>
+                
+                <h3>5️⃣ Comparison: C vs C++ STL</h3>
+                
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>C Style</th>
+                        <th>C++ STL</th>
+                    </tr>
+                    <tr>
+                        <td>Type Safety</td>
+                        <td>Uses <code>void*</code></td>
+                        <td>Type safe templates</td>
+                    </tr>
+                    <tr>
+                        <td>Casting</td>
+                        <td>Manual casting required</td>
+                        <td>No casting needed</td>
+                    </tr>
+                    <tr>
+                        <td>Element Size</td>
+                        <td>Must specify</td>
+                        <td>Compiler knows</td>
+                    </tr>
+                    <tr>
+                        <td>Safety</td>
+                        <td>Error-prone</td>
+                        <td>Safe</td>
+                    </tr>
+                    <tr>
+                        <td>Complexity</td>
+                        <td>Complex syntax</td>
+                        <td>Simple and clean</td>
+                    </tr>
+                    <tr>
+                        <td>Performance</td>
+                        <td>Good</td>
+                        <td>Excellent (inline optimizations)</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- MODULE 3: CONTAINERS -->
+            <section id="containers">
+                <h2>📦 Module 3: STL Containers & Data Structures</h2>
+                
+                <h3>1️⃣ Algorithm + Data Structure = Problem Solving</h3>
+                <div class="success-box">
+                    <strong>Key Concept:</strong> Algorithms operate on data structures. You need both to solve problems effectively.
+                </div>
+                
+                <p>In C++:</p>
+                <ul>
+                    <li><strong>Algorithms</strong> → <code>&lt;algorithm&gt;</code></li>
+                    <li><strong>Data Structures</strong> → Called <strong>Containers</strong> in STL</li>
+                </ul>
+                
+                <h3>2️⃣ Stack - LIFO Container</h3>
+                
+                <h4>🔹 What is Stack?</h4>
+                <p><strong>LIFO</strong> - Last In First Out</p>
+                
+                <div class="info-box">
+                    <strong>Real-world Analogy:</strong> Stack of books<br>
+                    • Last book placed on top<br>
+                    • First book to be removed
+                </div>
+                
+                <h4>🔹 Header Required:</h4>
+                <pre>
+#include &lt;stack&gt;
+</pre>
+                
+                <h4>🔹 Creating a Stack:</h4>
+                <pre>
+stack&lt;int&gt; s;         // Stack of integers
+stack&lt;double&gt; sd;     // Stack of doubles
+stack&lt;string&gt; ss;     // Stack of strings
+stack&lt;char&gt; sc;       // Stack of characters
+</pre>
+                
+                <h4>🔹 Stack Operations:</h4>
+                
+                <table>
+                    <tr>
+                        <th>Function</th>
+                        <th>Description</th>
+                        <th>Time Complexity</th>
+                    </tr>
+                    <tr>
+                        <td><code>push(x)</code></td>
+                        <td>Add element to top</td>
+                        <td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td><code>pop()</code></td>
+                        <td>Remove top element</td>
+                        <td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td><code>top()</code></td>
+                        <td>Get top element</td>
+                        <td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td><code>empty()</code></td>
+                        <td>Check if empty</td>
+                        <td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td><code>size()</code></td>
+                        <td>Number of elements</td>
+                        <td>O(1)</td>
+                    </tr>
+                </table>
+                
+                <h4>🔹 Example: Reverse a String Using Stack</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main()
+{
+    string str = "hello";
+    stack&lt;char&gt; s;
+    
+    // Push all characters
+    for(char ch : str)
+        s.push(ch);
+    
+    cout &lt;&lt; "Original: " &lt;&lt; str &lt;&lt; endl;
+    cout &lt;&lt; "Reversed: ";
+    
+    // Pop and print
+    while(!s.empty())
+    {
+        cout &lt;&lt; s.top();
+        s.pop();
+    }
+    
+    return 0;
+}
+</pre>
+                <div class="output">
+                    Output:<br>
+                    Original: hello<br>
+                    Reversed: olleh
+                </div>
+                
+                <h4>🔹 Example: Balanced Parentheses</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+using namespace std;
+
+bool isBalanced(string expr)
+{
+    stack&lt;char&gt; s;
+    
+    for(char ch : expr)
+    {
+        if(ch == '(' || ch == '{' || ch == '[')
+        {
+            s.push(ch);
+        }
+        else if(ch == ')' || ch == '}' || ch == ']')
+        {
+            if(s.empty())
+                return false;
+                
+            char top = s.top();
+            s.pop();
+            
+            if((ch == ')' &amp;&amp; top != '(') ||
+               (ch == '}' &amp;&amp; top != '{') ||
+               (ch == ']' &amp;&amp; top != '['))
+            {
+                return false;
+            }
+        }
+    }
+    
+    return s.empty();
+}
+
+int main()
+{
+    string expr1 = "{[()]}";
+    string expr2 = "{[(])}";
+    
+    cout &lt;&lt; expr1 &lt;&lt; " is " &lt;&lt; (isBalanced(expr1) ? "balanced" : "not balanced") &lt;&lt; endl;
+    cout &lt;&lt; expr2 &lt;&lt; " is " &lt;&lt; (isBalanced(expr2) ? "balanced" : "not balanced") &lt;&lt; endl;
+    
+    return 0;
+}
+</pre>
+                
+                <h4>🔹 Postfix Expression Evaluation</h4>
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int evaluatePostfix(string expr)
+{
+    stack&lt;int&gt; s;
+    
+    for(char ch : expr)
+    {
+        // If digit, push to stack
+        if(isdigit(ch))
+        {
+            s.push(ch - '0');
+        }
+        // If operator, pop two operands
+        else
+        {
+            int op2 = s.top(); s.pop();
+            int op1 = s.top(); s.pop();
+            
+            switch(ch)
+            {
+                case '+': s.push(op1 + op2); break;
+                case '-': s.push(op1 - op2); break;
+                case '*': s.push(op1 * op2); break;
+                case '/': s.push(op1 / op2); break;
+            }
+        }
+    }
+    
+    return s.top();
+}
+
+int main()
+{
+    string expr = "123*+4-";  // (1 + (2 * 3)) - 4 = 3
+    cout &lt;&lt; "Result: " &lt;&lt; evaluatePostfix(expr) &lt;&lt; endl;
+    
+    return 0;
+}
+</pre>
+                <div class="output">
+                    Output: Result: 3
+                </div>
+                
+                <h3>3️⃣ Other STL Containers</h3>
+                
+                <h4>🔹 Queue (FIFO)</h4>
+                <pre>
+#include &lt;queue&gt;
+
+queue&lt;int&gt; q;
+q.push(10);      // Add to back
+q.front();       // Get front element
+q.pop();         // Remove from front
+q.empty();       // Check if empty
+q.size();        // Get size
+</pre>
+                
+                <h4>🔹 Priority Queue (Heap)</h4>
+                <pre>
+#include &lt;queue&gt;
+
+priority_queue&lt;int&gt; pq;              // Max heap (default)
+priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minPq;  // Min heap
+
+pq.push(10);
+pq.push(5);
+pq.push(20);
+cout &lt;&lt; pq.top();  // 20 (largest element)
+pq.pop();
+</pre>
+                
+                <h4>🔹 Vector (Dynamic Array)</h4>
+                <pre>
+#include &lt;vector&gt;
+
+vector&lt;int&gt; v;
+v.push_back(10);     // Add at end
+v.pop_back();        // Remove from end
+v[0] = 5;            // Random access
+v.size();            // Number of elements
+v.empty();           // Check if empty
+v.clear();           // Remove all elements
+
+// Iteration
+for(int i = 0; i &lt; v.size(); i++)
+    cout &lt;&lt; v[i] &lt;&lt; " ";
+
+// Range-based for loop
+for(int x : v)
+    cout &lt;&lt; x &lt;&lt; " ";
+</pre>
+                
+                <h4>🔹 List (Doubly Linked List)</h4>
+                <pre>
+#include &lt;list&gt;
+
+list&lt;int&gt; l;
+l.push_back(10);     // Add at end
+l.push_front(5);     // Add at beginning
+l.pop_back();        // Remove from end
+l.pop_front();       // Remove from beginning
+l.size();            // Number of elements
+l.reverse();         // Reverse the list
+l.sort();            // Sort the list
+</pre>
+                
+                <h4>🔹 Deque (Double-Ended Queue)</h4>
+                <pre>
+#include &lt;deque&gt;
+
+deque&lt;int&gt; dq;
+dq.push_back(10);    // Add at end
+dq.push_front(5);    // Add at beginning
+dq.pop_back();       // Remove from end
+dq.pop_front();      // Remove from beginning
+dq[0];               // Random access
+</pre>
+                
+                <h4>🔹 Set (Unique, Sorted Elements)</h4>
+                <pre>
+#include &lt;set&gt;
+
+set&lt;int&gt; s;
+s.insert(10);        // Insert element
+s.erase(10);         // Remove element
+s.find(10);          // Find element (returns iterator)
+s.count(10);         // Count occurrences (0 or 1)
+s.size();            // Number of elements
+
+// Iteration (elements in sorted order)
+for(int x : s)
+    cout &lt;&lt; x &lt;&lt; " ";
+</pre>
+                
+                <h4>🔹 Map (Key-Value Pairs)</h4>
+                <pre>
+#include &lt;map&gt;
+
+map&lt;int, string&gt; m;
+m[1] = "One";        // Insert/update
+m[2] = "Two";
+m.erase(1);          // Remove by key
+m.find(2);           // Find by key (returns iterator)
+m.count(2);          // Check if key exists (0 or 1)
+m.size();            // Number of pairs
+
+// Iteration (sorted by key)
+for(auto p : m)
+    cout &lt;&lt; p.first &lt;&lt; " -&gt; " &lt;&lt; p.second &lt;&lt; endl;
+</pre>
+                
+                <h3>4️⃣ Container Categories</h3>
+                
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Containers</th>
+                        <th>Characteristics</th>
+                    </tr>
+                    <tr>
+                        <td>Sequential</td>
+                        <td>vector, list, deque</td>
+                        <td>Elements stored in sequence</td>
+                    </tr>
+                    <tr>
+                        <td>Associative</td>
+                        <td>set, map, multiset, multimap</td>
+                        <td>Elements organized by value/key</td>
+                    </tr>
+                    <tr>
+                        <td>Container Adapters</td>
+                        <td>stack, queue, priority_queue</td>
+                        <td>Restricted interface to other containers</td>
+                    </tr>
+                </table>
+                
+                <h3>5️⃣ Choosing the Right Container</h3>
+                
+                <table>
+                    <tr>
+                        <th>Need</th>
+                        <th>Use</th>
+                    </tr>
+                    <tr>
+                        <td>Fast random access</td>
+                        <td>vector, deque</td>
+                    </tr>
+                    <tr>
+                        <td>Fast insertion/deletion at ends</td>
+                        <td>deque</td>
+                    </tr>
+                    <tr>
+                        <td>Fast insertion/deletion anywhere</td>
+                        <td>list</td>
+                    </tr>
+                    <tr>
+                        <td>LIFO operations</td>
+                        <td>stack</td>
+                    </tr>
+                    <tr>
+                        <td>FIFO operations</td>
+                        <td>queue</td>
+                    </tr>
+                    <tr>
+                        <td>Priority-based removal</td>
+                        <td>priority_queue</td>
+                    </tr>
+                    <tr>
+                        <td>Unique sorted elements</td>
+                        <td>set</td>
+                    </tr>
+                    <tr>
+                        <td>Key-value associations</td>
+                        <td>map</td>
+                    </tr>
+                </table>
+                
+                <h3>6️⃣ Why C++ STL is Powerful</h3>
+                
+                <div class="success-box">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>✅ <strong>Reusable:</strong> Write once, use everywhere</li>
+                        <li>✅ <strong>Type Safe:</strong> Compile-time type checking</li>
+                        <li>✅ <strong>Well Tested:</strong> Battle-tested implementations</li>
+                        <li>✅ <strong>No Code Duplication:</strong> Templates handle different types</li>
+                        <li>✅ <strong>Generic:</strong> Works with any type</li>
+                        <li>✅ <strong>Consistent Interface:</strong> Similar functions across containers</li>
+                        <li>✅ <strong>Memory Management:</strong> Automatic allocation/deallocation</li>
+                        <li>✅ <strong>Performance:</strong> Highly optimized</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- MODULE 4: PREPROCESSING -->
+            <section id="preprocessing">
+                <h2>⚙️ Module 4: C++ Preprocessing & Project Structure</h2>
+                
+                <h3>1️⃣ Understanding C++ Build Process</h3>
+                
+                <div class="info-box">
+                    <strong>Build Pipeline:</strong><br>
+                    Source Code (.cpp) → Preprocessor → Compiler → Object Files (.o) → Linker → Executable
+                </div>
+                
+                <h3>2️⃣ Project Structure</h3>
+                
+                <h4>🔹 Translation Units</h4>
+                <p>Each <code>.cpp</code> file is a <strong>translation unit</strong> that is compiled independently.</p>
+                
+                <pre>
+// complex.h (Header file - declarations)
+#ifndef COMPLEX_H
+#define COMPLEX_H
+
+class Complex
+{
+private:
+    double real, imag;
+public:
+    Complex(double r = 0, double i = 0);
+    void display();
+    Complex add(Complex c);
+};
+
+#endif
+</pre>
+                
+                <pre>
+// complex.cpp (Source file - implementation)
+#include "complex.h"
+#include &lt;iostream&gt;
+using namespace std;
+
+Complex::Complex(double r, double i)
+{
+    real = r;
+    imag = i;
+}
+
+void Complex::display()
+{
+    cout &lt;&lt; real &lt;&lt; " + " &lt;&lt; imag &lt;&lt; "i" &lt;&lt; endl;
+}
+
+Complex Complex::add(Complex c)
+{
+    return Complex(real + c.real, imag + c.imag);
+}
+</pre>
+                
+                <pre>
+// main.cpp (Application file)
+#include "complex.h"
+
+int main()
+{
+    Complex c1(3, 4);
+    Complex c2(1, 2);
+    
+    Complex c3 = c1.add(c2);
+    c3.display();
+    
+    return 0;
+}
+</pre>
+                
+                <h4>🔹 Compilation Process:</h4>
+                <pre>
+g++ -c complex.cpp -o complex.o   # Compile complex.cpp
+g++ -c main.cpp -o main.o         # Compile main.cpp
+g++ complex.o main.o -o app       # Link object files
+./app                             # Run executable
+</pre>
+                
+                <h3>3️⃣ Header vs Source Files</h3>
+                
+                <table>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Header File (.h/.hpp)</th>
+                        <th>Source File (.cpp)</th>
+                    </tr>
+                    <tr>
+                        <td>Purpose</td>
+                        <td>Declarations</td>
+                        <td>Implementations</td>
+                    </tr>
+                    <tr>
+                        <td>Compilation</td>
+                        <td>Not compiled alone</td>
+                        <td>Translation unit</td>
+                    </tr>
+                    <tr>
+                        <td>Contains</td>
+                        <td>Class declarations, function prototypes, constants</td>
+                        <td>Function definitions, class method implementations</td>
+                    </tr>
+                    <tr>
+                        <td>Included In</td>
+                        <td>Multiple files</td>
+                        <td>Compiled once</td>
+                    </tr>
+                </table>
+                
+                <h3>4️⃣ Include Directives</h3>
+                
+                <table>
+                    <tr>
+                        <th>Syntax</th>
+                        <th>Used For</th>
+                        <th>Search Path</th>
+                    </tr>
+                    <tr>
+                        <td><code>#include "myfile.h"</code></td>
+                        <td>Your header files</td>
+                        <td>Current directory first, then system paths</td>
+                    </tr>
+                    <tr>
+                        <td><code>#include &lt;iostream&gt;</code></td>
+                        <td>Standard library</td>
+                        <td>System library directories</td>
+                    </tr>
+                </table>
+                
+                <h3>5️⃣ C++ Preprocessor</h3>
+                
+                <div class="warning-box">
+                    <strong>Important:</strong> The preprocessor is <strong>NOT</strong> part of the C++ language.<br>
+                    It runs <strong>before</strong> compilation and performs text manipulation.
+                </div>
+                
+                <h4>🔹 Preprocessor Directives (start with #):</h4>
+                <ul>
+                    <li><code>#include</code> - Include files</li>
+                    <li><code>#define</code> - Define macros</li>
+                    <li><code>#ifdef</code> - Conditional compilation</li>
+                    <li><code>#ifndef</code> - If not defined</li>
+                    <li><code>#endif</code> - End conditional</li>
+                    <li><code>#undef</code> - Undefine macro</li>
+                    <li><code>#error</code> - Generate error</li>
+                    <li><code>#pragma</code> - Compiler-specific directives</li>
+                </ul>
+                
+                <h3>6️⃣ Macros with #define</h3>
+                
+                <h4>🔹 Simple Macro:</h4>
+                <pre>
+#define PI 3.14159
+#define MAX_SIZE 100
+#define DEBUG
+
+// Usage
+double area = PI * r * r;
+int arr[MAX_SIZE];
+</pre>
+                
+                <h4>🔹 Function-like Macros:</h4>
+                <pre>
+#define SQUARE(x) ((x) * (x))
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+#define MIN(a, b) ((a) &lt; (b) ? (a) : (b))
+
+// Usage
+int result = SQUARE(5);        // Becomes: ((5) * (5))
+int maximum = MAX(10, 20);     // Becomes: ((10) &gt; (20) ? (10) : (20))
+</pre>
+                
+                <div class="danger-box">
+                    <strong>Warning:</strong> Always use parentheses in macros to avoid operator precedence issues!<br>
+                    <br>
+                    Bad: <code>#define SQUARE(x) x * x</code><br>
+                    SQUARE(2+3) becomes 2+3 * 2+3 = 11 (wrong!)<br>
+                    <br>
+                    Good: <code>#define SQUARE(x) ((x) * (x))</code><br>
+                    SQUARE(2+3) becomes ((2+3) * (2+3)) = 25 (correct!)
+                </div>
+                
+                <h4>🔹 Command Line Defines:</h4>
+                <pre>
+// Compile with: g++ main.cpp -DDEBUG -DVERSION=2
+// This defines DEBUG and sets VERSION to 2
+</pre>
+                
+                <h3>7️⃣ Special Macro Operators</h3>
+                
+                <h4>🔹 Stringizing Operator (#):</h4>
+                <pre>
+#define STRINGIFY(x) #x
+
+cout &lt;&lt; STRINGIFY(Hello);  // Prints: Hello
+cout &lt;&lt; STRINGIFY(123);    // Prints: 123
+</pre>
+                
+                <h4>🔹 Token Concatenation (##):</h4>
+                <pre>
+#define CONCAT(a, b) a##b
+
+int xy = 100;
+cout &lt;&lt; CONCAT(x, y);  // Accesses variable xy, prints: 100
+</pre>
+                
+                <h3>8️⃣ Conditional Compilation</h3>
+                
+                <h4>🔹 #ifdef / #ifndef:</h4>
+                <pre>
+#define DEBUG
+
+#ifdef DEBUG
+    cout &lt;&lt; "Debug mode enabled" &lt;&lt; endl;
+    cout &lt;&lt; "Value of x: " &lt;&lt; x &lt;&lt; endl;
+#endif
+
+#ifndef RELEASE
+    cout &lt;&lt; "Not in release mode" &lt;&lt; endl;
+#endif
+</pre>
+                
+                <h4>🔹 #if with Expressions:</h4>
+                <pre>
+#define VERSION 2
+
+#if VERSION &gt;= 2
+    // New features
+    void newFeature() { }
+#elif VERSION == 1
+    // Old features
+    void oldFeature() { }
+#else
+    #error "Unsupported version"
+#endif
+</pre>
+                
+                <h4>🔹 Commenting Out Code:</h4>
+                <pre>
+#if 0
+    // This entire block is ignored by compiler
+    // Useful for temporarily disabling large code sections
+    void oldFunction() {
+        // ...
+    }
+#endif
+</pre>
+                
+                <h3>9️⃣ Include Guards - CRITICAL!</h3>
+                
+                <div class="danger-box">
+                    <strong>Problem:</strong> If a header file is included multiple times, it causes redefinition errors.
+                </div>
+                
+                <h4>🔹 Without Include Guard (Problem):</h4>
+                <pre>
+// student.h
+struct Student {
+    int id;
+    string name;
+};
+
+// main.cpp
+#include "student.h"
+#include "student.h"  // ERROR: Student redefined!
+</pre>
+                
+                <h4>🔹 With Include Guard (Solution):</h4>
+                <pre>
+// student.h
+#ifndef STUDENT_H
+#define STUDENT_H
+
+struct Student {
+    int id;
+    string name;
+};
+
+#endif  // STUDENT_H
+</pre>
+                
+                <h4>🔹 How It Works:</h4>
+                <ol>
+                    <li>First inclusion: <code>STUDENT_H</code> not defined → defines it and includes code</li>
+                    <li>Second inclusion: <code>STUDENT_H</code> already defined → skips entire file</li>
+                </ol>
+                
+                <div class="success-box">
+                    <strong>Best Practice:</strong> EVERY header file must have include guards!
+                </div>
+                
+                <h4>🔹 Naming Convention:</h4>
+                <pre>
+// For file: myclass.h
+#ifndef MYCLASS_H
+#define MYCLASS_H
+// ...
+#endif
+
+// For file: utils/helper.h
+#ifndef UTILS_HELPER_H
+#define UTILS_HELPER_H
+// ...
+#endif
+</pre>
+                
+                <h3>🔟 #pragma once</h3>
+                
+                <p>Modern alternative to include guards:</p>
+                <pre>
+// student.h
+#pragma once
+
+struct Student {
+    int id;
+    string name;
+};
+</pre>
+                
+                <table>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Include Guards</th>
+                        <th>#pragma once</th>
+                    </tr>
+                    <tr>
+                        <td>Portability</td>
+                        <td>✅ Standard, works everywhere</td>
+                        <td>⚠️ Not standard, but widely supported</td>
+                    </tr>
+                    <tr>
+                        <td>Simplicity</td>
+                        <td>More verbose</td>
+                        <td>✅ One line</td>
+                    </tr>
+                    <tr>
+                        <td>Performance</td>
+                        <td>Good</td>
+                        <td>✅ Slightly faster</td>
+                    </tr>
+                </table>
+                
+                <div class="info-box">
+                    <strong>Recommendation:</strong> Use include guards for maximum portability, or <code>#pragma once</code> if you know your compiler supports it.
+                </div>
+                
+                <h3>1️⃣1️⃣ Predefined Macros</h3>
+                
+                <table>
+                    <tr>
+                        <th>Macro</th>
+                        <th>Description</th>
+                        <th>Example Value</th>
+                    </tr>
+                    <tr>
+                        <td><code>__LINE__</code></td>
+                        <td>Current line number</td>
+                        <td>42</td>
+                    </tr>
+                    <tr>
+                        <td><code>__FILE__</code></td>
+                        <td>Current file name</td>
+                        <td>"main.cpp"</td>
+                    </tr>
+                    <tr>
+                        <td><code>__DATE__</code></td>
+                        <td>Compilation date</td>
+                        <td>"Feb 12 2026"</td>
+                    </tr>
+                    <tr>
+                        <td><code>__TIME__</code></td>
+                        <td>Compilation time</td>
+                        <td>"14:30:25"</td>
+                    </tr>
+                    <tr>
+                        <td><code>__cplusplus</code></td>
+                        <td>C++ standard version</td>
+                        <td>202002L (C++20)</td>
+                    </tr>
+                </table>
+                
+                <h4>🔹 Example Usage:</h4>
+                <pre>
+#include &lt;iostream&gt;
+using namespace std;
+
+void logError(const char* msg)
+{
+    cout &lt;&lt; "Error in file: " &lt;&lt; __FILE__ 
+         &lt;&lt; " at line: " &lt;&lt; __LINE__
+         &lt;&lt; " - " &lt;&lt; msg &lt;&lt; endl;
+}
+
+int main()
+{
+    logError("Invalid input");
+    
+    cout &lt;&lt; "Compiled on: " &lt;&lt; __DATE__ 
+         &lt;&lt; " at " &lt;&lt; __TIME__ &lt;&lt; endl;
+    
+    return 0;
+}
+</pre>
+                
+                <h3>1️⃣2️⃣ #error Directive</h3>
+                
+                <pre>
+#ifndef CPP_VERSION
+    #error "CPP_VERSION must be defined"
+#endif
+
+#if CPP_VERSION &lt; 11
+    #error "This code requires C++11 or later"
+#endif
+</pre>
+                
+                <h3>1️⃣3️⃣ Practical Example: Debug Logging</h3>
+                
+                <pre>
+// debug.h
+#ifndef DEBUG_H
+#define DEBUG_H
+
+#include &lt;iostream&gt;
+
+#ifdef DEBUG_MODE
+    #define LOG(msg) std::cout &lt;&lt; "[" &lt;&lt; __FILE__ &lt;&lt; ":" &lt;&lt; __LINE__ &lt;&lt; "] " &lt;&lt; msg &lt;&lt; std::endl
+    #define LOG_VAR(var) std::cout &lt;&lt; #var &lt;&lt; " = " &lt;&lt; var &lt;&lt; std::endl
+#else
+    #define LOG(msg)
+    #define LOG_VAR(var)
+#endif
+
+#endif
+</pre>
+                
+                <pre>
+// main.cpp
+#include "debug.h"
+
+int main()
+{
+    int x = 42;
+    
+    LOG("Program started");  // Only prints if DEBUG_MODE is defined
+    LOG_VAR(x);              // Only prints if DEBUG_MODE is defined
+    
+    return 0;
+}
+
+// Compile with: g++ main.cpp -DDEBUG_MODE
+</pre>
+            </section>
+            
+            <!-- MODULE 5: REFERENCES -->
+            <section id="references">
+                <h2>🔗 Module 5: References in C++</h2>
+                
+                <h3>1️⃣ What is a Reference?</h3>
+                
+                <div class="success-box">
+                    A reference is an <strong>alias</strong> (another name) for an existing variable.<br>
+                    It does NOT create a new variable - it refers to the same memory location.
+                </div>
+                
+                <h4>🔹 Syntax:</h4>
+                <pre>
+int a = 10;
+int&amp; b = a;  // b is a reference to a
+
+cout &lt;&lt; &amp;a &lt;&lt; endl;  // Same address
+cout &lt;&lt; &amp;b &lt;&lt; endl;  // Same address
+
+b = 20;
+cout &lt;&lt; a;  // Prints: 20 (a changed when b changed)
+</pre>
+                
+                <h3>2️⃣ Reference Rules</h3>
+                
+                <div class="info-box">
+                    <strong>Critical Rules:</strong>
+                    <ol>
+                        <li>Reference MUST be initialized at declaration</li>
+                        <li>Reference CANNOT be changed to refer to another variable</li>
+                        <li>Reference CANNOT be NULL</li>
+                        <li>Cannot create array of references</li>
+                    </ol>
+                </div>
+                
+                <h4>🔹 Valid References:</h4>
+                <pre>
+int x = 5;
+int&amp; r = x;           // ✅ Valid
+const int&amp; cr = 10;   // ✅ Valid (const reference to literal)
+</pre>
+                
+                <h4>🔹 Invalid References:</h4>
+                <pre>
+int&amp; r;              // ❌ ERROR: Must be initialized
+int&amp; r = 5;          // ❌ ERROR: Cannot refer to literal (use const int&amp;)
+int&amp; arr[10];        // ❌ ERROR: Cannot create array of references
+</pre>
+                
+                <h3>3️⃣ Const References</h3>
+                
+                <h4>🔹 Reference to Literal:</h4>
+                <pre>
+const int&amp; r = 5;  // ✅ Valid
+// Compiler creates temporary storage for 5
+// r refers to that storage
+// r cannot be modified
+</pre>
+                
+                <h4>🔹 Reference to Expression:</h4>
+                <pre>
+int a = 2, b = 3;
+const int&amp; c = a + b;  // ✅ Valid
+
+cout &lt;&lt; c;  // Prints: 5
+
+a = 10;
+cout &lt;&lt; c;  // Still prints: 5 (c doesn't change)
+</pre>
+                
+                <h3>4️⃣ Call by Value vs Call by Reference</h3>
+                
+                <table>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Call by Value</th>
+                        <th>Call by Reference</th>
+                    </tr>
+                    <tr>
+                        <td>Syntax</td>
+                        <td><code>void func(int x)</code></td>
+                        <td><code>void func(int&amp; x)</code></td>
+                    </tr>
+                    <tr>
+                        <td>Copy Made?</td>
+                        <td>Yes</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Modifies Original?</td>
+                        <td>No</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Performance</td>
+                        <td>Slower for large objects</td>
+                        <td>Faster (no copy)</td>
+                    </tr>
+                    <tr>
+                        <td>Use Case</td>
+                        <td>Small data, read-only</td>
+                        <td>Large data, need to modify</td>
+                    </tr>
+                </table>
+                
+                <h4>🔹 Example: Swap Function</h4>
+                
+                <pre>
+// ❌ Wrong: Call by value
+void swapWrong(int x, int y)
+{
+    int temp = x;
+    x = y;
+    y = temp;
+    // Only swaps local copies!
+}
+
+// ✅ Correct: Call by reference
+void swapCorrect(int&amp; x, int&amp; y)
+{
+    int temp = x;
+    x = y;
+    y = temp;
+    // Swaps actual variables!
+}
+
+int main()
+{
+    int a = 5, b = 10;
+    
+    swapWrong(a, b);
+    cout &lt;&lt; a &lt;&lt; " " &lt;&lt; b;  // 5 10 (not swapped)
+    
+    swapCorrect(a, b);
+    cout &lt;&lt; a &lt;&lt; " " &lt;&lt; b;  // 10 5 (swapped!)
+    
+    return 0;
+}
+</pre>
+                
+                <h3>5️⃣ Const Reference Parameters</h3>
+                
+                <div class="success-box">
+                    <strong>Best Practice:</strong> Use <code>const</code> reference for large objects when you don't need to modify them.
+                </div>
+                
+                <pre>
+// For built-in types (cheap to copy)
+void processInt(int x) { }  // Pass by value is fine
+
+// For user-defined types (expensive to copy)
+void processStudent(const Student&amp; s)  // Pass by const reference
+{
+    cout &lt;&lt; s.name;  // ✅ Can read
+    // s.name = "New";  // ❌ ERROR: Cannot modify
+}
+</pre>
+                
+                <h4>🔹 Benefits:</h4>
+                <ul>
+                    <li>✅ No copy overhead (efficient)</li>
+                    <li>✅ Cannot accidentally modify original</li>
+                    <li>✅ Works with temporary objects</li>
+                </ul>
+                
+                <h3>6️⃣ Return by Reference</h3>
+                
+                <h4>🔹 Return by Value (Safe):</h4>
+                <pre>
+int getValue()
+{
+    int x = 10;
+    return x;  // ✅ Returns copy
+}
+
+int main()
+{
+    int result = getValue();  // result = 10
+}
+</pre>
+                
+                <h4>🔹 Return by Reference (Advanced):</h4>
+                <pre>
+int&amp; getElement(int arr[], int index)
+{
+    return arr[index];  // ✅ Returns reference to array element
+}
+
+int main()
+{
+    int arr[] = {10, 20, 30};
+    
+    getElement(arr, 1) = 99;  // Modifies arr[1]!
+    
+    cout &lt;&lt; arr[1];  // Prints: 99
+}
+</pre>
+                
+                <h3>7️⃣ DANGER: Never Return Local Variable by Reference</h3>
+                
+                <div class="danger-box">
+                    <strong>❌ NEVER DO THIS:</strong>
+                    <pre>
+int&amp; dangerousFunction()
+{
+    int x = 10;
+    return x;  // ❌ VERY DANGEROUS!
+    // x is destroyed when function ends
+    // Reference becomes invalid (dangling reference)
+}
+
+int main()
+{
+    int&amp; r = dangerousFunction();  // Undefined behavior!
+    cout &lt;&lt; r;  // May crash or print garbage
+}
+</pre>
+                </div>
+                
+                <h3>8️⃣ Function Parameter Types Summary</h3>
+                
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Syntax</th>
+                        <th>Purpose</th>
+                        <th>Can Modify?</th>
+                    </tr>
+                    <tr>
+                        <td>Value</td>
+                        <td><code>int x</code></td>
+                        <td>Input only, copy made</td>
+                        <td>No (copy only)</td>
+                    </tr>
+                    <tr>
+                        <td>Reference</td>
+                        <td><code>int&amp; x</code></td>
+                        <td>Input/Output, no copy</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Const Reference</td>
+                        <td><code>const int&amp; x</code></td>
+                        <td>Input only, efficient</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Pointer</td>
+                        <td><code>int* x</code></td>
+                        <td>Input/Output, can be null</td>
+                        <td>Yes</td>
+                    </tr>
+                </table>
+                
+                <h3>9️⃣ Reference vs Pointer</h3>
+                
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Reference</th>
+                        <th>Pointer</th>
+                    </tr>
+                    <tr>
+                        <td>Syntax</td>
+                        <td><code>int&amp; r = x;</code></td>
+                        <td><code>int* p = &amp;x;</code></td>
+                    </tr>
+                    <tr>
+                        <td>Can be NULL?</td>
+                        <td>No</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Must Initialize?</td>
+                        <td>Yes</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Can Reassign?</td>
+                        <td>No</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Arithmetic?</td>
+                        <td>No</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Array Allowed?</td>
+                        <td>No</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Indirection</td>
+                        <td>Automatic</td>
+                        <td>Manual (*)</td>
+                    </tr>
+                </table>
+                
+                <h3>🔟 Practical Examples</h3>
+                
+                <h4>🔹 Example 1: Multiple Return Values</h4>
+                <pre>
+void getDimensions(const string&amp; shape, int&amp; width, int&amp; height)
+{
+    if(shape == "rectangle")
+    {
+        width = 10;
+        height = 5;
+    }
+    else if(shape == "square")
+    {
+        width = height = 7;
+    }
+}
+
+int main()
+{
+    int w, h;
+    getDimensions("rectangle", w, h);
+    cout &lt;&lt; "Width: " &lt;&lt; w &lt;&lt; ", Height: " &lt;&lt; h;
+    return 0;
+}
+</pre>
+                
+                <h4>🔹 Example 2: Efficient Vector Passing</h4>
+                <pre>
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+// ❌ Inefficient (copies entire vector)
+void printVector1(vector&lt;int&gt; v)
+{
+    for(int x : v)
+        cout &lt;&lt; x &lt;&lt; " ";
+}
+
+// ✅ Efficient (no copy)
+void printVector2(const vector&lt;int&gt;&amp; v)
+{
+    for(int x : v)
+        cout &lt;&lt; x &lt;&lt; " ";
+}
+
+int main()
+{
+    vector&lt;int&gt; numbers = {1, 2, 3, 4, 5};
+    printVector2(numbers);  // Fast, no copy
+    return 0;
+}
+</pre>
+            </section>
+            
+            <!-- MODULE 6: CONST AND INLINE -->
+            <section id="const-inline">
+                <h2>🔒 Module 6: Const Variables & Inline Functions</h2>
+                
+                <h3>1️⃣ Const Variables</h3>
+                
+                <div class="success-box">
+                    <strong>const</strong> variables are constant values that cannot be modified after initialization.
+                </div>
+                
+                <h4>🔹 Basic Const:</h4>
+                <pre>
+const int MAX_SIZE = 100;
+const double PI = 3.14159;
+const string APP_NAME = "MyApp";
+
+// MAX_SIZE = 200;  // ❌ ERROR: Cannot modify const variable
+</pre>
+                
+                <h4>🔹 Advantages over #define:</h4>
+                
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>#define</th>
+                        <th>const</th>
+                    </tr>
+                    <tr>
+                        <td>Type Safety</td>
+                        <td>❌ No</td>
+                        <td>✅ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Scope</td>
+                        <td>Global (no scope)</td>
+                        <td>✅ Follows scope rules</td>
+                    </tr>
+                    <tr>
+                        <td>Debugging</td>
+                        <td>❌ Difficult</td>
+                        <td>✅ Easy (shows in debugger)</td>
+                    </tr>
+                    <tr>
+                        <td>Memory</td>
+                        <td>No storage</td>
+                        <td>Has storage location</td>
+                    </tr>
+                </table>
+                
+                <h3>2️⃣ Const with Pointers</h3>
+                
+                <h4>🔹 Pointer to Const Data:</h4>
+                <pre>
+int x = 10;
+const int* ptr = &amp;x;  // Pointer to const int
+
+// *ptr = 20;  // ❌ ERROR: Cannot modify data through pointer
+ptr = &amp;y;      // ✅ OK: Can change where pointer points
+</pre>
+                
+                <h4>🔹 Const Pointer:</h4>
+                <pre>
+int x = 10, y = 20;
+int* const ptr = &amp;x;  // Const pointer to int
+
+*ptr = 20;    // ✅ OK: Can modify data
+// ptr = &amp;y;  // ❌ ERROR: Cannot change where pointer points
+</pre>
+                
+                <h4>🔹 Const Pointer to Const Data:</h4>
+                <pre>
+int x = 10;
+const int* const ptr = &amp;x;  // Const pointer to const int
+
+// *ptr = 20;  // ❌ ERROR: Cannot modify data
+// ptr = &amp;y;   // ❌ ERROR: Cannot change pointer
+</pre>
+                
+                <div class="info-box">
+                    <strong>Memory Trick:</strong><br>
+                    Read declarations <strong>right to left</strong>:<br>
+                    • <code>const int* ptr</code> = pointer to int that is const<br>
+                    • <code>int* const ptr</code> = const pointer to int
+                </div>
+                
+                <h3>3️⃣ Const Member Functions</h3>
+                
+                <pre>
+class Student
+{
+private:
+    string name;
+    int marks;
+    
+public:
+    Student(string n, int m) : name(n), marks(m) { }
+    
+    // Const member function - promises not to modify object
+    void display() const
+    {
+        cout &lt;&lt; name &lt;&lt; " - " &lt;&lt; marks &lt;&lt; endl;
+        // name = "New";  // ❌ ERROR: Cannot modify in const function
+    }
+    
+    // Non-const member function
+    void setMarks(int m)
+    {
+        marks = m;  // ✅ OK: Can modify
+    }
+    
+    // Const getter
+    int getMarks() const
+    {
+        return marks;
+    }
+};
+
+int main()
+{
+    const Student s("Alice", 90);
+    
+    s.display();     // ✅ OK: display() is const
+    // s.setMarks(95);  // ❌ ERROR: setMarks() is not const
+    
+    return 0;
+}
+</pre>
+                
+                <h3>4️⃣ Inline Functions</h3>
+                
+                <div class="success-box">
+                    <strong>Inline functions</strong> are a safer, type-checked replacement for function-like macros.
+                </div>
+                
+                <h4>🔹 Problem with Macros:</h4>
+                <pre>
+#define SQUARE(x) ((x) * (x))
+
+int a = 5;
+int result = SQUARE(a++);  // ❌ Bug: expands to ((a++) * (a++))
+                            // Increments a twice!
+</pre>
+                
+                <h4>🔹 Solution: Inline Functions:</h4>
+                <pre>
+inline int square(int x)
+{
+    return x * x;
+}
+
+int a = 5;
+int result = square(a++);  // ✅ Correct: a incremented once
+</pre>
+                
+                <h4>🔹 Advantages of Inline:</h4>
+                <ul>
+                    <li>✅ Type checking</li>
+                    <li>✅ Proper scoping</li>
+                    <li>✅ No side effects from multiple evaluations</li>
+                    <li>✅ Can be debugged</li>
+                    <li>✅ Faster than function calls (no overhead)</li>
+                </ul>
+                
+                <h4>🔹 When to Use Inline:</h4>
+                <pre>
+// ✅ Good candidates for inline
+inline int max(int a, int b)
+{
+    return (a &gt; b) ? a : b;
+}
+
+inline double square(double x)
+{
+    return x * x;
+}
+
+// ❌ Bad candidates (too large)
+inline void processLargeData()
+{
+    // 100+ lines of code
+    // Compiler likely ignores inline request
+}
+</pre>
+                
+                <div class="warning-box">
+                    <strong>Note:</strong> The <code>inline</code> keyword is a <strong>suggestion</strong> to the compiler, not a command. The compiler may ignore it for large functions.
+                </div>
+                
+                <h4>🔹 Inline in Header Files:</h4>
+                <pre>
+// math_utils.h
+#ifndef MATH_UTILS_H
+#define MATH_UTILS_H
+
+inline int square(int x)
+{
+    return x * x;
+}
+
+inline int cube(int x)
+{
+    return x * x * x;
+}
+
+#endif
+</pre>
+                
+                <div class="info-box">
+                    <strong>Best Practice:</strong> Small inline functions can be defined in header files since they're substituted at compile time.
+                </div>
+                
+                <h3>5️⃣ Volatile Keyword (Bonus)</h3>
+                
+                <pre>
+volatile int sensorValue;  // Tells compiler this can change unexpectedly
+
+// Used for:
+// - Hardware registers
+// - Multi-threaded shared variables
+// - Memory-mapped I/O
+</pre>
+                
+                <div class="info-box">
+                    <strong>volatile</strong> tells the compiler not to optimize reads/writes to this variable because its value may change outside the program's control.
+                </div>
+                
+                <h3>6️⃣ Complete Example: Using Everything Together</h3>
+                
+                <pre>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class BankAccount
+{
+private:
+    string accountNumber;
+    double balance;
+    static const double MIN_BALANCE;  // Const static member
+    
+public:
+    // Constructor
+    BankAccount(string accNum, double bal)
+        : accountNumber(accNum), balance(bal) { }
+    
+    // Const member function
+    void display() const
+    {
+        cout &lt;&lt; "Account: " &lt;&lt; accountNumber 
+             &lt;&lt; ", Balance: $" &lt;&lt; balance &lt;&lt; endl;
+    }
+    
+    // Inline function
+    inline double getBalance() const
+    {
+        return balance;
+    }
+    
+    // Reference parameter
+    void deposit(const double&amp; amount)
+    {
+        balance += amount;
+    }
+    
+    // Returns bool indicating success
+    bool withdraw(const double&amp; amount)
+    {
+        if(balance - amount &gt;= MIN_BALANCE)
+        {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+};
+
+// Initialize static const member
+const double BankAccount::MIN_BALANCE = 100.0;
+
+int main()
+{
+    BankAccount acc("ACC001", 1000.0);
+    
+    acc.display();
+    acc.deposit(500.0);
+    acc.display();
+    
+    if(acc.withdraw(200.0))
+        cout &lt;&lt; "Withdrawal successful" &lt;&lt; endl;
+    
+    acc.display();
+    
+    return 0;
+}
+</pre>
+            </section>
+        </div>
+        
+     
+    </div>
+</body>
+</html>
