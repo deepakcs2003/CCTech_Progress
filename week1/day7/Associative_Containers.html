@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ STL Associative Containers - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #252526;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        h2 {
+            color: #4ec9b0;
+            margin: 30px 0 15px 0;
+            font-size: 1.8em;
+            border-bottom: 2px solid #4ec9b0;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            color: #dcdcaa;
+            margin: 25px 0 12px 0;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #9cdcfe;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: #2d2d30;
+            padding: 25px;
+            border-radius: 6px;
+            border-left: 4px solid #569cd6;
+        }
+
+        .highlight-box {
+            background: #3c3c3c;
+            border-left: 4px solid #f48771;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .info-box {
+            background: #264f78;
+            border-left: 4px solid #4fc3f7;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #4d3319;
+            border-left: 4px solid #ffa726;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        ul, ol {
+            margin: 10px 0 10px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #d4d4d4;
+        }
+
+        pre {
+            background: #1e1e1e;
+            border: 1px solid #3c3c3c;
+            border-radius: 6px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        /* VS Code-like syntax highlighting */
+        .keyword { color: #569cd6; }
+        .class-name { color: #4ec9b0; }
+        .function { color: #dcdcaa; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .operator { color: #d4d4d4; }
+        .variable { color: #9cdcfe; }
+        .macro { color: #c586c0; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #2d2d30;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #094771;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #3c3c3c;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #37373d;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .badge-time {
+            background: #1a472a;
+            color: #4ec9b0;
+        }
+
+        .badge-feature {
+            background: #264f78;
+            color: #4fc3f7;
+        }
+
+        .badge-important {
+            background: #5a1d1d;
+            color: #f48771;
+        }
+
+        .complexity {
+            font-family: 'Consolas', monospace;
+            background: #3c3c3c;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #ce9178;
+        }
+
+        .checkmark {
+            color: #4ec9b0;
+            font-weight: bold;
+        }
+
+        .crossmark {
+            color: #f48771;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #2d2d30;
+            padding: 20px;
+            text-align: center;
+            color: #858585;
+            border-top: 1px solid #3c3c3c;
+        }
+
+        .toc {
+            background: #2d2d30;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: #9cdcfe;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: #4fc3f7;
+            text-decoration: underline;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: #2d2d30;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #569cd6;
+        }
+
+        .card h4 {
+            margin-top: 0;
+            color: #569cd6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✅ C++ STL Associative Containers</h1>
+            <p>Complete Theory + All Important Member Functions</p>
+            <p><code class="complexity">map | set | multimap | multiset</code></p>
+        </header>
+
+        <div class="content">
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>📑 Table of Contents</h3>
+                <ul>
+                    <li><a href="#intro">Introduction to Associative Containers</a></li>
+                    <li><a href="#map">1. std::map</a></li>
+                    <li><a href="#set">2. std::set</a></li>
+                    <li><a href="#multimap">3. std::multimap</a></li>
+                    <li><a href="#multiset">4. std::multiset</a></li>
+                    <li><a href="#iterators">5. Iterators in Associative Containers</a></li>
+                    <li><a href="#advanced">6. Advanced Concepts</a></li>
+                    <li><a href="#comparison">7. Comparison Table</a></li>
+                    <li><a href="#when-to-use">8. When to Use What?</a></li>
+                    <li><a href="#common-mistakes">9. Common Mistakes to Avoid</a></li>
+                </ul>
+            </div>
+
+            <!-- Introduction -->
+            <div id="intro" class="section">
+                <h2>🎯 Introduction to Associative Containers</h2>
+                
+                <div class="info-box">
+                    <h4>Why "Associative"?</h4>
+                    <p>These containers are called <strong>Associative Containers</strong> because they store data based on <strong>keys</strong> and keep elements <strong>sorted automatically</strong>.</p>
+                </div>
+
+                <h3>Internal Implementation</h3>
+                <ul>
+                    <li>Internally implemented using <strong>Self-Balancing Binary Search Tree (Red-Black Tree)</strong></li>
+                    <li>Automatically maintains sorted order</li>
+                    <li>All major operations: <span class="complexity">O(log n)</span></li>
+                    <li>Height-balanced tree ensures performance</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h4><span class="badge badge-time">Time Complexity</span></h4>
+                    <ul>
+                        <li><strong>Insert:</strong> <span class="complexity">O(log n)</span></li>
+                        <li><strong>Search:</strong> <span class="complexity">O(log n)</span></li>
+                        <li><strong>Delete:</strong> <span class="complexity">O(log n)</span></li>
+                        <li><strong>Access:</strong> <span class="complexity">O(log n)</span></li>
+                    </ul>
+                </div>
+
+                <h3>Required Header</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;map&gt;</span>      <span class="comment">// for map and multimap</span>
+<span class="macro">#include</span> <span class="string">&lt;set&gt;</span>      <span class="comment">// for set and multiset</span></code></pre>
+            </div>
+
+            <!-- MAP Section -->
+            <div id="map" class="section">
+                <h2>🔷 1️⃣ MAP (std::map)</h2>
+                
+                <h3>📌 What is Map?</h3>
+                <ul>
+                    <li>Stores <strong>key-value pairs</strong></li>
+                    <li>Keys are <strong>unique</strong> (no duplicates)</li>
+                    <li>Elements are <strong>sorted by key</strong></li>
+                    <li>Implemented using Red-Black Tree</li>
+                    <li>Allows fast lookup, insertion, and deletion</li>
+                </ul>
+
+                <h3>🔹 Syntax</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;map&gt;</span>
+<span class="keyword">std</span>::<span class="class-name">map</span>&lt;<span class="class-name">key_type</span>, <span class="class-name">value_type</span>&gt; <span class="variable">map_name</span>;
+
+<span class="comment">// Example:</span>
+<span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">m</span>;</code></pre>
+
+                <h3>🔹 All Important Member Functions</h3>
+
+                <h4>Complete Practical Example:</h4>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;map&gt;</span>
+<span class="keyword">using namespace</span> <span class="keyword">std</span>;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 1️⃣ Declaration</span>
+    <span class="comment">// ===============================</span>
+    <span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">m</span>;  <span class="comment">// Creates an empty map</span>
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 2️⃣ insert() - Add elements</span>
+    <span class="comment">// ===============================</span>
+    <span class="variable">m</span>.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"Apple"</span>});     <span class="comment">// Method 1: using pair</span>
+    <span class="variable">m</span>.<span class="function">insert</span>({<span class="number">2</span>, <span class="string">"Banana"</span>});
+    
+    <span class="comment">// Insert with return value check</span>
+    <span class="keyword">auto</span> <span class="variable">result</span> = <span class="variable">m</span>.<span class="function">insert</span>({<span class="number">3</span>, <span class="string">"Cherry"</span>});
+    <span class="keyword">if</span> (<span class="variable">result</span>.<span class="variable">second</span>)  <span class="comment">// .second is bool (success?)</span>
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"Inserted successfully"</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 3️⃣ operator[] - Access/Insert</span>
+    <span class="comment">// ===============================</span>
+    <span class="variable">m</span>[<span class="number">4</span>] = <span class="string">"Mango"</span>;          <span class="comment">// If key doesn't exist → create it</span>
+    <span class="variable">m</span>[<span class="number">1</span>] = <span class="string">"Avocado"</span>;        <span class="comment">// If key exists → update value</span>
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 4️⃣ at() - Safe Access</span>
+    <span class="comment">// ===============================</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">m</span>.<span class="function">at</span>(<span class="number">1</span>) &lt;&lt; <span class="variable">endl</span>;  <span class="comment">// Returns value of key 1</span>
+    <span class="comment">// m.at(100);  // Throws std::out_of_range exception</span>
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 5️⃣ find() - Search for key</span>
+    <span class="comment">// ===============================</span>
+    <span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">find</span>(<span class="number">2</span>);
+    <span class="keyword">if</span> (<span class="variable">it</span> != <span class="variable">m</span>.<span class="function">end</span>()) {
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"Found: "</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">first</span> &lt;&lt; <span class="string">" -&gt; "</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">second</span> &lt;&lt; <span class="variable">endl</span>;
+    }
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 6️⃣ size() - Number of elements</span>
+    <span class="comment">// ===============================</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Size: "</span> &lt;&lt; <span class="variable">m</span>.<span class="function">size</span>() &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 7️⃣ empty() - Check if empty</span>
+    <span class="comment">// ===============================</span>
+    <span class="keyword">if</span> (<span class="variable">m</span>.<span class="function">empty</span>())
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"Map is empty"</span>;
+    <span class="keyword">else</span>
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"Map is not empty"</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 8️⃣ erase() - Remove elements</span>
+    <span class="comment">// ===============================</span>
+    <span class="variable">m</span>.<span class="function">erase</span>(<span class="number">2</span>);               <span class="comment">// Erase by key</span>
+    <span class="variable">m</span>.<span class="function">erase</span>(<span class="variable">m</span>.<span class="function">find</span>(<span class="number">3</span>));      <span class="comment">// Erase using iterator</span>
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 9️⃣ count() - Check existence</span>
+    <span class="comment">// ===============================</span>
+    <span class="keyword">if</span> (<span class="variable">m</span>.<span class="function">count</span>(<span class="number">1</span>))           <span class="comment">// Returns 1 if exists, 0 if not</span>
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"Key 1 exists"</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 🔟 lower_bound() &amp; upper_bound()</span>
+    <span class="comment">// ===============================</span>
+    <span class="variable">m</span>[<span class="number">5</span>] = <span class="string">"Orange"</span>; <span class="variable">m</span>[<span class="number">7</span>] = <span class="string">"Grape"</span>; <span class="variable">m</span>[<span class="number">10</span>] = <span class="string">"Kiwi"</span>;
+    
+    <span class="keyword">auto</span> <span class="variable">lb</span> = <span class="variable">m</span>.<span class="function">lower_bound</span>(<span class="number">6</span>);  <span class="comment">// First element &gt;= 6 (returns key 7)</span>
+    <span class="keyword">auto</span> <span class="variable">ub</span> = <span class="variable">m</span>.<span class="function">upper_bound</span>(<span class="number">7</span>);  <span class="comment">// First element &gt; 7 (returns key 10)</span>
+    
+    <span class="keyword">if</span> (<span class="variable">lb</span> != <span class="variable">m</span>.<span class="function">end</span>())
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"lower_bound(6): "</span> &lt;&lt; <span class="variable">lb</span>-&gt;<span class="variable">first</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 1️⃣1️⃣ clear() - Remove all</span>
+    <span class="comment">// ===============================</span>
+    <span class="comment">// m.clear();  // Removes all elements</span>
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 1️⃣2️⃣ Traversal - Different ways</span>
+    <span class="comment">// ===============================</span>
+    
+    <span class="comment">// Method 1: Range-based for loop (Recommended)</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">p</span> : <span class="variable">m</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">p</span>.<span class="variable">first</span> &lt;&lt; <span class="string">" -&gt; "</span> &lt;&lt; <span class="variable">p</span>.<span class="variable">second</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// Method 2: Using iterators</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">begin</span>(); <span class="variable">it</span> != <span class="variable">m</span>.<span class="function">end</span>(); ++<span class="variable">it</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">first</span> &lt;&lt; <span class="string">" -&gt; "</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">second</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// ===============================</span>
+    <span class="comment">// 1️⃣3️⃣ Reverse Traversal</span>
+    <span class="comment">// ===============================</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">rbegin</span>(); <span class="variable">it</span> != <span class="variable">m</span>.<span class="function">rend</span>(); ++<span class="variable">it</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">first</span> &lt;&lt; <span class="string">" -&gt; "</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">second</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <div class="warning-box">
+                    <h4>⚠️ Important Notes on map:</h4>
+                    <ul>
+                        <li><code>operator[]</code> creates a new element if key doesn't exist (can be dangerous!)</li>
+                        <li><code>at()</code> throws exception if key not found (safer for read-only access)</li>
+                        <li>Use <code>find()</code> or <code>count()</code> to check existence before accessing</li>
+                        <li>Cannot modify keys directly; must erase and re-insert</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SET Section -->
+            <div id="set" class="section">
+                <h2>🔷 2️⃣ SET (std::set)</h2>
+                
+                <h3>📌 What is Set?</h3>
+                <ul>
+                    <li>Stores <strong>only keys</strong> (no values)</li>
+                    <li>Keys must be <strong>unique</strong></li>
+                    <li>Automatically <strong>sorted</strong></li>
+                    <li>No indexing (cannot access by <code>set[0]</code>)</li>
+                    <li>Fast lookup, insertion, and deletion</li>
+                </ul>
+
+                <h3>🔹 Syntax</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;set&gt;</span>
+<span class="keyword">std</span>::<span class="class-name">set</span>&lt;<span class="class-name">data_type</span>&gt; <span class="variable">set_name</span>;
+
+<span class="comment">// Example:</span>
+<span class="class-name">set</span>&lt;<span class="keyword">int</span>&gt; <span class="variable">s</span>;</code></pre>
+
+                <h3>🔹 All Important Member Functions</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;set&gt;</span>
+<span class="keyword">using namespace</span> <span class="keyword">std</span>;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">set</span>&lt;<span class="keyword">int</span>&gt; <span class="variable">s</span>;
+    
+    <span class="comment">// insert() - Add elements</span>
+    <span class="variable">s</span>.<span class="function">insert</span>(<span class="number">10</span>);
+    <span class="variable">s</span>.<span class="function">insert</span>(<span class="number">20</span>);
+    <span class="variable">s</span>.<span class="function">insert</span>(<span class="number">30</span>);
+    <span class="variable">s</span>.<span class="function">insert</span>(<span class="number">10</span>);  <span class="comment">// Duplicate - ignored</span>
+    
+    <span class="comment">// size()</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Size: "</span> &lt;&lt; <span class="variable">s</span>.<span class="function">size</span>() &lt;&lt; <span class="variable">endl</span>;  <span class="comment">// Output: 3</span>
+    
+    <span class="comment">// find() - Returns iterator</span>
+    <span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">s</span>.<span class="function">find</span>(<span class="number">20</span>);
+    <span class="keyword">if</span> (<span class="variable">it</span> != <span class="variable">s</span>.<span class="function">end</span>())
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"Found: "</span> &lt;&lt; *<span class="variable">it</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// count() - Returns 0 or 1</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">s</span>.<span class="function">count</span>(<span class="number">10</span>) &lt;&lt; <span class="variable">endl</span>;  <span class="comment">// Output: 1 (exists)</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">s</span>.<span class="function">count</span>(<span class="number">100</span>) &lt;&lt; <span class="variable">endl</span>; <span class="comment">// Output: 0 (doesn't exist)</span>
+    
+    <span class="comment">// lower_bound() &amp; upper_bound()</span>
+    <span class="keyword">auto</span> <span class="variable">lb</span> = <span class="variable">s</span>.<span class="function">lower_bound</span>(<span class="number">15</span>);  <span class="comment">// First element &gt;= 15 (returns 20)</span>
+    <span class="keyword">auto</span> <span class="variable">ub</span> = <span class="variable">s</span>.<span class="function">upper_bound</span>(<span class="number">20</span>);  <span class="comment">// First element &gt; 20 (returns 30)</span>
+    
+    <span class="comment">// erase() - Remove element</span>
+    <span class="variable">s</span>.<span class="function">erase</span>(<span class="number">10</span>);              <span class="comment">// Erase by value</span>
+    <span class="variable">s</span>.<span class="function">erase</span>(<span class="variable">s</span>.<span class="function">find</span>(<span class="number">20</span>));      <span class="comment">// Erase using iterator</span>
+    
+    <span class="comment">// Traversal</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">x</span> : <span class="variable">s</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">x</span> &lt;&lt; <span class="string">" "</span>;  <span class="comment">// Sorted order</span>
+    
+    <span class="comment">// Reverse traversal</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">s</span>.<span class="function">rbegin</span>(); <span class="variable">it</span> != <span class="variable">s</span>.<span class="function">rend</span>(); ++<span class="variable">it</span>)
+        <span class="variable">cout</span> &lt;&lt; *<span class="variable">it</span> &lt;&lt; <span class="string">" "</span>;
+    
+    <span class="comment">// clear() - Remove all elements</span>
+    <span class="variable">s</span>.<span class="function">clear</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <div class="info-box">
+                    <h4>💡 Set Use Cases:</h4>
+                    <ul>
+                        <li>Remove duplicates from a collection</li>
+                        <li>Maintain sorted unique elements</li>
+                        <li>Fast membership testing</li>
+                        <li>Finding ranges in sorted data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MULTIMAP Section -->
+            <div id="multimap" class="section">
+                <h2>🔷 3️⃣ MULTIMAP (std::multimap)</h2>
+                
+                <h3>📌 What is Multimap?</h3>
+                <ul>
+                    <li>Same as <code>map</code></li>
+                    <li><strong>Allows duplicate keys</strong></li>
+                    <li>No <code>[]</code> operator (because which value to return?)</li>
+                    <li>Keys are sorted</li>
+                    <li>Multiple values can exist for same key</li>
+                </ul>
+
+                <h3>🔹 Syntax</h3>
+                <pre><code><span class="class-name">multimap</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">mm</span>;</code></pre>
+
+                <h3>🔹 Important Member Functions</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;map&gt;</span>
+<span class="keyword">using namespace</span> <span class="keyword">std</span>;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">multimap</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">mm</span>;
+    
+    <span class="comment">// insert() - Allows duplicates</span>
+    <span class="variable">mm</span>.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"Apple"</span>});
+    <span class="variable">mm</span>.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"Avocado"</span>});   <span class="comment">// Duplicate key allowed!</span>
+    <span class="variable">mm</span>.<span class="function">insert</span>({<span class="number">2</span>, <span class="string">"Banana"</span>});
+    <span class="variable">mm</span>.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"Apricot"</span>});  <span class="comment">// Another duplicate</span>
+    
+    <span class="comment">// size()</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Size: "</span> &lt;&lt; <span class="variable">mm</span>.<span class="function">size</span>() &lt;&lt; <span class="variable">endl</span>;  <span class="comment">// Output: 4</span>
+    
+    <span class="comment">// count() - Returns number of occurrences</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Count of key 1: "</span> &lt;&lt; <span class="variable">mm</span>.<span class="function">count</span>(<span class="number">1</span>) &lt;&lt; <span class="variable">endl</span>;  <span class="comment">// Output: 3</span>
+    
+    <span class="comment">// find() - Returns first occurrence</span>
+    <span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">mm</span>.<span class="function">find</span>(<span class="number">1</span>);
+    <span class="keyword">if</span> (<span class="variable">it</span> != <span class="variable">mm</span>.<span class="function">end</span>())
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"First occurrence: "</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">second</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// equal_range() - Get all values for a key</span>
+    <span class="keyword">auto</span> <span class="variable">range</span> = <span class="variable">mm</span>.<span class="function">equal_range</span>(<span class="number">1</span>);
+    <span class="comment">// range.first → iterator to first occurrence</span>
+    <span class="comment">// range.second → iterator to one past last occurrence</span>
+    
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"All values for key 1: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">i</span> = <span class="variable">range</span>.<span class="variable">first</span>; <span class="variable">i</span> != <span class="variable">range</span>.<span class="variable">second</span>; ++<span class="variable">i</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">i</span>-&gt;<span class="variable">second</span> &lt;&lt; <span class="string">" "</span>;
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// erase() - Removes ALL occurrences of key</span>
+    <span class="variable">mm</span>.<span class="function">erase</span>(<span class="number">1</span>);  <span class="comment">// Removes all 3 entries with key 1</span>
+    
+    <span class="comment">// To erase only one occurrence:</span>
+    <span class="variable">mm</span>.<span class="function">erase</span>(<span class="variable">mm</span>.<span class="function">find</span>(<span class="number">2</span>));  <span class="comment">// Erase using iterator</span>
+    
+    <span class="comment">// Traversal</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">p</span> : <span class="variable">mm</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">p</span>.<span class="variable">first</span> &lt;&lt; <span class="string">" -&gt; "</span> &lt;&lt; <span class="variable">p</span>.<span class="variable">second</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <div class="warning-box">
+                    <h4>⚠️ Key Differences from map:</h4>
+                    <ul>
+                        <li>No <code>operator[]</code> available</li>
+                        <li><code>count()</code> can return values &gt; 1</li>
+                        <li><code>erase(key)</code> removes ALL occurrences</li>
+                        <li>Use <code>equal_range()</code> to get all values for a key</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MULTISET Section -->
+            <div id="multiset" class="section">
+                <h2>🔷 4️⃣ MULTISET (std::multiset)</h2>
+                
+                <h3>📌 What is Multiset?</h3>
+                <ul>
+                    <li>Same as <code>set</code></li>
+                    <li><strong>Allows duplicates</strong></li>
+                    <li>Sorted automatically</li>
+                    <li>Cannot modify element after insertion</li>
+                </ul>
+
+                <h3>🔹 Syntax</h3>
+                <pre><code><span class="class-name">multiset</span>&lt;<span class="keyword">int</span>&gt; <span class="variable">ms</span>;</code></pre>
+
+                <h3>🔹 Important Member Functions</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;set&gt;</span>
+<span class="keyword">using namespace</span> <span class="keyword">std</span>;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">multiset</span>&lt;<span class="keyword">int</span>&gt; <span class="variable">ms</span>;
+    
+    <span class="comment">// insert() - Allows duplicates</span>
+    <span class="variable">ms</span>.<span class="function">insert</span>(<span class="number">5</span>);
+    <span class="variable">ms</span>.<span class="function">insert</span>(<span class="number">5</span>);  <span class="comment">// Duplicate allowed</span>
+    <span class="variable">ms</span>.<span class="function">insert</span>(<span class="number">10</span>);
+    <span class="variable">ms</span>.<span class="function">insert</span>(<span class="number">5</span>);  <span class="comment">// Another duplicate</span>
+    <span class="variable">ms</span>.<span class="function">insert</span>(<span class="number">20</span>);
+    
+    <span class="comment">// count() - Returns number of occurrences</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Count of 5: "</span> &lt;&lt; <span class="variable">ms</span>.<span class="function">count</span>(<span class="number">5</span>) &lt;&lt; <span class="variable">endl</span>;  <span class="comment">// Output: 3</span>
+    
+    <span class="comment">// find() - Returns iterator to first occurrence</span>
+    <span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">ms</span>.<span class="function">find</span>(<span class="number">5</span>);
+    <span class="keyword">if</span> (<span class="variable">it</span> != <span class="variable">ms</span>.<span class="function">end</span>())
+        <span class="variable">cout</span> &lt;&lt; <span class="string">"Found: "</span> &lt;&lt; *<span class="variable">it</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// equal_range() - Get range of equal elements</span>
+    <span class="keyword">auto</span> <span class="variable">range</span> = <span class="variable">ms</span>.<span class="function">equal_range</span>(<span class="number">5</span>);
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Elements equal to 5: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">i</span> = <span class="variable">range</span>.<span class="variable">first</span>; <span class="variable">i</span> != <span class="variable">range</span>.<span class="variable">second</span>; ++<span class="variable">i</span>)
+        <span class="variable">cout</span> &lt;&lt; *<span class="variable">i</span> &lt;&lt; <span class="string">" "</span>;
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// erase() - Removes ALL occurrences</span>
+    <span class="variable">ms</span>.<span class="function">erase</span>(<span class="number">5</span>);  <span class="comment">// Removes all three 5's</span>
+    
+    <span class="comment">// To erase only one occurrence:</span>
+    <span class="variable">ms</span>.<span class="function">insert</span>(<span class="number">5</span>); <span class="variable">ms</span>.<span class="function">insert</span>(<span class="number">5</span>);
+    <span class="variable">ms</span>.<span class="function">erase</span>(<span class="variable">ms</span>.<span class="function">find</span>(<span class="number">5</span>));  <span class="comment">// Erase only one 5</span>
+    
+    <span class="comment">// Traversal (sorted order with duplicates)</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">x</span> : <span class="variable">ms</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">x</span> &lt;&lt; <span class="string">" "</span>;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <div class="info-box">
+                    <h4>💡 Multiset Use Cases:</h4>
+                    <ul>
+                        <li>Frequency counting with sorting</li>
+                        <li>Priority queue alternative (when duplicates needed)</li>
+                        <li>Maintaining sorted data with duplicates</li>
+                        <li>Sliding window problems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Iterators Section -->
+            <div id="iterators" class="section">
+                <h2>🔷 5️⃣ Iterators in Associative Containers</h2>
+                
+                <h3>📌 Types of Iterators</h3>
+                
+                <div class="comparison-grid">
+                    <div class="card">
+                        <h4>Forward Iterators</h4>
+                        <pre><code><span class="variable">begin</span>()  <span class="comment">// First element</span>
+<span class="variable">end</span>()    <span class="comment">// Past-the-end</span></code></pre>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Reverse Iterators</h4>
+                        <pre><code><span class="variable">rbegin</span>() <span class="comment">// Last element</span>
+<span class="variable">rend</span>()   <span class="comment">// Before first</span></code></pre>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Const Iterators</h4>
+                        <pre><code><span class="variable">cbegin</span>()  <span class="comment">// Const begin</span>
+<span class="variable">cend</span>()    <span class="comment">// Const end</span>
+<span class="variable">crbegin</span>() <span class="comment">// Const reverse</span>
+<span class="variable">crend</span>()   <span class="comment">// Const reverse end</span></code></pre>
+                    </div>
+                </div>
+
+                <h3>Complete Iterator Example</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;map&gt;</span>
+<span class="keyword">using namespace</span> <span class="keyword">std</span>;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">m</span> = {{<span class="number">1</span>, <span class="string">"A"</span>}, {<span class="number">2</span>, <span class="string">"B"</span>}, {<span class="number">3</span>, <span class="string">"C"</span>}};
+    
+    <span class="comment">// Forward iteration</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Forward: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">begin</span>(); <span class="variable">it</span> != <span class="variable">m</span>.<span class="function">end</span>(); ++<span class="variable">it</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">first</span> &lt;&lt; <span class="string">" "</span>;
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// Reverse iteration</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Reverse: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">rbegin</span>(); <span class="variable">it</span> != <span class="variable">m</span>.<span class="function">rend</span>(); ++<span class="variable">it</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">it</span>-&gt;<span class="variable">first</span> &lt;&lt; <span class="string">" "</span>;
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// Range-based (recommended)</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="string">"Range-based: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">const auto</span>&amp; [<span class="variable">key</span>, <span class="variable">value</span>] : <span class="variable">m</span>)  <span class="comment">// C++17 structured binding</span>
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">key</span> &lt;&lt; <span class="string">"-&gt;"</span> &lt;&lt; <span class="variable">value</span> &lt;&lt; <span class="string">" "</span>;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <div class="warning-box">
+                    <h4>⚠️ Iterator Invalidation</h4>
+                    <ul>
+                        <li><strong>Insertion:</strong> Does NOT invalidate any iterators</li>
+                        <li><strong>Deletion:</strong> Only invalidates iterators to the deleted element</li>
+                        <li>Unlike vectors, insertion doesn't invalidate iterators in associative containers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Advanced Concepts -->
+            <div id="advanced" class="section">
+                <h2>🔷 6️⃣ Advanced Concepts</h2>
+                
+                <h3>1️⃣ Custom Comparator</h3>
+                <p>By default, elements are sorted in <strong>ascending order</strong>. To change this:</p>
+                
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;map&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;set&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;functional&gt;</span>
+<span class="keyword">using namespace</span> <span class="keyword">std</span>;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="comment">// Descending order map</span>
+    <span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>, <span class="class-name">greater</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="variable">m</span>;
+    <span class="variable">m</span>[<span class="number">3</span>] = <span class="string">"C"</span>; <span class="variable">m</span>[<span class="number">1</span>] = <span class="string">"A"</span>; <span class="variable">m</span>[<span class="number">2</span>] = <span class="string">"B"</span>;
+    
+    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">p</span> : <span class="variable">m</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">p</span>.<span class="variable">first</span> &lt;&lt; <span class="string">" "</span>;  <span class="comment">// Output: 3 2 1</span>
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="comment">// Custom comparator for set</span>
+    <span class="keyword">auto</span> <span class="variable">cmp</span> = [](<span class="keyword">int</span> <span class="variable">a</span>, <span class="keyword">int</span> <span class="variable">b</span>) { <span class="keyword">return</span> <span class="variable">a</span> &gt; <span class="variable">b</span>; };
+    <span class="class-name">set</span>&lt;<span class="keyword">int</span>, <span class="keyword">decltype</span>(<span class="variable">cmp</span>)&gt; <span class="variable">s</span>(<span class="variable">cmp</span>);
+    <span class="variable">s</span>.<span class="function">insert</span>(<span class="number">5</span>); <span class="variable">s</span>.<span class="function">insert</span>(<span class="number">2</span>); <span class="variable">s</span>.<span class="function">insert</span>(<span class="number">8</span>);
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> <span class="variable">x</span> : <span class="variable">s</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">x</span> &lt;&lt; <span class="string">" "</span>;  <span class="comment">// Output: 8 5 2</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <h3>2️⃣ Custom Objects as Keys</h3>
+                <pre><code><span class="macro">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="macro">#include</span> <span class="string">&lt;map&gt;</span>
+<span class="keyword">using namespace</span> <span class="keyword">std</span>;
+
+<span class="keyword">struct</span> <span class="class-name">Person</span> {
+    <span class="class-name">string</span> <span class="variable">name</span>;
+    <span class="keyword">int</span> <span class="variable">age</span>;
+    
+    <span class="comment">// Must define operator&lt; for sorting</span>
+    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> <span class="class-name">Person</span>&amp; <span class="variable">other</span>) <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="variable">age</span> &lt; <span class="variable">other</span>.<span class="variable">age</span>;  <span class="comment">// Sort by age</span>
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="class-name">map</span>&lt;<span class="class-name">Person</span>, <span class="class-name">string</span>&gt; <span class="variable">m</span>;
+    
+    <span class="variable">m</span>[{<span class="string">"Alice"</span>, <span class="number">25</span>}] = <span class="string">"Engineer"</span>;
+    <span class="variable">m</span>[{<span class="string">"Bob"</span>, <span class="number">30</span>}] = <span class="string">"Doctor"</span>;
+    <span class="variable">m</span>[{<span class="string">"Charlie"</span>, <span class="number">20</span>}] = <span class="string">"Student"</span>;
+    
+    <span class="keyword">for</span> (<span class="keyword">const auto</span>&amp; [<span class="variable">person</span>, <span class="variable">job</span>] : <span class="variable">m</span>)
+        <span class="variable">cout</span> &lt;&lt; <span class="variable">person</span>.<span class="variable">name</span> &lt;&lt; <span class="string">" ("</span> &lt;&lt; <span class="variable">person</span>.<span class="variable">age</span> &lt;&lt; <span class="string">"): "</span> &lt;&lt; <span class="variable">job</span> &lt;&lt; <span class="variable">endl</span>;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <h3>3️⃣ Pair and Tuple as Keys</h3>
+                <pre><code><span class="comment">// Pair as key (automatically sorted by first, then second)</span>
+<span class="class-name">map</span>&lt;<span class="class-name">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;, <span class="class-name">string</span>&gt; <span class="variable">m</span>;
+<span class="variable">m</span>[{<span class="number">1</span>, <span class="number">2</span>}] = <span class="string">"Point A"</span>;
+<span class="variable">m</span>[{<span class="number">3</span>, <span class="number">4</span>}] = <span class="string">"Point B"</span>;
+
+<span class="comment">// Tuple as key (C++11)</span>
+<span class="class-name">map</span>&lt;<span class="class-name">tuple</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;, <span class="class-name">string</span>&gt; <span class="variable">m2</span>;
+<span class="variable">m2</span>[<span class="function">make_tuple</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)] = <span class="string">"3D Point"</span>;</code></pre>
+
+                <h3>4️⃣ emplace() vs insert()</h3>
+                <div class="info-box">
+                    <h4>💡 Performance Tip:</h4>
+                    <p><code>emplace()</code> constructs the object in-place, avoiding extra copy/move operations.</p>
+                </div>
+                
+                <pre><code><span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">m</span>;
+
+<span class="comment">// insert() - creates temporary object first</span>
+<span class="variable">m</span>.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"Apple"</span>});
+
+<span class="comment">// emplace() - constructs directly (more efficient)</span>
+<span class="variable">m</span>.<span class="function">emplace</span>(<span class="number">2</span>, <span class="string">"Banana"</span>);  <span class="comment">// Slightly faster</span></code></pre>
+
+                <h3>5️⃣ swap() Function</h3>
+                <pre><code><span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">m1</span> = {{<span class="number">1</span>, <span class="string">"A"</span>}};
+<span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="class-name">string</span>&gt; <span class="variable">m2</span> = {{<span class="number">2</span>, <span class="string">"B"</span>}};
+
+<span class="variable">m1</span>.<span class="function">swap</span>(<span class="variable">m2</span>);  <span class="comment">// O(1) - just swaps internal pointers</span>
+<span class="comment">// Now: m1 = {{2, "B"}}, m2 = {{1, "A"}}</span></code></pre>
+            </div>
+
+            <!-- Comparison Table -->
+            <div id="comparison" class="section">
+                <h2>🔷 7️⃣ Complete Comparison Table</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>map</th>
+                            <th>multimap</th>
+                            <th>set</th>
+                            <th>multiset</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Stores</strong></td>
+                            <td>Key-Value pairs</td>
+                            <td>Key-Value pairs</td>
+                            <td>Only keys</td>
+                            <td>Only keys</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sorted</strong></td>
+                            <td><span class="checkmark">✅</span> Yes</td>
+                            <td><span class="checkmark">✅</span> Yes</td>
+                            <td><span class="checkmark">✅</span> Yes</td>
+                            <td><span class="checkmark">✅</span> Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Duplicate Keys</strong></td>
+                            <td><span class="crossmark">❌</span> No</td>
+                            <td><span class="checkmark">✅</span> Yes</td>
+                            <td><span class="crossmark">❌</span> No</td>
+                            <td><span class="checkmark">✅</span> Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>[] operator</strong></td>
+                            <td><span class="checkmark">✅</span> Yes</td>
+                            <td><span class="crossmark">❌</span> No</td>
+                            <td><span class="crossmark">❌</span> No</td>
+                            <td><span class="crossmark">❌</span> No</td>
+                        </tr>
+                        <tr>
+                            <td><strong>count() returns</strong></td>
+                            <td>0 or 1</td>
+                            <td>0 to n</td>
+                            <td>0 or 1</td>
+                            <td>0 to n</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Time Complexity</strong></td>
+                            <td><span class="complexity">O(log n)</span></td>
+                            <td><span class="complexity">O(log n)</span></td>
+                            <td><span class="complexity">O(log n)</span></td>
+                            <td><span class="complexity">O(log n)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>equal_range()</strong></td>
+                            <td>Single element</td>
+                            <td>Multiple elements</td>
+                            <td>Single element</td>
+                            <td>Multiple elements</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Header</strong></td>
+                            <td><code>&lt;map&gt;</code></td>
+                            <td><code>&lt;map&gt;</code></td>
+                            <td><code>&lt;set&gt;</code></td>
+                            <td><code>&lt;set&gt;</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- When to Use What -->
+            <div id="when-to-use" class="section">
+                <h2>🔷 8️⃣ When to Use What?</h2>
+                
+                <div class="comparison-grid">
+                    <div class="card">
+                        <h4>Use <code>map</code> when:</h4>
+                        <ul>
+                            <li>Each key has exactly one value</li>
+                            <li>Need key-value mapping</li>
+                            <li>Dictionary-like structure</li>
+                            <li>Example: Student ID → Name</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Use <code>multimap</code> when:</h4>
+                        <ul>
+                            <li>One key can have multiple values</li>
+                            <li>Need to group by key</li>
+                            <li>Example: Date → Events</li>
+                            <li>Example: Category → Products</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Use <code>set</code> when:</h4>
+                        <ul>
+                            <li>Need unique sorted values</li>
+                            <li>Remove duplicates</li>
+                            <li>Fast membership testing</li>
+                            <li>Example: Unique usernames</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Use <code>multiset</code> when:</h4>
+                        <ul>
+                            <li>Duplicates allowed but sorted</li>
+                            <li>Frequency counting</li>
+                            <li>Priority queue with duplicates</li>
+                            <li>Example: Leaderboard scores</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Real-World Examples</h3>
+                
+                <h4>Example 1: Frequency Counter</h4>
+                <pre><code><span class="class-name">map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; <span class="variable">freq</span>;
+<span class="class-name">string</span> <span class="variable">s</span> = <span class="string">"hello"</span>;
+<span class="keyword">for</span> (<span class="keyword">char</span> <span class="variable">c</span> : <span class="variable">s</span>)
+    <span class="variable">freq</span>[<span class="variable">c</span>]++;  <span class="comment">// Counts: h=1, e=1, l=2, o=1</span></code></pre>
+
+                <h4>Example 2: Group Anagrams</h4>
+                <pre><code><span class="class-name">map</span>&lt;<span class="class-name">string</span>, <span class="class-name">vector</span>&lt;<span class="class-name">string</span>&gt;&gt; <span class="variable">anagrams</span>;
+<span class="class-name">vector</span>&lt;<span class="class-name">string</span>&gt; <span class="variable">words</span> = {<span class="string">"eat"</span>, <span class="string">"tea"</span>, <span class="string">"tan"</span>, <span class="string">"ate"</span>};
+
+<span class="keyword">for</span> (<span class="class-name">string</span> <span class="variable">word</span> : <span class="variable">words</span>) {
+    <span class="class-name">string</span> <span class="variable">sorted</span> = <span class="variable">word</span>;
+    <span class="function">sort</span>(<span class="variable">sorted</span>.<span class="function">begin</span>(), <span class="variable">sorted</span>.<span class="function">end</span>());
+    <span class="variable">anagrams</span>[<span class="variable">sorted</span>].<span class="function">push_back</span>(<span class="variable">word</span>);
+}</code></pre>
+
+                <h4>Example 3: Range Queries</h4>
+                <pre><code><span class="class-name">set</span>&lt;<span class="keyword">int</span>&gt; <span class="variable">s</span> = {<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>};
+
+<span class="comment">// Find all elements in range [4, 8]</span>
+<span class="keyword">auto</span> <span class="variable">start</span> = <span class="variable">s</span>.<span class="function">lower_bound</span>(<span class="number">4</span>);  <span class="comment">// Points to 5</span>
+<span class="keyword">auto</span> <span class="variable">end</span> = <span class="variable">s</span>.<span class="function">upper_bound</span>(<span class="number">8</span>);    <span class="comment">// Points to 9</span>
+
+<span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">start</span>; <span class="variable">it</span> != <span class="variable">end</span>; ++<span class="variable">it</span>)
+    <span class="variable">cout</span> &lt;&lt; *<span class="variable">it</span> &lt;&lt; <span class="string">" "</span>;  <span class="comment">// Output: 5 7</span></code></pre>
+            </div>
+
+            <!-- Common Mistakes -->
+            <div id="common-mistakes" class="section">
+                <h2>🔷 9️⃣ Common Mistakes to Avoid</h2>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Mistake 1: Using [] on non-existent key</h4>
+                    <pre><code><span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="variable">m</span>;
+<span class="variable">cout</span> &lt;&lt; <span class="variable">m</span>[<span class="number">5</span>];  <span class="comment">// Creates entry with value 0!</span>
+
+<span class="comment">// Solution: Use find() or at()</span>
+<span class="keyword">if</span> (<span class="variable">m</span>.<span class="function">find</span>(<span class="number">5</span>) != <span class="variable">m</span>.<span class="function">end</span>())
+    <span class="variable">cout</span> &lt;&lt; <span class="variable">m</span>[<span class="number">5</span>];</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Mistake 2: Modifying elements while iterating</h4>
+                    <pre><code><span class="comment">// WRONG: Iterator invalidation</span>
+<span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">begin</span>(); <span class="variable">it</span> != <span class="variable">m</span>.<span class="function">end</span>(); ++<span class="variable">it</span>) {
+    <span class="variable">m</span>.<span class="function">erase</span>(<span class="variable">it</span>-&gt;<span class="variable">first</span>);  <span class="comment">// BUG!</span>
+}
+
+<span class="comment">// CORRECT: Use erase's return value</span>
+<span class="keyword">for</span> (<span class="keyword">auto</span> <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">begin</span>(); <span class="variable">it</span> != <span class="variable">m</span>.<span class="function">end</span>(); ) {
+    <span class="variable">it</span> = <span class="variable">m</span>.<span class="function">erase</span>(<span class="variable">it</span>);  <span class="comment">// Returns next valid iterator</span>
+}</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Mistake 3: Comparing map with ==</h4>
+                    <pre><code><span class="comment">// This compares both keys AND values</span>
+<span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="variable">m1</span> = {{<span class="number">1</span>, <span class="number">10</span>}};
+<span class="class-name">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="variable">m2</span> = {{<span class="number">1</span>, <span class="number">20</span>}};
+<span class="variable">cout</span> &lt;&lt; (<span class="variable">m1</span> == <span class="variable">m2</span>);  <span class="comment">// false (different values)</span></code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Mistake 4: Forgetting about custom comparators</h4>
+                    <pre><code><span class="keyword">struct</span> <span class="class-name">Point</span> {
+    <span class="keyword">int</span> <span class="variable">x</span>, <span class="variable">y</span>;
+    <span class="comment">// MUST define operator&lt; or provide custom comparator!</span>
+};
+
+<span class="comment">// This won't compile without operator&lt;</span>
+<span class="class-name">set</span>&lt;<span class="class-name">Point</span>&gt; <span class="variable">s</span>;  <span class="comment">// ERROR!</span></code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Mistake 5: Using erase() with multimap/multiset</h4>
+                    <pre><code><span class="class-name">multiset</span>&lt;<span class="keyword">int</span>&gt; <span class="variable">ms</span> = {<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">10</span>};
+<span class="variable">ms</span>.<span class="function">erase</span>(<span class="number">5</span>);  <span class="comment">// Removes ALL three 5's!</span>
+
+<span class="comment">// To remove only one:</span>
+<span class="variable">ms</span>.<span class="function">erase</span>(<span class="variable">ms</span>.<span class="function">find</span>(<span class="number">5</span>));  <span class="comment">// Removes only one 5</span></code></pre>
+                </div>
+            </div>
+
+            <!-- Summary Box -->
+            <div class="highlight-box">
+                <h3>🎯 Key Takeaways</h3>
+                <ul>
+                    <li><strong>All operations:</strong> <span class="complexity">O(log n)</span> time complexity</li>
+                    <li><strong>Automatically sorted</strong> by keys (Red-Black Tree)</li>
+                    <li>Use <code>map</code> for unique key-value pairs</li>
+                    <li>Use <code>set</code> for unique sorted values</li>
+                    <li>Add "multi" prefix to allow duplicates</li>
+                    <li>No indexing - use iterators for access</li>
+                    <li>Iterator invalidation only on deletion of that specific element</li>
+                    <li><code>lower_bound()</code> and <code>upper_bound()</code> for range queries</li>
+                </ul>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="info-box">
+                <h3>🚀 Next Steps to Master STL</h3>
+                <ol>
+                    <li><strong>Unordered Containers:</strong> <code>unordered_map</code>, <code>unordered_set</code> (O(1) average time)</li>
+                    <li><strong>Internal Implementation:</strong> Red-Black Tree deep dive</li>
+                    <li><strong>Performance Comparison:</strong> map vs unordered_map benchmarks</li>
+                    <li><strong>Interview Problems:</strong> Practice LeetCode/Codeforces problems</li>
+                    <li><strong>Other STL Containers:</strong> <code>deque</code>, <code>priority_queue</code>, <code>stack</code>, <code>queue</code></li>
+                </ol>
+            </div>
+        </div>
+
+        <footer>
+            <p>💻 Created for C++ STL Mastery | Happy Coding! 🚀</p>
+            <p>Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,999 @@
+Why std::array is Better than C-style Array?
+1️⃣ Knows its own size
+
+C-style array does NOT know its size.
+
+std::array has .size() function.
+
+2️⃣ Does NOT decay into pointer
+
+C-style array converts to pointer when passed to function.
+
+std::array does NOT decay → safer.
+
+3️⃣ More Safe & Reliable
+
+Has bound checking using at()
+
+Has built-in useful functions
+
+🔹 How to Declare std::array
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+
+    array<int, 5> arr = {10, 20, 30, 40, 50};
+
+    cout << "First element: " << arr[0] << endl;
+
+    return 0;
+}
+
+👉 array<int, 5>
+
+int → data type
+
+5 → size (fixed at compile time)
+
+🔹 Important Functions (Very Simple Explanation)
+1️⃣ at() – Safe Access
+
+✔ Checks index
+✔ Throws error if out of range
+
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+
+    array<int, 3> arr = {1, 2, 3};
+
+    cout << arr.at(0) << endl;   // 1
+    cout << arr.at(1) << endl;   // 2
+
+    // cout << arr.at(5);  // ❌ Runtime error (out of range)
+
+}
+
+👉 Use at() when safety is important.
+
+2️⃣ operator[] – Fast Access
+
+✔ No checking
+✔ Faster
+
+cout << arr[2];   // 3
+
+👉 Use when you are sure index is correct.
+
+3️⃣ get<index>() – Compile-time Access
+
+✔ Used with <tuple> header
+✔ Index must be constant
+
+#include <tuple>
+
+cout << get<0>(arr);   // 1
+4️⃣ front() and back()
+
+✔ front() → first element
+✔ back() → last element
+
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+
+    array<int,5> arr = {10,20,30,40,50};
+
+    cout << "First: " << arr.front() << endl;  // 10
+    cout << "Last: " << arr.back() << endl;    // 50
+
+    // Modify using reference
+    arr.front() = 100;
+    arr.back() = 500;
+
+    for(auto x : arr)
+        cout << x << " ";
+
+}
+
+Output:
+
+100 20 30 40 500
+5️⃣ size() and max_size()
+
+✔ Returns number of elements
+✔ Both return same value in std::array
+
+cout << arr.size();      // 5
+cout << arr.max_size();  // 5
+6️⃣ swap()
+
+✔ Swap two arrays completely
+
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+
+    array<int,3> a = {1,2,3};
+    array<int,3> b = {4,5,6};
+
+    a.swap(b);
+
+    for(auto x : a)
+        cout << x << " ";
+}
+
+Output:
+
+4 5 6
+7️⃣ empty()
+
+✔ Returns true if size = 0
+
+array<int,0> a;
+
+if(a.empty())
+    cout << "Array is empty";
+8️⃣ fill(value)
+
+✔ Fill entire array with same value
+
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+
+    array<int,5> arr;
+
+    arr.fill(9);
+
+    for(auto x : arr)
+        cout << x << " ";
+}
+
+Output:
+
+9 9 9 9 9
+🔥 Complete Practice Program (All in One)
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+
+    array<int,5> arr = {1,2,3,4,5};
+
+    cout << "Using at(): ";
+    for(int i=0;i<arr.size();i++)
+        cout << arr.at(i) << " ";
+    cout << endl;
+
+    cout << "Front: " << arr.front() << endl;
+    cout << "Back: " << arr.back() << endl;
+
+    cout << "Size: " << arr.size() << endl;
+
+    arr.fill(10);
+
+    cout << "After fill: ";
+    for(auto x : arr)
+        cout << x << " ";
+}
+summary:
+array<int,5> arr = {1,2,3,4,5};
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+
+    array<int,5> arr = {1,2,3,4,5};  
+    // Creates an array of 5 integers and initializes it with values
+
+    arr.at(0);       
+    // Access element at index 0 with bounds checking (safe access).
+    // If index is invalid, it throws an exception.
+
+    arr[0];          
+    // Access element at index 0 without bounds checking (faster but unsafe).
+
+    arr.front();     
+    // Returns the first element of the array (same as arr[0]).
+
+    arr.back();      
+    // Returns the last element of the array (here arr[4]).
+
+    arr.size();      
+    // Returns the total number of elements in the array (here 5).
+
+    array<int,5> arr2 = {10,20,30,40,50};  
+    // Another array of same size for swapping
+
+    arr.swap(arr2);  
+    // Swaps all elements of arr with arr2.
+
+    arr.fill(9);     
+    // Replaces all elements of the array with the value 9.
+
+    arr.empty();     
+    // Returns true if array size is 0, otherwise false.
+    // (Here it will return false because size is 5.)
+
+    return 0;
+}
+🎯 When to Use std::array?
+
+
+✔ When size is fixed
+✔ When you want safe STL container
+✔ When you need better features than C array
+
+
+
+std::vector is a dynamic array provided by the C++ Standard Template Library (STL).
+It automatically resizes itself when elements are added or removed.
+
+Unlike normal arrays:
+
+Size is flexible (can grow/shrink)
+
+Memory management is automatic
+
+Provides many built-in useful functions
+
+Header file:
+
+#include <vector>
+1️⃣ Declaration & Initialization
+🔹 Basic Declaration
+vector<int> v;   // Empty vector of integers
+🔹 Fixed Size with Initial Value
+vector<int> v(3, 5);  // {5,5,5}
+
+3 → size
+
+5 → initial value
+
+🔹 Using Initializer List
+vector<int> v = {1,2,3};
+2️⃣ Internal Working of Vector
+
+Vector internally maintains:
+
+size() → number of elements
+
+capacity() → allocated memory space
+
+When size exceeds capacity:
+
+Vector reallocates larger memory
+
+Copies old elements
+
+Deletes old memory
+
+⚠ Reallocation is costly (O(n)), but happens rarely.
+Average insertion at end → O(1).
+
+3️⃣ Important Operations in Vector
+🔹 INSERT ELEMENTS
+✅ push_back()
+
+Adds element at end.
+
+v.push_back(10);
+
+Time Complexity → O(1) average
+
+Fastest way to insert
+
+✅ insert()
+
+Insert at specific position.
+
+v.insert(v.begin()+1, 50);
+
+Shifts elements
+
+Time Complexity → O(n)
+
+🔹 ACCESS ELEMENTS
+✅ Using []
+cout << v[2];
+
+No bounds checking
+
+Fast
+
+Dangerous if index invalid
+
+✅ Using at()
+cout << v.at(2);
+
+Performs bounds checking
+
+Throws out_of_range exception
+
+Safer
+
+Time complexity → O(1)
+
+🔹 UPDATE ELEMENT
+v[1] = 100;
+
+Direct replacement
+
+O(1)
+
+🔹 FIND SIZE
+v.size();
+
+Returns number of elements.
+
+🔹 TRAVERSE VECTOR
+Using Index Loop
+for(int i=0;i<v.size();i++)
+    cout<<v[i];
+Using Range-Based Loop
+for(int x : v)
+    cout<<x;
+
+Time Complexity → O(n)
+
+🔹 DELETE ELEMENTS
+✅ pop_back()
+
+Removes last element.
+
+v.pop_back();
+
+Time Complexity → O(1)
+
+✅ erase()
+
+Remove specific element using iterator.
+
+v.erase(v.begin()+2);
+
+Time Complexity → O(n)
+
+🔹 CHECK EMPTY
+v.empty();
+
+Returns:
+
+true → if empty
+
+false → otherwise
+
+4️⃣ 2D Vector (Matrix)
+Declaration
+vector<vector<int>> matrix;
+Initialization
+vector<vector<int>> matrix(3, vector<int>(4,0));
+
+3 rows, 4 columns filled with 0.
+
+Access
+matrix[i][j];
+Traversal
+for(int i=0;i<matrix.size();i++){
+    for(int j=0;j<matrix[i].size();j++){
+        cout<<matrix[i][j];
+    }
+}
+5️⃣ Time Complexity Summary
+Operation	Time Complexity
+push_back()	O(1) average
+insert()	O(n)
+erase()	O(n)
+pop_back()	O(1)
+access []	O(1)
+at()	O(1)
+size()	O(1)
+traverse	O(n)
+6️⃣ Important Member Functions (Complete Summary in Code Form)
+
+Below is a complete summary program with comments explaining each vector member function:
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+
+    vector<int> v;  
+
+    v.push_back(10);   // Adds element at end (O(1) average)
+    v.push_back(20);
+    v.push_back(30);
+
+    cout << "Size: " << v.size() << endl;       
+    // size() -> returns number of elements
+
+    cout << "Capacity: " << v.capacity() << endl;  
+    // capacity() -> returns allocated memory
+
+    cout << "First element: " << v.front() << endl; 
+    // front() -> returns first element
+
+    cout << "Last element: " << v.back() << endl;   
+    // back() -> returns last element
+
+    cout << "Element at index 1: " << v.at(1) << endl;  
+    // at(i) -> safe access with bounds checking
+
+    v[1] = 50;  
+    // [] -> direct access (no bounds checking)
+
+    v.insert(v.begin()+1, 100);  
+    // insert(pos,value) -> insert at position (O(n))
+
+    v.erase(v.begin());  
+    // erase(pos) -> delete element at position (O(n))
+
+    v.pop_back();  
+    // pop_back() -> removes last element (O(1))
+
+    if(v.empty())  
+        cout << "Vector is empty\n";
+    else
+        cout << "Vector is not empty\n";
+    // empty() -> checks if vector is empty
+
+    v.clear();  
+    // clear() -> removes all elements
+
+    return 0;
+}
+7️⃣ When To Use Vector vs Array
+Use Vector When:
+
+✔ Size is dynamic
+✔ Frequent insertions at end
+✔ Need STL compatibility
+
+Use Array When:
+
+✔ Fixed size
+✔ Performance extremely critical
+✔ No dynamic resizing required
+
+1️⃣ What is Deque?
+
+A deque is similar to vector, but:
+
+Feature	vector	deque
+Insert at back	Fast	Fast
+Insert at front	Slow (O(n))	Fast (O(1))
+Random access	Yes	Yes
+Memory	Contiguous	Non-contiguous blocks
+
+👉 deque internally uses multiple memory blocks, not a single continuous memory like vector.
+
+This is why:
+
+It efficiently grows from both sides
+
+It does not reallocate entire memory like vector
+
+2️⃣ Declaration & Initialization
+🔹 Empty deque
+deque<int> d;
+🔹 Using initializer list
+deque<int> d = {10,20,30,40};
+3️⃣ Insertion Operations
+✅ push_back()
+
+Adds element at end.
+
+d.push_back(10);
+
+✔ Time Complexity → O(1) amortized
+✔ Used like queue enqueue
+
+✅ push_front()
+
+Adds element at beginning.
+
+d.push_front(5);
+
+✔ Time Complexity → O(1) amortized
+✔ Very powerful feature (vector does not support this efficiently)
+
+4️⃣ Deletion Operations
+✅ pop_back()
+
+Removes last element.
+
+d.pop_back();
+
+✔ O(1) amortized
+
+✅ pop_front()
+
+Removes first element.
+
+d.pop_front();
+
+✔ O(1) amortized
+
+5️⃣ Accessing Elements
+✅ Using front()
+d.front();
+
+Returns first element (does not remove)
+
+✅ Using back()
+d.back();
+
+Returns last element
+
+✅ Using index operator []
+d[2];
+
+✔ Random access supported
+✔ Time Complexity → O(1)
+
+6️⃣ Size & Empty
+✅ size()
+d.size();
+
+Returns number of elements
+
+✅ empty()
+d.empty();
+
+Returns:
+
+true → if empty
+
+false → otherwise
+
+7️⃣ clear()
+d.clear();
+
+Removes all elements
+Size becomes 0
+
+8️⃣ Insert & Erase at Arbitrary Position
+insert()
+d.insert(d.begin()+2, 100);
+
+✔ O(n)
+
+erase()
+d.erase(d.begin()+1);
+
+✔ O(n)
+
+9️⃣ Time Complexity Table
+Operation	Time Complexity
+push_back()	O(1) amortized
+push_front()	O(1) amortized
+pop_back()	O(1) amortized
+pop_front()	O(1) amortized
+insert(pos)	O(n)
+erase(pos)	O(n)
+access by index	O(1)
+iterate	O(n)
+🔟 Deque vs Queue
+Feature	Queue	Deque
+Insert	Rear only	Front & Rear
+Delete	Front only	Front & Rear
+Behavior	FIFO	FIFO + LIFO
+Flexibility	Limited	More flexible
+1️⃣1️⃣ When To Use Deque?
+
+✔ Sliding Window Problems
+✔ Palindrome Checking
+✔ Implementing Stack + Queue together
+✔ When insertion/deletion required from both ends
+
+1️⃣2️⃣ Complete Member Function Summary (With Comments)
+
+Below is full summary program with explanation of all major deque member functions:
+
+#include <iostream>
+#include <deque>
+using namespace std;
+
+int main() {
+
+    deque<int> d;
+
+    d.push_back(10);    
+    // push_back() -> Insert element at end (O(1))
+
+    d.push_front(5);    
+    // push_front() -> Insert element at beginning (O(1))
+
+    cout << "First element: " << d.front() << endl;
+    // front() -> Returns first element
+
+    cout << "Last element: " << d.back() << endl;
+    // back() -> Returns last element
+
+    cout << "Element at index 1: " << d[1] << endl;
+    // [] -> Random access (O(1))
+
+    cout << "Size: " << d.size() << endl;
+    // size() -> Returns number of elements
+
+    if(d.empty())
+        cout << "Deque is empty\n";
+    else
+        cout << "Deque is not empty\n";
+    // empty() -> Checks if deque is empty
+
+    d.insert(d.begin()+1, 100);
+    // insert(pos,value) -> Insert at given position (O(n))
+
+    d.erase(d.begin());
+    // erase(pos) -> Remove element at position (O(n))
+
+    d.pop_back();
+    // pop_back() -> Remove last element (O(1))
+
+    d.pop_front();
+    // pop_front() -> Remove first element (O(1))
+
+    d.clear();
+    // clear() -> Removes all elements
+
+    return 0;
+}
+
+std::list is a sequence container in C++ STL.
+
+It is implemented as a Doubly Linked List.
+
+That means:
+
+Each node stores data
+
+One pointer to next node
+
+One pointer to previous node
+
+Header file:
+
+#include <list>
+1️⃣ What is List?
+
+A list:
+
+✔ Stores elements in non-contiguous memory
+✔ Allows fast insertion/deletion anywhere
+✔ Maintains front and back
+✔ Does NOT support random access
+
+2️⃣ Declaration & Initialization
+🔹 Empty list
+list<int> l;
+🔹 Using initializer list
+list<int> l = {1,2,3};
+3️⃣ Internal Working
+
+Since it is a doubly linked list:
+
+Each node contains:
+
+[prev pointer | data | next pointer]
+
+So:
+
+Insertion/deletion → O(1) (if iterator known)
+
+Random access → ❌ Not allowed (O(n))
+
+4️⃣ Inserting Elements
+✅ push_back()
+
+Insert at end
+
+l.push_back(10);   // O(1)
+✅ push_front()
+
+Insert at beginning
+
+l.push_front(5);   // O(1)
+✅ insert()
+
+Insert at specific position using iterator
+
+auto it = l.begin();
+advance(it,2);
+l.insert(it,100);   // O(1) if position known
+
+⚠ If position unknown → traversal O(n)
+
+5️⃣ Accessing Elements
+
+❌ No random access like l[2]
+
+✅ front()
+l.front();
+
+Returns first element
+
+✅ back()
+l.back();
+
+Returns last element
+
+✅ Access using iterator
+auto it = next(l.begin(),2);
+cout << *it;
+
+Time Complexity → O(n)
+
+6️⃣ Updating Elements
+
+Must use iterator:
+
+auto it = l.begin();
+advance(it,2);
+*it = 50;
+
+✔ O(n) to reach position
+✔ O(1) to update
+
+7️⃣ Finding Elements
+
+Use find() from <algorithm>
+
+#include <algorithm>
+
+auto it = find(l.begin(), l.end(), 4);
+
+✔ Returns iterator
+✔ If not found → returns l.end()
+✔ Time Complexity → O(n)
+
+8️⃣ Traversing List
+Using iterator
+for(auto it=l.begin(); it!=l.end(); ++it)
+    cout << *it << " ";
+Using range-based loop
+for(int x : l)
+    cout << x << " ";
+
+Time Complexity → O(n)
+
+9️⃣ Deleting Elements
+✅ pop_back()
+l.pop_back();   // O(1)
+✅ pop_front()
+l.pop_front();   // O(1)
+✅ erase()
+auto it = l.begin();
+advance(it,2);
+l.erase(it);   // O(1)
+
+⚠ Traversal to position → O(n)
+
+🔟 Important Member Functions
+Function	Use
+size()	Returns number of elements
+empty()	Checks if list empty
+clear()	Removes all elements
+front()	First element
+back()	Last element
+insert()	Insert at position
+erase()	Remove at position
+push_front()	Insert at start
+push_back()	Insert at end
+pop_front()	Remove first
+pop_back()	Remove last
+rbegin()	Reverse begin iterator
+rend()	Reverse end iterator
+1️⃣1️⃣ Time Complexity Table
+Operation	Time Complexity
+push_front()	O(1)
+push_back()	O(1)
+insert()	O(1) if iterator known
+erase()	O(1) if iterator known
+access by index	❌ Not allowed
+search	O(n)
+traversal	O(n)
+1️⃣2️⃣ List vs Vector vs Deque
+Feature	vector	deque	list
+Memory	Contiguous	Block-based	Non-contiguous
+Random access	O(1)	O(1)	❌
+Insert front	O(n)	O(1)	O(1)
+Insert middle	O(n)	O(n)	O(1)
+Insert back	O(1)	O(1)	O(1)
+Best for	Dynamic array	Double ended ops	Frequent insert/delete
+1️⃣3️⃣ forward_list vs list
+Feature	forward_list	list
+Type	Singly Linked	Doubly Linked
+Memory	Less	More
+Reverse traversal	❌	✔
+size() function	❌	✔
+Iterators	Forward only	Bidirectional
+1️⃣4️⃣ Complete Member Function Summary (With Comments)
+#include <iostream>
+#include <list>
+#include <algorithm>
+using namespace std;
+
+int main() {
+
+    list<int> l;
+
+    l.push_back(10);
+    // push_back() -> Insert at end (O(1))
+
+    l.push_front(5);
+    // push_front() -> Insert at beginning (O(1))
+
+    cout << "First: " << l.front() << endl;
+    // front() -> Returns first element
+
+    cout << "Last: " << l.back() << endl;
+    // back() -> Returns last element
+
+    cout << "Size: " << l.size() << endl;
+    // size() -> Number of elements
+
+    if(l.empty())
+        cout << "List is empty\n";
+    // empty() -> Checks if list is empty
+
+    auto it = l.begin();
+    l.insert(it,100);
+    // insert(pos,value) -> Insert before pos (O(1))
+
+    it = find(l.begin(), l.end(), 10);
+    // find() -> Search element (O(n))
+
+    if(it != l.end())
+        l.erase(it);
+    // erase(pos) -> Remove element at position (O(1))
+
+    l.pop_front();
+    // pop_front() -> Remove first element
+
+    l.pop_back();
+    // pop_back() -> Remove last element
+
+    l.clear();
+    // clear() -> Remove all elements
+
+    return 0;
+}
+🎯 Final Summary
+
+A list in C++:
+
+✔ Implemented as doubly linked list
+✔ Fast insertion/deletion anywhere
+✔ No random access
+✔ Uses more memory than vector
+✔ Best for frequent middle insert/delete
+
+What is forward_list?
+
+std::forward_list is a singly linked list container in C++ STL.
+
+✔ Stores elements in non-contiguous memory
+✔ Each node points to next element only
+✔ Supports only forward traversal
+✔ Very memory efficient
+✔ Fast insertion/deletion after known position
+
+Header file:
+
+#include <forward_list>
+🔹 Syntax
+forward_list<int> fl;
+🔹 Short Main Example (All Basic Operations)
+#include <iostream>
+#include <forward_list>
+#include <algorithm>
+using namespace std;
+
+int main() {
+
+    forward_list<int> fl = {10, 20, 30};
+
+    fl.push_front(5);   
+    // push_front() -> Insert at front (O(1))
+
+    cout << "First element: " << fl.front() << endl;
+    // front() -> Access first element
+
+    auto it = fl.begin();
+    advance(it,1);
+    fl.insert_after(it, 25);
+    // insert_after(pos,value) -> Insert after position
+
+    fl.pop_front();
+    // pop_front() -> Remove first element
+
+    fl.erase_after(fl.begin());
+    // erase_after(pos) -> Remove element after pos
+
+    // Traversal
+    for(int x : fl)
+        cout << x << " ";
+
+    cout << endl;
+
+    // Check empty
+    if(fl.empty())
+        cout << "Empty\n";
+    else
+        cout << "Not Empty\n";
+
+    return 0;
+}
+🔹 Important Member Functions (Summary)
+Function	Use
+push_front()	Insert at beginning
+pop_front()	Remove first element
+insert_after()	Insert after given iterator
+erase_after()	Remove element after iterator
+front()	Access first element
+empty()	Check if empty
+clear()	Remove all elements
+begin()	Iterator to first element
+end()	Iterator to end
+before_begin()	Iterator before first element
+
+⚠ No size() function
+⚠ No push_back()
+⚠ No reverse iterators
+
+🔥 forward_list vs list (Important Difference)
+Feature	forward_list	list
+Type	Singly Linked List	Doubly Linked List
+Pointers per node	1 (next)	2 (prev + next)
+Memory usage	Less	More
+Traversal	Forward only	Forward + Backward
+Reverse iterator	❌ No	✔ Yes
+size() function	❌ No	✔ Yes
+push_back()	❌ No	✔ Yes
+insert()	insert_after() only	insert() before position
+Best for	Memory optimization	Flexible operations
+🔹 Time Complexity
+Operation	Time
+push_front()	O(1)
+pop_front()	O(1)
+insert_after()	O(1)
+erase_after()	O(1)
+search	O(n)
+traversal	O(n)
+🔹 When To Use forward_list?
+
+✔ When memory is limited
+✔ When only forward traversal required
+✔ When mostly insertion/deletion from front
+✔ When size() not required
+
+🎯 Final Summary
+
+forward_list:
+
+Singly linked list
+
+Lightweight
+
+Only forward movement
+
+Fast insert/delete after known position
+
+No random access
+
+No size() function

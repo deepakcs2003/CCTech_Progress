@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ STL Unordered Containers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #2a5298;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: normal;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .theory-box h3 {
+            color: #2a5298;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .theory-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .theory-box li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .theory-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .use-when {
+            background: #e7f3ff;
+            border-left: 5px solid #0066cc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .use-when h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        /* VS Code-like code styling */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Syntax highlighting */
+        .keyword {
+            color: #569cd6;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        .type {
+            color: #4ec9b0;
+        }
+
+        .operator {
+            color: #d4d4d4;
+        }
+
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .complexity-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .complexity-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .complexity-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .complexity-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: #2a5298;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .highlight-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .highlight-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .syntax-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .syntax-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .diff-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .diff-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+        }
+
+        .diff-item h4 {
+            color: #2a5298;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .diff-item p {
+            text-align: center;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .footer {
+            background: #2a5298;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .diff-table {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 C++ STL Unordered Containers</h1>
+            <p>Complete Guide with Syntax & Examples</p>
+        </div>
+
+        <div class="content">
+            <!-- UNORDERED_MAP -->
+            <div class="section">
+                <h2 class="section-title">1️⃣ unordered_map <span class="badge">Key-Value Hash Table</span></h2>
+                
+                <div class="theory-box">
+                    <h3>✅ Theory</h3>
+                    <ul>
+                        <li>Stores key-value pairs</li>
+                        <li>Keys are unique (no duplicate keys)</li>
+                        <li>No sorted order</li>
+                        <li>Uses hash table</li>
+                        <li>Supports [] operator for direct access</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>⏱️ Average Time Complexity</h3>
+                    <table class="complexity-table">
+                        <tr>
+                            <th>Operation</th>
+                            <th>Complexity</th>
+                        </tr>
+                        <tr>
+                            <td>Insert</td>
+                            <td><strong>O(1)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Access ([])</td>
+                            <td><strong>O(1)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Find</td>
+                            <td><strong>O(1)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Erase</td>
+                            <td><strong>O(1)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Traverse</td>
+                            <td><strong>O(n)</strong></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="use-when">
+                    <h4>📌 Use when:</h4>
+                    <ul>
+                        <li>You need key-value storage</li>
+                        <li>Fast lookup by key is required</li>
+                        <li>Order does not matter</li>
+                        <li>Keys are unique</li>
+                    </ul>
+                </div>
+
+                <div class="syntax-box">
+                    <h4>✅ Syntax</h4>
+                </div>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;unordered_map&gt;</span>
+
+<span class="type">unordered_map</span><span class="operator">&lt;</span><span class="type">Key</span>, <span class="type">Value</span><span class="operator">&gt;</span> name;
+</pre>
+
+                <div class="highlight-box">
+                    <h4>🔎 Syntax Meaning</h4>
+                    <p><strong>unordered_map</strong> → container type</p>
+                    <p><strong>Key</strong> → data type of key (int, string, etc.)</p>
+                    <p><strong>Value</strong> → data type of value (int, string, etc.)</p>
+                    <p><strong>name</strong> → object name</p>
+                </div>
+
+                <h3 style="color: #2a5298; margin: 30px 0 15px 0;">✅ All Important Member Functions</h3>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="type">int</span> <span class="function">main</span>() {
+
+    <span class="type">unordered_map</span><span class="operator">&lt;</span><span class="type">int</span>, <span class="type">string</span><span class="operator">&gt;</span> um;
+
+    <span class="comment">// insert({key, value})</span>
+    um.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"Apple"</span>});
+    <span class="comment">// Meaning: Insert key-value pair</span>
+
+    <span class="comment">// [] operator - direct access/insert</span>
+    um[<span class="number">2</span>] <span class="operator">=</span> <span class="string">"Banana"</span>;
+    <span class="comment">// Meaning: Insert or update value for key 2</span>
+    <span class="comment">// If key exists → update value</span>
+    <span class="comment">// If key doesn't exist → insert new pair</span>
+
+    <span class="comment">// Accessing value</span>
+    cout <span class="operator">&lt;&lt;</span> um[<span class="number">1</span>] <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Get value associated with key 1</span>
+    <span class="comment">// Returns "Apple"</span>
+
+    <span class="comment">// size()</span>
+    cout <span class="operator">&lt;&lt;</span> um.<span class="function">size</span>() <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Returns number of key-value pairs</span>
+
+    <span class="comment">// empty()</span>
+    cout <span class="operator">&lt;&lt;</span> um.<span class="function">empty</span>() <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Returns true if map is empty</span>
+
+    <span class="comment">// find(key)</span>
+    <span class="keyword">auto</span> it <span class="operator">=</span> um.<span class="function">find</span>(<span class="number">1</span>);
+    <span class="comment">// Meaning: Returns iterator to key-value pair if found,</span>
+    <span class="comment">// otherwise returns um.end()</span>
+
+    <span class="keyword">if</span>(it <span class="operator">!=</span> um.<span class="function">end</span>()) {
+        cout <span class="operator">&lt;&lt;</span> it<span class="operator">-&gt;</span>first <span class="operator">&lt;&lt;</span> <span class="string">" : "</span> <span class="operator">&lt;&lt;</span> it<span class="operator">-&gt;</span>second;
+        <span class="comment">// first → key, second → value</span>
+    }
+
+    <span class="comment">// count(key)</span>
+    cout <span class="operator">&lt;&lt;</span> um.<span class="function">count</span>(<span class="number">1</span>) <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Returns 1 if key exists, else 0</span>
+
+    <span class="comment">// at(key)</span>
+    cout <span class="operator">&lt;&lt;</span> um.<span class="function">at</span>(<span class="number">1</span>) <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Access value with bounds checking</span>
+    <span class="comment">// Throws exception if key doesn't exist</span>
+
+    <span class="comment">// erase(key)</span>
+    um.<span class="function">erase</span>(<span class="number">1</span>);
+    <span class="comment">// Meaning: Remove key-value pair by key</span>
+
+    <span class="comment">// erase(iterator)</span>
+    <span class="keyword">auto</span> itr <span class="operator">=</span> um.<span class="function">find</span>(<span class="number">2</span>);
+    <span class="keyword">if</span>(itr <span class="operator">!=</span> um.<span class="function">end</span>())
+        um.<span class="function">erase</span>(itr);
+    <span class="comment">// Meaning: Remove element at iterator position</span>
+
+    <span class="comment">// clear()</span>
+    um.<span class="function">clear</span>();
+    <span class="comment">// Meaning: Removes all key-value pairs</span>
+
+    <span class="comment">// Traversing unordered_map</span>
+    <span class="keyword">for</span>(<span class="keyword">auto</span> pair : um) {
+        cout <span class="operator">&lt;&lt;</span> pair.first <span class="operator">&lt;&lt;</span> <span class="string">" -&gt; "</span> <span class="operator">&lt;&lt;</span> pair.second <span class="operator">&lt;&lt;</span> endl;
+    }
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</pre>
+
+                <div class="highlight-box">
+                    <h4>⚠️ Important: [] vs at()</h4>
+                    <p><strong>um[key]</strong> → Creates key if it doesn't exist (with default value)</p>
+                    <p><strong>um.at(key)</strong> → Throws exception if key doesn't exist (safer)</p>
+                </div>
+            </div>
+
+            <!-- UNORDERED_SET -->
+            <div class="section">
+                <h2 class="section-title">2️⃣ unordered_set <span class="badge">Hash Table</span></h2>
+                
+                <div class="theory-box">
+                    <h3>✅ Theory</h3>
+                    <ul>
+                        <li>Stores unique elements</li>
+                        <li>No duplicate allowed</li>
+                        <li>No sorted order</li>
+                        <li>Uses hash table</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>⏱️ Average Time Complexity</h3>
+                    <table class="complexity-table">
+                        <tr>
+                            <th>Operation</th>
+                            <th>Complexity</th>
+                        </tr>
+                        <tr>
+                            <td>Insert</td>
+                            <td><strong>O(1)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Find</td>
+                            <td><strong>O(1)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Erase</td>
+                            <td><strong>O(1)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Traverse</td>
+                            <td><strong>O(n)</strong></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="use-when">
+                    <h4>📌 Use when:</h4>
+                    <ul>
+                        <li>You need fast lookup</li>
+                        <li>Order does not matter</li>
+                    </ul>
+                </div>
+
+                <div class="syntax-box">
+                    <h4>✅ Syntax</h4>
+                </div>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;unordered_set&gt;</span>
+
+<span class="type">unordered_set</span><span class="operator">&lt;</span><span class="type">T</span><span class="operator">&gt;</span> name;
+</pre>
+
+                <div class="highlight-box">
+                    <h4>🔎 Syntax Meaning</h4>
+                    <p><strong>unordered_set</strong> → container type</p>
+                    <p><strong>T</strong> → data type (int, string, etc.)</p>
+                    <p><strong>name</strong> → object name</p>
+                </div>
+
+                <h3 style="color: #2a5298; margin: 30px 0 15px 0;">✅ All Important Member Functions</h3>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="type">int</span> <span class="function">main</span>() {
+
+    <span class="type">unordered_set</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> us;
+
+    <span class="comment">// insert(value)</span>
+    us.<span class="function">insert</span>(<span class="number">10</span>);  
+    <span class="comment">// Meaning: Insert element into set (if duplicate → ignored)</span>
+
+    us.<span class="function">insert</span>(<span class="number">20</span>);
+    us.<span class="function">insert</span>(<span class="number">10</span>);  
+    <span class="comment">// Duplicate → will NOT insert</span>
+
+    <span class="comment">// size()</span>
+    cout <span class="operator">&lt;&lt;</span> us.<span class="function">size</span>() <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Returns number of elements</span>
+
+    <span class="comment">// empty()</span>
+    cout <span class="operator">&lt;&lt;</span> us.<span class="function">empty</span>() <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Returns true if container is empty</span>
+
+    <span class="comment">// find(value)</span>
+    <span class="keyword">auto</span> it <span class="operator">=</span> us.<span class="function">find</span>(<span class="number">20</span>);
+    <span class="comment">// Meaning: Returns iterator to element if found,</span>
+    <span class="comment">// otherwise returns us.end()</span>
+
+    <span class="keyword">if</span>(it <span class="operator">!=</span> us.<span class="function">end</span>())
+        cout <span class="operator">&lt;&lt;</span> <span class="string">"Found\n"</span>;
+
+    <span class="comment">// count(value)</span>
+    cout <span class="operator">&lt;&lt;</span> us.<span class="function">count</span>(<span class="number">10</span>) <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Returns 1 if element exists, else 0</span>
+
+    <span class="comment">// erase(value)</span>
+    us.<span class="function">erase</span>(<span class="number">10</span>);
+    <span class="comment">// Meaning: Remove element by value</span>
+
+    <span class="comment">// erase(iterator)</span>
+    us.<span class="function">erase</span>(us.<span class="function">begin</span>());
+    <span class="comment">// Meaning: Remove element by position</span>
+
+    <span class="comment">// clear()</span>
+    us.<span class="function">clear</span>();
+    <span class="comment">// Meaning: Removes all elements</span>
+
+    <span class="comment">// bucket_count()</span>
+    cout <span class="operator">&lt;&lt;</span> us.<span class="function">bucket_count</span>();
+    <span class="comment">// Meaning: Total number of hash buckets</span>
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</pre>
+            </div>
+
+            <!-- UNORDERED_MULTISET -->
+            <div class="section">
+                <h2 class="section-title">3️⃣ unordered_multiset <span class="badge">Allows Duplicates</span></h2>
+                
+                <div class="theory-box">
+                    <h3>✅ Theory</h3>
+                    <ul>
+                        <li>Same as unordered_set</li>
+                        <li>But allows duplicates</li>
+                        <li>Uses hashing</li>
+                        <li>No sorted order</li>
+                    </ul>
+                </div>
+
+                <div class="diff-table">
+                    <div class="diff-item">
+                        <h4>unordered_set</h4>
+                        <p>Unique only</p>
+                    </div>
+                    <div class="diff-item">
+                        <h4>unordered_multiset</h4>
+                        <p>Duplicate allowed</p>
+                    </div>
+                </div>
+
+                <div class="syntax-box">
+                    <h4>✅ Syntax</h4>
+                </div>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;unordered_set&gt;</span>
+
+<span class="type">unordered_multiset</span><span class="operator">&lt;</span><span class="type">T</span><span class="operator">&gt;</span> name;
+</pre>
+
+                <h3 style="color: #2a5298; margin: 30px 0 15px 0;">✅ All Important Member Functions</h3>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="type">int</span> <span class="function">main</span>() {
+
+    <span class="type">unordered_multiset</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> ums;
+
+    <span class="comment">// insert()</span>
+    ums.<span class="function">insert</span>(<span class="number">5</span>);
+    ums.<span class="function">insert</span>(<span class="number">5</span>);
+    <span class="comment">// Meaning: Duplicate allowed</span>
+
+    <span class="comment">// size()</span>
+    cout <span class="operator">&lt;&lt;</span> ums.<span class="function">size</span>() <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Total elements including duplicates</span>
+
+    <span class="comment">// count(value)</span>
+    cout <span class="operator">&lt;&lt;</span> ums.<span class="function">count</span>(<span class="number">5</span>);
+    <span class="comment">// Meaning: Returns number of occurrences of 5</span>
+
+    <span class="comment">// find(value)</span>
+    <span class="keyword">auto</span> it <span class="operator">=</span> ums.<span class="function">find</span>(<span class="number">5</span>);
+    <span class="comment">// Meaning: Returns iterator to first occurrence</span>
+
+    <span class="comment">// erase(value)</span>
+    ums.<span class="function">erase</span>(<span class="number">5</span>);
+    <span class="comment">// Meaning: Deletes ALL occurrences of 5</span>
+
+    <span class="comment">// erase(iterator)</span>
+    <span class="keyword">auto</span> itr <span class="operator">=</span> ums.<span class="function">find</span>(<span class="number">5</span>);
+    <span class="keyword">if</span>(itr <span class="operator">!=</span> ums.<span class="function">end</span>())
+        ums.<span class="function">erase</span>(itr);
+    <span class="comment">// Meaning: Deletes only ONE occurrence</span>
+
+    <span class="comment">// clear()</span>
+    ums.<span class="function">clear</span>();
+    <span class="comment">// Meaning: Remove all elements</span>
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</pre>
+            </div>
+
+            <!-- UNORDERED_MULTIMAP -->
+            <div class="section">
+                <h2 class="section-title">4️⃣ unordered_multimap <span class="badge">Key-Value Pairs</span></h2>
+                
+                <div class="theory-box">
+                    <h3>✅ Theory</h3>
+                    <ul>
+                        <li>Stores key-value pairs</li>
+                        <li>Allows duplicate keys</li>
+                        <li>Uses hashing</li>
+                        <li>No order maintained</li>
+                        <li>Does NOT support [] operator</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>📌 Why no [] operator?</h4>
+                    <p>Because multiple values may exist for same key.</p>
+                </div>
+
+                <div class="syntax-box">
+                    <h4>✅ Syntax</h4>
+                </div>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;unordered_map&gt;</span>
+
+<span class="type">unordered_multimap</span><span class="operator">&lt;</span><span class="type">Key</span>, <span class="type">Value</span><span class="operator">&gt;</span> name;
+</pre>
+
+                <h3 style="color: #2a5298; margin: 30px 0 15px 0;">✅ All Important Member Functions</h3>
+
+<pre><span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="type">int</span> <span class="function">main</span>() {
+
+    <span class="type">unordered_multimap</span><span class="operator">&lt;</span><span class="type">int</span>, <span class="type">string</span><span class="operator">&gt;</span> umm;
+
+    <span class="comment">// insert({key,value})</span>
+    umm.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"A"</span>});
+    umm.<span class="function">insert</span>({<span class="number">1</span>, <span class="string">"B"</span>});
+    <span class="comment">// Meaning: Same key allowed</span>
+
+    <span class="comment">// size()</span>
+    cout <span class="operator">&lt;&lt;</span> umm.<span class="function">size</span>() <span class="operator">&lt;&lt;</span> endl;
+    <span class="comment">// Meaning: Total key-value pairs</span>
+
+    <span class="comment">// find(key)</span>
+    <span class="keyword">auto</span> it <span class="operator">=</span> umm.<span class="function">find</span>(<span class="number">1</span>);
+    <span class="comment">// Meaning: Returns iterator to FIRST element with key=1</span>
+
+    <span class="keyword">if</span>(it <span class="operator">!=</span> umm.<span class="function">end</span>())
+        cout <span class="operator">&lt;&lt;</span> it<span class="operator">-&gt;</span>second;
+
+    <span class="comment">// count(key)</span>
+    cout <span class="operator">&lt;&lt;</span> umm.<span class="function">count</span>(<span class="number">1</span>);
+    <span class="comment">// Meaning: Number of elements with key=1</span>
+
+    <span class="comment">// equal_range(key)</span>
+    <span class="keyword">auto</span> range <span class="operator">=</span> umm.<span class="function">equal_range</span>(<span class="number">1</span>);
+    <span class="comment">// Meaning: Returns pair of iterators</span>
+    <span class="comment">// covering ALL elements with that key</span>
+
+    <span class="keyword">for</span>(<span class="keyword">auto</span> itr <span class="operator">=</span> range.first; itr <span class="operator">!=</span> range.second; itr<span class="operator">++</span>)
+        cout <span class="operator">&lt;&lt;</span> itr<span class="operator">-&gt;</span>second <span class="operator">&lt;&lt;</span> <span class="string">" "</span>;
+
+    <span class="comment">// erase(key)</span>
+    umm.<span class="function">erase</span>(<span class="number">1</span>);
+    <span class="comment">// Meaning: Delete ALL elements with key=1</span>
+
+    <span class="comment">// erase(iterator)</span>
+    <span class="keyword">auto</span> itr <span class="operator">=</span> umm.<span class="function">begin</span>();
+    umm.<span class="function">erase</span>(itr);
+    <span class="comment">// Meaning: Delete only that element</span>
+
+    <span class="comment">// clear()</span>
+    umm.<span class="function">clear</span>();
+    <span class="comment">// Meaning: Remove all key-value pairs</span>
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</pre>
+            </div>
+
+            <!-- COMPARISON TABLE -->
+            <div class="section">
+                <h2 class="section-title">🔥 Complete Comparison Table</h2>
+                
+                <table class="comparison-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>unordered_map</th>
+                        <th>unordered_set</th>
+                        <th>unordered_multiset</th>
+                        <th>unordered_multimap</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Unique?</strong></td>
+                        <td>Keys unique</td>
+                        <td>Yes</td>
+                        <td>No</td>
+                        <td>Key duplicates allowed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stores</strong></td>
+                        <td>Key-Value pair</td>
+                        <td>Value only</td>
+                        <td>Value only</td>
+                        <td>Key-Value pair</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sorted?</strong></td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hashing</strong></td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[] operator</strong></td>
+                        <td>Yes</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fast Search</strong></td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- TIME COMPLEXITY -->
+            <div class="section">
+                <h2 class="section-title">🔥 Time Complexity (Average)</h2>
+                
+                <table class="complexity-table">
+                    <tr>
+                        <th>Operation</th>
+                        <th>Complexity</th>
+                    </tr>
+                    <tr>
+                        <td>Insert</td>
+                        <td><strong>O(1)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Find</td>
+                        <td><strong>O(1)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Erase</td>
+                        <td><strong>O(1)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Traverse</td>
+                        <td><strong>O(n)</strong></td>
+                    </tr>
+                </table>
+
+                <div class="highlight-box">
+                    <h4>⚠️ Important Note</h4>
+                    <p><strong>Worst case → O(n)</strong> (if hash collision happens)</p>
+                </div>
+            </div>
+
+            <!-- WHEN TO USE -->
+            <div class="section">
+                <h2 class="section-title">🎯 When to Use What?</h2>
+                
+                <table class="comparison-table">
+                    <tr>
+                        <th>Situation</th>
+                        <th>Use</th>
+                    </tr>
+                    <tr>
+                        <td>Key-value storage with unique keys</td>
+                        <td><strong>unordered_map</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Unique elements fast search</td>
+                        <td><strong>unordered_set</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Duplicate values allowed</td>
+                        <td><strong>unordered_multiset</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Duplicate keys allowed</td>
+                        <td><strong>unordered_multimap</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- FINAL SUMMARY -->
+            <div class="section">
+                <h2 class="section-title">✅ Final Concept Summary</h2>
+                
+                <div class="theory-box">
+                    <h3>All three containers share:</h3>
+                    <ul>
+                        <li>Use hash table</li>
+                        <li>Unordered</li>
+                        <li>Fast operations</li>
+                        <li>No indexing</li>
+                        <li>Access via iterators</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+</body>
+</html>
