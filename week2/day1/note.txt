@@ -1,0 +1,1178 @@
+C++ Templates allow you to write generic code, meaning the same function or class can work with different data types without rewriting code again and again.
+
+Instead of writing:
+
+int max(int a, int b);
+double max(double a, double b);
+char max(char a, char b);
+
+We write one template, and the compiler generates type-specific versions automatically.
+
+🔹 1. What is a Template?
+
+A template is a blueprint for creating:
+
+✅ Generic Functions
+
+✅ Generic Classes
+
+✅ Generic Variables (C++14 onwards)
+
+🔹 2. Why We Use Templates?
+
+✔ Avoid code duplication
+✔ Provide type safety (better than void*)
+✔ Work at compile time
+✔ Base of STL (vector, map, sort, etc.)
+
+For example:
+
+vector<int>
+
+map<string, int>
+
+sort()
+
+All use templates internally.
+
+🔹 3. Basic Syntax of Template
+template <typename T>
+entity_definition
+
+OR
+
+template <class T>
+entity_definition
+
+🔹 typename and class are interchangeable.
+
+🔹 4. Function Template
+🔸 Syntax
+template <typename T>
+return_type function_name(parameters)
+{
+    // logic
+}
+🔸 Example: Maximum of Two Values
+#include <iostream>
+using namespace std;
+
+// Template definition
+template <typename T>
+T myMax(T x, T y)
+{
+    return (x > y) ? x : y;
+}
+
+int main()
+{
+    cout << myMax<int>(3, 7) << endl;        // int version
+    cout << myMax<double>(3.5, 7.5) << endl; // double version
+    cout << myMax<char>('g', 'e') << endl;   // char version
+}
+🔸 Output
+7
+7.5
+g
+🔸 Explanation Step-by-Step
+1️⃣ template <typename T>
+
+T is a placeholder type
+
+It will be replaced with actual type at compile time
+
+2️⃣ T myMax(T x, T y)
+
+Function works with type T
+
+Both parameters must be same type
+
+3️⃣ myMax<int>(3,7)
+
+Compiler generates:
+
+int myMax(int x, int y)
+
+Similarly for double and char.
+
+This process is called:
+
+🔹 Template Instantiation
+
+🔹 5. Template Argument Deduction (Important)
+
+You don’t always need to write <int>.
+
+cout << myMax(3, 7);   // compiler automatically detects int
+
+This is called:
+
+🔹 Template Argument Deduction
+
+Works since C++98 for functions.
+
+🔹 6. Class Template
+
+Used when class logic is independent of data type.
+
+🔸 Syntax
+template <typename T>
+class ClassName
+{
+    T data;
+};
+🔸 Example
+#include <iostream>
+using namespace std;
+
+template <typename T>
+class Geek
+{
+public:
+    T x;
+    T y;
+
+    // Constructor (Initializer List)
+    Geek(T val1, T val2) : x(val1), y(val2)
+    {
+    }
+
+    void getValues()
+    {
+        cout << x << " " << y;
+    }
+};
+
+int main()
+{
+    Geek<int> intGeek(10, 20);
+    Geek<double> doubleGeek(3.14, 6.28);
+
+    intGeek.getValues();
+    cout << endl;
+    doubleGeek.getValues();
+}
+🔸 Explanation
+template <typename T>
+
+Makes entire class generic.
+
+Geek<int>
+
+Compiler creates:
+
+class Geek<int>
+Constructor:
+Geek(T val1, T val2) : x(val1), y(val2)
+
+This is Constructor Initializer List
+
+It means:
+
+x is initialized with val1
+
+y is initialized with val2
+
+🔹 7. Multiple Template Parameters
+template <typename T1, typename T2, typename T3>
+class Geek
+{
+public:
+    T1 x;
+    T2 y;
+    T3 z;
+
+    Geek(T1 val1, T2 val2, T3 val3) : x(val1), y(val2), z(val3)
+    {
+    }
+
+    void getValues()
+    {
+        cout << x << " " << y << " " << z;
+    }
+};
+
+Usage:
+
+Geek<int, double, string> obj(10, 3.14, "Hello");
+🔹 8. Default Template Arguments
+
+Just like function default parameters.
+
+template <typename T1, typename T2 = double, typename T3 = string>
+class Geek
+{
+    // class body
+};
+
+Usage:
+
+Geek<char> obj('A', 3.14, "World");
+
+Here:
+
+T1 = char
+
+T2 = double (default)
+
+T3 = string (default)
+
+🔹 9. Variable Templates (C++14)
+🔸 Syntax
+template <typename T>
+constexpr T pi = T(3.14159);
+🔸 Example
+#include <iostream>
+using namespace std;
+
+template <typename T>
+constexpr T pi = T(3.14159);
+
+int main()
+{
+    cout << pi<float> << endl;
+    cout << pi<double>;
+}
+🔸 Why constexpr?
+
+Ensures value is evaluated at compile time
+
+Better optimization
+
+🔹 10. Non-Type Template Parameters
+
+Templates can also take constant values.
+
+🔸 Syntax
+template <typename T, int size>
+🔸 Example
+#include <iostream>
+using namespace std;
+
+template <class T, int max>
+int arrMin(T arr[], int n)
+{
+    int m = max;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] < m)
+            m = arr[i];
+    }
+    return m;
+}
+
+int main()
+{
+    int arr1[] = {10, 20, 15, 12};
+    cout << arrMin<int, 10000>(arr1, 4);
+}
+
+Here:
+
+10000 is a compile-time constant
+
+Used as initial maximum value
+
+🔹 11. Class Template Argument Deduction (C++17)
+
+Before C++17:
+
+Geek<int> obj(10, 20);
+
+After C++17:
+
+Geek obj(10, 20);  // compiler deduces type
+
+Compiler automatically detects int.
+
+🔹 12. Important Rules
+❌ This will not work:
+template <typename T>
+void func(T a, T b);
+
+Calling:
+
+func(10, 3.5); // Error
+
+Because:
+
+T must be same type for both parameters.
+
+🔹 13. Template Specialization (Advanced but Important)
+
+We can create special behavior for specific types.
+
+template <>
+char myMax<char>(char a, char b)
+{
+    cout << "Char specialization used\n";
+    return (a > b) ? a : b;
+}
+
+Now if char is used → this version runs.
+
+🔹 14. Internally How Templates Work
+
+Template is not real code.
+
+Compiler generates real function/class when used.
+
+Happens at compile time.
+
+This is why:
+
+Templates increase compile time
+
+But give high performance
+
+🔹 15. Templates in STL
+
+STL is built using templates:
+
+vector<int>
+map<string, int>
+sort(begin, end)
+pair<int, int>
+
+Example:
+
+pair<int, int> p;
+
+Means:
+
+First element int
+
+Second element int
+
+🔥 Final Summary
+Feature	Description
+Function Template	Generic functions
+Class Template	Generic classes
+Variable Template	Generic variables (C++14)
+Non-type Parameter	Constant value parameter
+Default Arguments	Default template types
+Deduction	Compiler auto-detects type
+Specialization	Custom behavior for specific type
+
+i use this as reference:https://www.geeksforgeeks.org/cpp/templates-cpp/
+
+What is an Iterator?
+
+An Iterator in C++ STL is an object that works like a pointer and is used to traverse (move through) elements of a container.
+
+👉 It connects containers (like vector, list, map) with algorithms (like sort, find, count).
+
+✅ Why Iterators Are Important?
+
+Traverse containers without exposing internal structure
+
+Work with STL algorithms
+
+Provide uniform way to access different containers
+
+Increase code reusability
+
+🔹 Basic Syntax of Iterator
+1️⃣ General Syntax
+container_type::iterator it;
+Example:
+vector<int>::iterator it;
+2️⃣ Modern Way (Recommended)
+auto it = container.begin();
+🔹 Basic Example
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<int> v = {10, 20, 30, 40};
+
+    // Declaring iterator
+    vector<int>::iterator it;
+
+    // Traversing container
+    for (it = v.begin(); it != v.end(); ++it)
+    {
+        cout << *it << " ";   // Dereferencing iterator
+    }
+
+    return 0;
+}
+🔎 Explanation
+Part	Meaning
+v.begin()	Points to first element
+v.end()	Points after last element
+*it	Access value
+++it	Move to next element
+🔹 Container Iterator Member Functions
+
+These functions return iterators.
+
+Function	Meaning
+begin()	Iterator to first element
+end()	Iterator after last element
+cbegin()	Constant iterator (read-only)
+cend()	Constant end iterator
+rbegin()	Reverse begin
+rend()	Reverse end
+crbegin()	Constant reverse begin
+crend()	Constant reverse end
+🔹 Example Covering All Iterator Types
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<int> vec = {10, 20, 30, 40, 50};
+
+    // Normal iterator
+    cout << "Forward: ";
+    for (auto it = vec.begin(); it != vec.end(); ++it)
+        cout << *it << " ";
+
+    cout << endl;
+
+    // Constant iterator
+    cout << "Constant Forward: ";
+    for (auto it = vec.cbegin(); it != vec.cend(); ++it)
+        cout << *it << " ";
+
+    cout << endl;
+
+    // Reverse iterator
+    cout << "Reverse: ";
+    for (auto it = vec.rbegin(); it != vec.rend(); ++it)
+        cout << *it << " ";
+
+    return 0;
+}
+🔹 Iterator Operations (Very Important)
+
+There are 5 main operations.
+
+1️⃣ Dereferencing (*)
+
+Used to access or modify value.
+
+auto it = v.begin();
+cout << *it;   // Access
+*it = 100;     // Modify
+2️⃣ Increment / Decrement
+++it;  // Move forward
+--it;  // Move backward (only bidirectional+)
+3️⃣ Add / Subtract Integer (Only Random Access Iterators)
+
+Works only with:
+
+vector
+
+deque
+
+array
+
+it = it + 2;
+it = it - 1;
+4️⃣ Subtract Two Iterators
+auto it1 = v.begin();
+auto it2 = v.begin() + 3;
+
+cout << it2 - it1;  // Distance
+5️⃣ Comparison Operators
+if (it1 != it2)
+if (it1 < it2)   // Only random access
+🔹 Types of Iterators in C++
+1️⃣ Input Iterator
+
+Read only
+
+Single pass:
+A Single Pass Iterator means you can traverse (go through) the elements only once from start to end.
+
+👉 Once you move forward, you cannot reliably go back or re-traverse the same elements using the same iterator.
+
+Example: istream_iterator
+
+Supports: *, ++, ==, !=
+
+2️⃣ Output Iterator
+
+Write only
+
+Single pass
+
+Example: ostream_iterator
+
+Supports: *, ++
+
+3️⃣ Forward Iterator
+
+Read & Write
+
+Multi-pass:A Multi-Pass Iterator is an iterator that allows you to:
+
+✔ Traverse the container multiple times
+✔ Revisit elements again
+✔ Use multiple copies of the same iterator safely
+
+Example: forward_list, unordered_set
+
+Supports:
+
+*, ++, ==, !=
+4️⃣ Bidirectional Iterator
+
+Forward + Backward
+
+Example:
+
+list
+
+set
+
+map
+
+multiset
+
+multimap
+
+Supports:
+
+*, ++, --, ==, !=
+5️⃣ Random Access Iterator (Most Powerful)
+
+Example:
+
+vector
+
+deque
+
+array
+
+Supports:
+
+*, ++, --, +, -, [], <, >
+🔹 Iterator Adaptors
+
+Special iterators built on normal iterators.
+
+1️⃣ Reverse Iterator
+vec.rbegin()
+vec.rend()
+2️⃣ Stream Iterators
+istream_iterator<int> input(cin);
+ostream_iterator<int> output(cout, " ");
+3️⃣ Inserter Iterators
+Function	Use
+back_inserter()	Insert at end
+front_inserter()	Insert at front
+inserter()	Insert at position
+
+Example:
+
+vector<int> v;
+back_insert_iterator<vector<int>> it = back_inserter(v);
+4️⃣ Move Iterator
+
+Used for move semantics:
+
+move_iterator<vector<int>::iterator>
+
+Transfers ownership (no copy).
+
+🔹 Iterator Utility Functions (Very Important for Exams)
+
+Include <iterator>
+
+Function	Syntax	Meaning
+advance	advance(it, n)	Move iterator
+next	next(it, n)	Returns new iterator forward
+prev	prev(it, n)	Returns new iterator backward
+distance	distance(it1, it2)	Number of elements
+begin	begin(container)	First iterator
+end	end(container)	End iterator
+🔹 Full Example Using Utility Functions
+#include <iostream>
+#include <vector>
+#include <iterator>
+using namespace std;
+
+int main()
+{
+    vector<int> v = {10, 20, 30, 40, 50};
+
+    auto it = v.begin();
+
+    advance(it, 2);
+    cout << "After advance: " << *it << endl;
+
+    auto it2 = next(it, 1);
+    cout << "Using next: " << *it2 << endl;
+
+    cout << "Distance: " << distance(v.begin(), v.end());
+
+    return 0;
+}
+🔹 Applications of Iterators
+1️⃣ Traversing Container
+for(auto it = s.begin(); it != s.end(); ++it)
+2️⃣ Reverse Traversal
+for(auto it = v.rbegin(); it != v.rend(); ++it)
+3️⃣ Using with Algorithms
+count(vec.begin(), vec.end(), 10);
+find(vec.begin(), vec.end(), 20);
+sort(vec.begin(), vec.end());
+🔥 Important Interview Points
+
+✔ end() points AFTER last element
+✔ Not all containers support arithmetic
+✔ Stack & Queue don't support iterators
+✔ Use auto for clean code
+✔ Prefer range-based loop when possible
+
+🔹 Difference: Pointer vs Iterator
+Pointer	Iterator
+Works on arrays	Works on containers
+Raw memory access	Abstracted access
+Less safe	Safer
+📌 Final Summary
+
+Iterators:
+
+Connect containers & algorithms
+
+Provide uniform access
+
+Have 5 categories
+
+Support multiple operations
+
+Essential for STL mastery
+
+
+# 📘 STL Algorithms in C++ — FULL THEORY + SYNTAX EXPLANATION (Easy Language)
+
+---
+
+# 🔷 1️⃣ What is STL Algorithm?
+
+In C++, **STL Algorithms** are ready-made functions that perform operations like:
+
+* Searching
+* Sorting
+* Counting
+* Reversing
+* Replacing
+* Summing
+* Rearranging
+
+They are available in:
+
+```cpp
+#include <algorithm>   // most algorithms
+#include <numeric>     // numeric algorithms like accumulate
+```
+
+---
+
+# 🔷 2️⃣ Important Theory (Very Important to Understand)
+
+## ✅ Algorithms do NOT work directly on containers
+
+They work on **iterators**.
+
+Example:
+
+```cpp
+sort(v.begin(), v.end());
+```
+
+Here:
+
+* `v.begin()` → starting iterator
+* `v.end()` → ending iterator
+
+So algorithm works on **range**.
+
+---
+
+## ✅ What is Range?
+
+Range means:
+
+```
+[start, end)
+```
+
+👉 Includes start
+👉 Excludes end
+
+So:
+
+```cpp
+sort(v.begin(), v.end());
+```
+
+Means sort from first element to last element.
+
+---
+
+# 🔷 3️⃣ Basic Structure of Algorithm
+
+Most algorithms follow this pattern:
+
+```cpp
+algorithm_name(start_iterator, end_iterator, extra_parameters);
+```
+
+---
+
+# 🔷 4️⃣ Important STL Algorithms with FULL THEORY + SYNTAX
+
+---
+
+# 🔵 1. sort()
+
+---
+
+## 📘 Theory:
+
+* Used to sort elements
+* Default: ascending order
+* Time Complexity: O(n log n)
+* Works only on random access iterators (vector, array, deque)
+
+---
+
+## 📌 Syntax:
+
+```cpp
+sort(start, end);
+```
+
+### 🔎 Meaning:
+
+| Part  | Meaning           |
+| ----- | ----------------- |
+| sort  | function name     |
+| start | starting iterator |
+| end   | ending iterator   |
+
+---
+
+## ✅ Example:
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    vector<int> v = {5, 2, 8, 1};
+
+    sort(v.begin(), v.end());
+
+    for(int x : v)
+        cout << x << " ";
+}
+```
+
+Output:
+
+```
+1 2 5 8
+```
+
+---
+
+## 🔥 Custom Sorting (Descending)
+
+```cpp
+sort(v.begin(), v.end(), greater<int>());
+```
+
+### Syntax Explanation:
+
+```cpp
+sort(start, end, comparator);
+```
+
+Comparator decides order.
+
+---
+
+# 🔵 2. find()
+
+---
+
+## 📘 Theory:
+
+* Finds first occurrence of value
+* If found → returns iterator
+* If not found → returns end()
+
+Time Complexity: O(n)
+
+---
+
+## 📌 Syntax:
+
+```cpp
+find(start, end, value);
+```
+
+### Meaning:
+
+| Part  | Meaning           |
+| ----- | ----------------- |
+| start | start of range    |
+| end   | end of range      |
+| value | element to search |
+
+---
+
+## ✅ Example:
+
+```cpp
+auto it = find(v.begin(), v.end(), 8);
+
+if(it != v.end())
+    cout << "Found";
+```
+
+---
+
+# 🔵 3. count()
+
+---
+
+## 📘 Theory:
+
+Counts how many times a value appears.
+
+Time Complexity: O(n)
+
+---
+
+## 📌 Syntax:
+
+```cpp
+count(start, end, value);
+```
+
+---
+
+## ✅ Example:
+
+```cpp
+int c = count(v.begin(), v.end(), 2);
+cout << c;
+```
+
+---
+
+# 🔵 4. binary_search()
+
+---
+
+## 📘 Theory:
+
+* Works only on sorted container
+* Faster search
+* Time Complexity: O(log n)
+* Returns true or false
+
+---
+
+## 📌 Syntax:
+
+```cpp
+binary_search(start, end, value);
+```
+
+---
+
+## ✅ Example:
+
+```cpp
+sort(v.begin(), v.end());
+
+if(binary_search(v.begin(), v.end(), 5))
+    cout << "Found";
+```
+
+---
+
+# 🔵 5. lower_bound()
+
+---
+
+## 📘 Theory:
+
+Returns first element ≥ value.
+
+Container must be sorted.
+
+---
+
+## 📌 Syntax:
+
+```cpp
+lower_bound(start, end, value);
+```
+
+Returns iterator.
+
+---
+
+## ✅ Example:
+
+```cpp
+auto it = lower_bound(v.begin(), v.end(), 4);
+cout << *it;
+```
+
+---
+
+# 🔵 6. upper_bound()
+
+---
+
+## 📘 Theory:
+
+Returns first element > value.
+
+---
+
+## 📌 Syntax:
+
+```cpp
+upper_bound(start, end, value);
+```
+
+---
+
+# 🔵 7. reverse()
+
+---
+
+## 📘 Theory:
+
+Reverses container elements.
+
+Time Complexity: O(n)
+
+---
+
+## 📌 Syntax:
+
+```cpp
+reverse(start, end);
+```
+
+---
+
+## ✅ Example:
+
+```cpp
+reverse(v.begin(), v.end());
+```
+
+---
+
+# 🔵 8. max_element()
+
+---
+
+## 📘 Theory:
+
+Finds maximum element.
+
+Returns iterator.
+
+---
+
+## 📌 Syntax:
+
+```cpp
+max_element(start, end);
+```
+
+---
+
+## Example:
+
+```cpp
+auto it = max_element(v.begin(), v.end());
+cout << *it;
+```
+
+---
+
+# 🔵 9. min_element()
+
+Same as max but for minimum.
+
+---
+
+# 🔵 10. accumulate()
+
+Header:
+
+```cpp
+#include <numeric>
+```
+
+---
+
+## 📘 Theory:
+
+Used to calculate sum.
+
+---
+
+## 📌 Syntax:
+
+```cpp
+accumulate(start, end, initial_value);
+```
+
+### Meaning:
+
+| Part          | Meaning        |
+| ------------- | -------------- |
+| start         | start of range |
+| end           | end of range   |
+| initial_value | starting sum   |
+
+---
+
+## Example:
+
+```cpp
+int sum = accumulate(v.begin(), v.end(), 0);
+```
+
+---
+
+# 🔵 11. transform()
+
+---
+
+## 📘 Theory:
+
+Modifies elements using function.
+
+---
+
+## 📌 Syntax:
+
+```cpp
+transform(start, end, destination, function);
+```
+
+---
+
+## Example:
+
+```cpp
+transform(v.begin(), v.end(), v.begin(), [](int x){
+    return x * 2;
+});
+```
+
+---
+
+# 🔵 12. remove()
+
+---
+
+## 📘 Very Important Theory:
+
+remove() does NOT delete element.
+
+It only shifts unwanted elements to end.
+
+So use with erase:
+
+```cpp
+v.erase(remove(v.begin(), v.end(), value), v.end());
+```
+
+---
+
+# 🔷 Complete Example (All in One)
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+int main() {
+
+    vector<int> v = {4, 1, 7, 3, 7, 2};
+
+    sort(v.begin(), v.end());
+
+    cout << "Sorted: ";
+    for(int x : v) cout << x << " ";
+
+    cout << "\nCount of 7: "
+         << count(v.begin(), v.end(), 7);
+
+    cout << "\nSum: "
+         << accumulate(v.begin(), v.end(), 0);
+
+    auto it = max_element(v.begin(), v.end());
+    cout << "\nMax: " << *it;
+
+    return 0;
+}
+```
+
+---
+
+# 🔥 Final Important Concepts
+
+### ✅ Algorithms use Iterators
+
+### ✅ Most use range (start, end)
+
+### ✅ Some require sorted container
+
+### ✅ Some return iterator
+
+### ✅ Some return bool
+
+### ✅ Some modify container
+
+---
+
+# 🧠 Interview Important Algorithms
+
+* sort()
+* binary_search()
+* lower_bound()
+* upper_bound()
+* find()
+* count()
+* reverse()
+* accumulate()
+* max_element()
+* remove + erase trick
+
+---
+
+If you want, next I can:
+
+* 🔥 Explain each algorithm internally how it works
+* 🔥 Give diagram explanation
+* 🔥 Give practice questions
+* 🔥 Make revision notes
+
+Tell me what you want 👍

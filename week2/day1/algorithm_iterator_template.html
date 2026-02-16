@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Templates, Iterators & STL Algorithms - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #2a5298;
+            font-size: 2em;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        h3::before {
+            content: "▸";
+            color: #667eea;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        h4 {
+            color: #5a67d8;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin: 15px 0;
+            color: #4a5568;
+        }
+
+        .emoji-heading {
+            font-size: 1.8em;
+            color: #2d3748;
+            margin: 30px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+            color: #4a5568;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* VS Code Style Code Block */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        /* Syntax Highlighting */
+        .keyword {
+            color: #569cd6;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        .type {
+            color: #4ec9b0;
+        }
+
+        .operator {
+            color: #d4d4d4;
+        }
+
+        .info-box {
+            background: #ebf4ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fffaf0;
+            border-left: 4px solid #f6ad55;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .error-box {
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover {
+            background: #f7fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px 5px 5px 0;
+        }
+
+        .badge-success {
+            background: #48bb78;
+        }
+
+        .badge-warning {
+            background: #f6ad55;
+        }
+
+        .badge-info {
+            background: #4299e1;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            margin: 50px 0;
+            border-radius: 2px;
+        }
+
+        .highlight-text {
+            background: #fef08a;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .reference-link {
+            display: inline-block;
+            background: #edf2f7;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            color: #2d3748;
+            text-decoration: none;
+            border: 1px solid #cbd5e0;
+        }
+
+        .reference-link:hover {
+            background: #e2e8f0;
+            border-color: #667eea;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .toc {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 10px 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            pre {
+                font-size: 12px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 C++ Complete Guide</h1>
+            <p>Templates • Iterators • STL Algorithms</p>
+        </header>
+
+        <div class="content">
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>📋 Table of Contents</h3>
+                <ul>
+                    <li><a href="#templates">1. C++ Templates</a></li>
+                    <li><a href="#iterators">2. Iterators in C++</a></li>
+                    <li><a href="#algorithms">3. STL Algorithms</a></li>
+                </ul>
+            </div>
+
+            <!-- SECTION 1: TEMPLATES -->
+            <section id="templates">
+                <h2>🔷 Part 1: C++ Templates</h2>
+
+                <p>C++ Templates allow you to write generic code, meaning the same function or class can work with different data types without rewriting code again and again.</p>
+
+                <div class="info-box">
+                    <strong>Instead of writing:</strong>
+                    <pre><code><span class="keyword">int</span> <span class="function">max</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b);
+<span class="keyword">double</span> <span class="function">max</span>(<span class="keyword">double</span> a, <span class="keyword">double</span> b);
+<span class="keyword">char</span> <span class="function">max</span>(<span class="keyword">char</span> a, <span class="keyword">char</span> b);</code></pre>
+                    <p>We write one template, and the compiler generates type-specific versions automatically.</p>
+                </div>
+
+                <h3>What is a Template?</h3>
+                <p>A template is a blueprint for creating:</p>
+                <ul>
+                    <li><span class="badge-success badge">✓</span> Generic Functions</li>
+                    <li><span class="badge-success badge">✓</span> Generic Classes</li>
+                    <li><span class="badge-success badge">✓</span> Generic Variables (C++14 onwards)</li>
+                </ul>
+
+                <h3>Why We Use Templates?</h3>
+                <ul>
+                    <li>Avoid code duplication</li>
+                    <li>Provide type safety (better than void*)</li>
+                    <li>Work at compile time</li>
+                    <li>Base of STL (vector, map, sort, etc.)</li>
+                </ul>
+
+                <div class="success-box">
+                    <strong>Examples in STL:</strong>
+                    <ul>
+                        <li><code>vector&lt;int&gt;</code></li>
+                        <li><code>map&lt;string, int&gt;</code></li>
+                        <li><code>sort()</code></li>
+                    </ul>
+                    <p>All use templates internally.</p>
+                </div>
+
+                <h3>Basic Syntax of Template</h3>
+                <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+entity_definition
+
+<span class="comment">// OR</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;
+entity_definition</code></pre>
+
+                <div class="info-box">
+                    <strong>Note:</strong> <code>typename</code> and <code>class</code> are interchangeable.
+                </div>
+
+                <h3>Function Template</h3>
+                <h4>Syntax</h4>
+                <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+return_type <span class="function">function_name</span>(parameters)
+{
+    <span class="comment">// logic</span>
+}</code></pre>
+
+                <h4>Example: Maximum of Two Values</h4>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="comment">// Template definition</span>
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+T <span class="function">myMax</span>(T x, T y)
+{
+    <span class="keyword">return</span> (x &gt; y) ? x : y;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>()
+{
+    cout &lt;&lt; <span class="function">myMax</span>&lt;<span class="keyword">int</span>&gt;(<span class="number">3</span>, <span class="number">7</span>) &lt;&lt; endl;        <span class="comment">// int version</span>
+    cout &lt;&lt; <span class="function">myMax</span>&lt;<span class="keyword">double</span>&gt;(<span class="number">3.5</span>, <span class="number">7.5</span>) &lt;&lt; endl; <span class="comment">// double version</span>
+    cout &lt;&lt; <span class="function">myMax</span>&lt;<span class="keyword">char</span>&gt;(<span class="string">'g'</span>, <span class="string">'e'</span>) &lt;&lt; endl;   <span class="comment">// char version</span>
+}</code></pre>
+
+                <h4>Output</h4>
+                <pre><code><span class="number">7</span>
+<span class="number">7.5</span>
+g</code></pre>
+
+                <h4>Explanation Step-by-Step</h4>
+                <div class="info-box">
+                    <p><strong>1️⃣ template &lt;typename T&gt;</strong></p>
+                    <ul>
+                        <li>T is a placeholder type</li>
+                        <li>It will be replaced with actual type at compile time</li>
+                    </ul>
+
+                    <p><strong>2️⃣ T myMax(T x, T y)</strong></p>
+                    <ul>
+                        <li>Function works with type T</li>
+                        <li>Both parameters must be same type</li>
+                    </ul>
+
+                    <p><strong>3️⃣ myMax&lt;int&gt;(3,7)</strong></p>
+                    <p>Compiler generates:</p>
+                    <pre><code><span class="keyword">int</span> <span class="function">myMax</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</code></pre>
+                    <p>Similarly for double and char.</p>
+                </div>
+
+                <div class="success-box">
+                    <strong>This process is called:</strong>
+                    <p class="highlight-text">Template Instantiation</p>
+                </div>
+
+                <h3>Template Argument Deduction</h3>
+                <p>You don't always need to write <code>&lt;int&gt;</code>.</p>
+                <pre><code>cout &lt;&lt; <span class="function">myMax</span>(<span class="number">3</span>, <span class="number">7</span>);   <span class="comment">// compiler automatically detects int</span></code></pre>
+
+                <div class="info-box">
+                    <strong>This is called:</strong> Template Argument Deduction<br>
+                    Works since C++98 for functions.
+                </div>
+
+                <h3>Class Template</h3>
+                <p>Used when class logic is independent of data type.</p>
+
+                <h4>Syntax</h4>
+                <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">class</span> <span class="type">ClassName</span>
+{
+    T data;
+};</code></pre>
+
+                <h4>Example</h4>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">class</span> <span class="type">Geek</span>
+{
+<span class="keyword">public</span>:
+    T x;
+    T y;
+
+    <span class="comment">// Constructor (Initializer List)</span>
+    <span class="function">Geek</span>(T val1, T val2) : x(val1), y(val2)
+    {
+    }
+
+    <span class="keyword">void</span> <span class="function">getValues</span>()
+    {
+        cout &lt;&lt; x &lt;&lt; <span class="string">" "</span> &lt;&lt; y;
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>()
+{
+    Geek&lt;<span class="keyword">int</span>&gt; intGeek(<span class="number">10</span>, <span class="number">20</span>);
+    Geek&lt;<span class="keyword">double</span>&gt; doubleGeek(<span class="number">3.14</span>, <span class="number">6.28</span>);
+
+    intGeek.<span class="function">getValues</span>();
+    cout &lt;&lt; endl;
+    doubleGeek.<span class="function">getValues</span>();
+}</code></pre>
+
+                <h4>Explanation</h4>
+                <div class="info-box">
+                    <p><strong>template &lt;typename T&gt;</strong> - Makes entire class generic.</p>
+                    <p><strong>Geek&lt;int&gt;</strong> - Compiler creates:</p>
+                    <pre><code><span class="keyword">class</span> <span class="type">Geek</span>&lt;<span class="keyword">int</span>&gt;</code></pre>
+                    <p><strong>Constructor:</strong></p>
+                    <pre><code><span class="function">Geek</span>(T val1, T val2) : x(val1), y(val2)</code></pre>
+                    <p>This is <strong>Constructor Initializer List</strong><br>
+                    It means: x is initialized with val1, y is initialized with val2</p>
+                </div>
+
+                <h3>Multiple Template Parameters</h3>
+                <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2, <span class="keyword">typename</span> T3&gt;
+<span class="keyword">class</span> <span class="type">Geek</span>
+{
+<span class="keyword">public</span>:
+    T1 x;
+    T2 y;
+    T3 z;
+
+    <span class="function">Geek</span>(T1 val1, T2 val2, T3 val3) : x(val1), y(val2), z(val3)
+    {
+    }
+
+    <span class="keyword">void</span> <span class="function">getValues</span>()
+    {
+        cout &lt;&lt; x &lt;&lt; <span class="string">" "</span> &lt;&lt; y &lt;&lt; <span class="string">" "</span> &lt;&lt; z;
+    }
+};</code></pre>
+
+                <p><strong>Usage:</strong></p>
+                <pre><code>Geek&lt;<span class="keyword">int</span>, <span class="keyword">double</span>, <span class="type">string</span>&gt; obj(<span class="number">10</span>, <span class="number">3.14</span>, <span class="string">"Hello"</span>);</code></pre>
+
+                <h3>Default Template Arguments</h3>
+                <p>Just like function default parameters.</p>
+                <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2 = <span class="keyword">double</span>, <span class="keyword">typename</span> T3 = <span class="type">string</span>&gt;
+<span class="keyword">class</span> <span class="type">Geek</span>
+{
+    <span class="comment">// class body</span>
+};</code></pre>
+
+                <p><strong>Usage:</strong></p>
+                <pre><code>Geek&lt;<span class="keyword">char</span>&gt; obj(<span class="string">'A'</span>, <span class="number">3.14</span>, <span class="string">"World"</span>);</code></pre>
+
+                <div class="info-box">
+                    <p>Here:</p>
+                    <ul>
+                        <li>T1 = char</li>
+                        <li>T2 = double (default)</li>
+                        <li>T3 = string (default)</li>
+                    </ul>
+                </div>
+
+                <h3>Variable Templates (C++14)</h3>
+                <h4>Syntax</h4>
+                <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">constexpr</span> T pi = T(<span class="number">3.14159</span>);</code></pre>
+
+                <h4>Example</h4>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">constexpr</span> T pi = T(<span class="number">3.14159</span>);
+
+<span class="keyword">int</span> <span class="function">main</span>()
+{
+    cout &lt;&lt; pi&lt;<span class="keyword">float</span>&gt; &lt;&lt; endl;
+    cout &lt;&lt; pi&lt;<span class="keyword">double</span>&gt;;
+}</code></pre>
+
+                <div class="info-box">
+                    <strong>Why constexpr?</strong>
+                    <ul>
+                        <li>Ensures value is evaluated at compile time</li>
+                        <li>Better optimization</li>
+                    </ul>
+                </div>
+
+                <h3>Non-Type Template Parameters</h3>
+                <p>Templates can also take constant values.</p>
+
+                <h4>Syntax</h4>
+                <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> size&gt;</code></pre>
+
+                <h4>Example</h4>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">int</span> max&gt;
+<span class="keyword">int</span> <span class="function">arrMin</span>(T arr[], <span class="keyword">int</span> n)
+{
+    <span class="keyword">int</span> m = max;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)
+    {
+        <span class="keyword">if</span> (arr[i] &lt; m)
+            m = arr[i];
+    }
+    <span class="keyword">return</span> m;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>()
+{
+    <span class="keyword">int</span> arr1[] = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">15</span>, <span class="number">12</span>};
+    cout &lt;&lt; <span class="function">arrMin</span>&lt;<span class="keyword">int</span>, <span class="number">10000</span>&gt;(arr1, <span class="number">4</span>);
+}</code></pre>
+
+                <div class="info-box">
+                    <p>Here: <strong>10000</strong> is a compile-time constant used as initial maximum value</p>
+                </div>
+
+                <h3>Class Template Argument Deduction (C++17)</h3>
+                <table>
+                    <tr>
+                        <th>Before C++17</th>
+                        <th>After C++17</th>
+                    </tr>
+                    <tr>
+                        <td><code>Geek&lt;int&gt; obj(10, 20);</code></td>
+                        <td><code>Geek obj(10, 20);  // compiler deduces type</code></td>
+                    </tr>
+                </table>
+
+                <h3>Important Rules</h3>
+                <div class="error-box">
+                    <strong>❌ This will not work:</strong>
+                    <pre><code><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">void</span> <span class="function">func</span>(T a, T b);
+
+<span class="comment">// Calling:</span>
+<span class="function">func</span>(<span class="number">10</span>, <span class="number">3.5</span>); <span class="comment">// Error</span></code></pre>
+                    <p><strong>Because:</strong> T must be same type for both parameters.</p>
+                </div>
+
+                <h3>Template Specialization</h3>
+                <p>We can create special behavior for specific types.</p>
+                <pre><code><span class="keyword">template</span> &lt;&gt;
+<span class="keyword">char</span> <span class="function">myMax</span>&lt;<span class="keyword">char</span>&gt;(<span class="keyword">char</span> a, <span class="keyword">char</span> b)
+{
+    cout &lt;&lt; <span class="string">"Char specialization used\n"</span>;
+    <span class="keyword">return</span> (a &gt; b) ? a : b;
+}</code></pre>
+                <p>Now if char is used → this version runs.</p>
+
+                <h3>Internally How Templates Work</h3>
+                <div class="info-box">
+                    <ul>
+                        <li>Template is not real code.</li>
+                        <li>Compiler generates real function/class when used.</li>
+                        <li>Happens at compile time.</li>
+                    </ul>
+                    <p><strong>This is why:</strong></p>
+                    <ul>
+                        <li>Templates increase compile time</li>
+                        <li>But give high performance</li>
+                    </ul>
+                </div>
+
+                <h3>Templates in STL</h3>
+                <p>STL is built using templates:</p>
+                <pre><code>vector&lt;<span class="keyword">int</span>&gt;
+map&lt;<span class="type">string</span>, <span class="keyword">int</span>&gt;
+<span class="function">sort</span>(begin, end)
+pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;</code></pre>
+
+                <p><strong>Example:</strong></p>
+                <pre><code>pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; p;</code></pre>
+                <p>Means: First element int, Second element int</p>
+
+                <h3>Final Summary</h3>
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Function Template</td>
+                        <td>Generic functions</td>
+                    </tr>
+                    <tr>
+                        <td>Class Template</td>
+                        <td>Generic classes</td>
+                    </tr>
+                    <tr>
+                        <td>Variable Template</td>
+                        <td>Generic variables (C++14)</td>
+                    </tr>
+                    <tr>
+                        <td>Non-type Parameter</td>
+                        <td>Constant value parameter</td>
+                    </tr>
+                    <tr>
+                        <td>Default Arguments</td>
+                        <td>Default template types</td>
+                    </tr>
+                    <tr>
+                        <td>Deduction</td>
+                        <td>Compiler auto-detects type</td>
+                    </tr>
+                    <tr>
+                        <td>Specialization</td>
+                        <td>Custom behavior for specific type</td>
+                    </tr>
+                </table>
+
+                <a href="https://www.geeksforgeeks.org/cpp/templates-cpp/" class="reference-link" target="_blank">
+                    📖 Reference: GeeksforGeeks - C++ Templates
+                </a>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 2: ITERATORS -->
+            <section id="iterators">
+                <h2>🔷 Part 2: Iterators in C++</h2>
+
+                <h3>What is an Iterator?</h3>
+                <p>An Iterator in C++ STL is an object that works like a pointer and is used to traverse (move through) elements of a container.</p>
+
+                <div class="info-box">
+                    <p>👉 It connects containers (like vector, list, map) with algorithms (like sort, find, count).</p>
+                </div>
+
+                <h3>Why Iterators Are Important?</h3>
+                <ul>
+                    <li>Traverse containers without exposing internal structure</li>
+                    <li>Work with STL algorithms</li>
+                    <li>Provide uniform way to access different containers</li>
+                    <li>Increase code reusability</li>
+                </ul>
+
+                <h3>Basic Syntax of Iterator</h3>
+                <h4>1️⃣ General Syntax</h4>
+                <pre><code>container_type::iterator it;</code></pre>
+                <p><strong>Example:</strong></p>
+                <pre><code>vector&lt;<span class="keyword">int</span>&gt;::iterator it;</code></pre>
+
+                <h4>2️⃣ Modern Way (Recommended)</h4>
+                <pre><code><span class="keyword">auto</span> it = container.<span class="function">begin</span>();</code></pre>
+
+                <h3>Basic Example</h3>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>()
+{
+    vector&lt;<span class="keyword">int</span>&gt; v = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>};
+
+    <span class="comment">// Declaring iterator</span>
+    vector&lt;<span class="keyword">int</span>&gt;::iterator it;
+
+    <span class="comment">// Traversing container</span>
+    <span class="keyword">for</span> (it = v.<span class="function">begin</span>(); it != v.<span class="function">end</span>(); ++it)
+    {
+        cout &lt;&lt; *it &lt;&lt; <span class="string">" "</span>;   <span class="comment">// Dereferencing iterator</span>
+    }
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <h4>🔎 Explanation</h4>
+                <table>
+                    <tr>
+                        <th>Part</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>v.begin()</td>
+                        <td>Points to first element</td>
+                    </tr>
+                    <tr>
+                        <td>v.end()</td>
+                        <td>Points after last element</td>
+                    </tr>
+                    <tr>
+                        <td>*it</td>
+                        <td>Access value</td>
+                    </tr>
+                    <tr>
+                        <td>++it</td>
+                        <td>Move to next element</td>
+                    </tr>
+                </table>
+
+                <h3>Container Iterator Member Functions</h3>
+                <p>These functions return iterators.</p>
+                <table>
+                    <tr>
+                        <th>Function</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>begin()</td>
+                        <td>Iterator to first element</td>
+                    </tr>
+                    <tr>
+                        <td>end()</td>
+                        <td>Iterator after last element</td>
+                    </tr>
+                    <tr>
+                        <td>cbegin()</td>
+                        <td>Constant iterator (read-only)</td>
+                    </tr>
+                    <tr>
+                        <td>cend()</td>
+                        <td>Constant end iterator</td>
+                    </tr>
+                    <tr>
+                        <td>rbegin()</td>
+                        <td>Reverse begin</td>
+                    </tr>
+                    <tr>
+                        <td>rend()</td>
+                        <td>Reverse end</td>
+                    </tr>
+                    <tr>
+                        <td>crbegin()</td>
+                        <td>Constant reverse begin</td>
+                    </tr>
+                    <tr>
+                        <td>crend()</td>
+                        <td>Constant reverse end</td>
+                    </tr>
+                </table>
+
+                <h3>Example Covering All Iterator Types</h3>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>()
+{
+    vector&lt;<span class="keyword">int</span>&gt; vec = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>};
+
+    <span class="comment">// Normal iterator</span>
+    cout &lt;&lt; <span class="string">"Forward: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> it = vec.<span class="function">begin</span>(); it != vec.<span class="function">end</span>(); ++it)
+        cout &lt;&lt; *it &lt;&lt; <span class="string">" "</span>;
+
+    cout &lt;&lt; endl;
+
+    <span class="comment">// Constant iterator</span>
+    cout &lt;&lt; <span class="string">"Constant Forward: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> it = vec.<span class="function">cbegin</span>(); it != vec.<span class="function">cend</span>(); ++it)
+        cout &lt;&lt; *it &lt;&lt; <span class="string">" "</span>;
+
+    cout &lt;&lt; endl;
+
+    <span class="comment">// Reverse iterator</span>
+    cout &lt;&lt; <span class="string">"Reverse: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> it = vec.<span class="function">rbegin</span>(); it != vec.<span class="function">rend</span>(); ++it)
+        cout &lt;&lt; *it &lt;&lt; <span class="string">" "</span>;
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <h3>Iterator Operations (Very Important)</h3>
+                <p>There are 5 main operations.</p>
+
+                <h4>1️⃣ Dereferencing (*)</h4>
+                <p>Used to access or modify value.</p>
+                <pre><code><span class="keyword">auto</span> it = v.<span class="function">begin</span>();
+cout &lt;&lt; *it;   <span class="comment">// Access</span>
+*it = <span class="number">100</span>;     <span class="comment">// Modify</span></code></pre>
+
+                <h4>2️⃣ Increment / Decrement</h4>
+                <pre><code>++it;  <span class="comment">// Move forward</span>
+--it;  <span class="comment">// Move backward (only bidirectional+)</span></code></pre>
+
+                <h4>3️⃣ Add / Subtract Integer (Only Random Access Iterators)</h4>
+                <p>Works only with: vector, deque, array</p>
+                <pre><code>it = it + <span class="number">2</span>;
+it = it - <span class="number">1</span>;</code></pre>
+
+                <h4>4️⃣ Subtract Two Iterators</h4>
+                <pre><code><span class="keyword">auto</span> it1 = v.<span class="function">begin</span>();
+<span class="keyword">auto</span> it2 = v.<span class="function">begin</span>() + <span class="number">3</span>;
+
+cout &lt;&lt; it2 - it1;  <span class="comment">// Distance</span></code></pre>
+
+                <h4>5️⃣ Comparison Operators</h4>
+                <pre><code><span class="keyword">if</span> (it1 != it2)
+<span class="keyword">if</span> (it1 &lt; it2)   <span class="comment">// Only random access</span></code></pre>
+
+                <h3>Types of Iterators in C++</h3>
+
+                <h4>1️⃣ Input Iterator</h4>
+                <ul>
+                    <li>Read only</li>
+                    <li>Single pass (traverse only once)</li>
+                    <li>Example: istream_iterator</li>
+                    <li>Supports: *, ++, ==, !=</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Single Pass Iterator:</strong> You can traverse elements only once from start to end. Once you move forward, you cannot reliably go back or re-traverse.
+                </div>
+
+                <h4>2️⃣ Output Iterator</h4>
+                <ul>
+                    <li>Write only</li>
+                    <li>Single pass</li>
+                    <li>Example: ostream_iterator</li>
+                    <li>Supports: *, ++</li>
+                </ul>
+
+                <h4>3️⃣ Forward Iterator</h4>
+                <ul>
+                    <li>Read & Write</li>
+                    <li>Multi-pass</li>
+                    <li>Example: forward_list, unordered_set</li>
+                    <li>Supports: *, ++, ==, !=</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Multi-Pass Iterator:</strong> Allows you to traverse the container multiple times, revisit elements, and use multiple copies of the same iterator safely.
+                </div>
+
+                <h4>4️⃣ Bidirectional Iterator</h4>
+                <ul>
+                    <li>Forward + Backward</li>
+                    <li>Example: list, set, map, multiset, multimap</li>
+                    <li>Supports: *, ++, --, ==, !=</li>
+                </ul>
+
+                <h4>5️⃣ Random Access Iterator (Most Powerful)</h4>
+                <ul>
+                    <li>Example: vector, deque, array</li>
+                    <li>Supports: *, ++, --, +, -, [], &lt;, &gt;</li>
+                </ul>
+
+                <h3>Iterator Adaptors</h3>
+                <p>Special iterators built on normal iterators.</p>
+
+                <h4>1️⃣ Reverse Iterator</h4>
+                <pre><code>vec.<span class="function">rbegin</span>()
+vec.<span class="function">rend</span>()</code></pre>
+
+                <h4>2️⃣ Stream Iterators</h4>
+                <pre><code>istream_iterator&lt;<span class="keyword">int</span>&gt; input(cin);
+ostream_iterator&lt;<span class="keyword">int</span>&gt; output(cout, <span class="string">" "</span>);</code></pre>
+
+                <h4>3️⃣ Inserter Iterators</h4>
+                <table>
+                    <tr>
+                        <th>Function</th>
+                        <th>Use</th>
+                    </tr>
+                    <tr>
+                        <td>back_inserter()</td>
+                        <td>Insert at end</td>
+                    </tr>
+                    <tr>
+                        <td>front_inserter()</td>
+                        <td>Insert at front</td>
+                    </tr>
+                    <tr>
+                        <td>inserter()</td>
+                        <td>Insert at position</td>
+                    </tr>
+                </table>
+
+                <p><strong>Example:</strong></p>
+                <pre><code>vector&lt;<span class="keyword">int</span>&gt; v;
+back_insert_iterator&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; it = <span class="function">back_inserter</span>(v);</code></pre>
+
+                <h4>4️⃣ Move Iterator</h4>
+                <p>Used for move semantics:</p>
+                <pre><code>move_iterator&lt;vector&lt;<span class="keyword">int</span>&gt;::iterator&gt;</code></pre>
+                <p>Transfers ownership (no copy).</p>
+
+                <h3>Iterator Utility Functions</h3>
+                <p>Include <code>&lt;iterator&gt;</code></p>
+
+                <table>
+                    <tr>
+                        <th>Function</th>
+                        <th>Syntax</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>advance</td>
+                        <td>advance(it, n)</td>
+                        <td>Move iterator</td>
+                    </tr>
+                    <tr>
+                        <td>next</td>
+                        <td>next(it, n)</td>
+                        <td>Returns new iterator forward</td>
+                    </tr>
+                    <tr>
+                        <td>prev</td>
+                        <td>prev(it, n)</td>
+                        <td>Returns new iterator backward</td>
+                    </tr>
+                    <tr>
+                        <td>distance</td>
+                        <td>distance(it1, it2)</td>
+                        <td>Number of elements</td>
+                    </tr>
+                    <tr>
+                        <td>begin</td>
+                        <td>begin(container)</td>
+                        <td>First iterator</td>
+                    </tr>
+                    <tr>
+                        <td>end</td>
+                        <td>end(container)</td>
+                        <td>End iterator</td>
+                    </tr>
+                </table>
+
+                <h3>Full Example Using Utility Functions</h3>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;iterator&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>()
+{
+    vector&lt;<span class="keyword">int</span>&gt; v = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>};
+
+    <span class="keyword">auto</span> it = v.<span class="function">begin</span>();
+
+    <span class="function">advance</span>(it, <span class="number">2</span>);
+    cout &lt;&lt; <span class="string">"After advance: "</span> &lt;&lt; *it &lt;&lt; endl;
+
+    <span class="keyword">auto</span> it2 = <span class="function">next</span>(it, <span class="number">1</span>);
+    cout &lt;&lt; <span class="string">"Using next: "</span> &lt;&lt; *it2 &lt;&lt; endl;
+
+    cout &lt;&lt; <span class="string">"Distance: "</span> &lt;&lt; <span class="function">distance</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <h3>Applications of Iterators</h3>
+
+                <h4>1️⃣ Traversing Container</h4>
+                <pre><code><span class="keyword">for</span>(<span class="keyword">auto</span> it = s.<span class="function">begin</span>(); it != s.<span class="function">end</span>(); ++it)</code></pre>
+
+                <h4>2️⃣ Reverse Traversal</h4>
+                <pre><code><span class="keyword">for</span>(<span class="keyword">auto</span> it = v.<span class="function">rbegin</span>(); it != v.<span class="function">rend</span>(); ++it)</code></pre>
+
+                <h4>3️⃣ Using with Algorithms</h4>
+                <pre><code><span class="function">count</span>(vec.<span class="function">begin</span>(), vec.<span class="function">end</span>(), <span class="number">10</span>);
+<span class="function">find</span>(vec.<span class="function">begin</span>(), vec.<span class="function">end</span>(), <span class="number">20</span>);
+<span class="function">sort</span>(vec.<span class="function">begin</span>(), vec.<span class="function">end</span>());</code></pre>
+
+                <h3>Important Interview Points</h3>
+                <div class="success-box">
+                    <ul>
+                        <li>✔ end() points AFTER last element</li>
+                        <li>✔ Not all containers support arithmetic</li>
+                        <li>✔ Stack & Queue don't support iterators</li>
+                        <li>✔ Use auto for clean code</li>
+                        <li>✔ Prefer range-based loop when possible</li>
+                    </ul>
+                </div>
+
+                <h3>Difference: Pointer vs Iterator</h3>
+                <table>
+                    <tr>
+                        <th>Pointer</th>
+                        <th>Iterator</th>
+                    </tr>
+                    <tr>
+                        <td>Works on arrays</td>
+                        <td>Works on containers</td>
+                    </tr>
+                    <tr>
+                        <td>Raw memory access</td>
+                        <td>Abstracted access</td>
+                    </tr>
+                    <tr>
+                        <td>Less safe</td>
+                        <td>Safer</td>
+                    </tr>
+                </table>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 3: STL ALGORITHMS -->
+            <section id="algorithms">
+                <h2>🔷 Part 3: STL Algorithms in C++</h2>
+
+                <h3>What is STL Algorithm?</h3>
+                <p>In C++, <strong>STL Algorithms</strong> are ready-made functions that perform operations like:</p>
+                <ul>
+                    <li>Searching</li>
+                    <li>Sorting</li>
+                    <li>Counting</li>
+                    <li>Reversing</li>
+                    <li>Replacing</li>
+                    <li>Summing</li>
+                    <li>Rearranging</li>
+                </ul>
+
+                <p>They are available in:</p>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>   <span class="comment">// most algorithms</span>
+<span class="keyword">#include</span> <span class="string">&lt;numeric&gt;</span>     <span class="comment">// numeric algorithms like accumulate</span></code></pre>
+
+                <h3>Important Theory</h3>
+
+                <div class="warning-box">
+                    <h4>✅ Algorithms do NOT work directly on containers</h4>
+                    <p>They work on <strong>iterators</strong>.</p>
+                    <p><strong>Example:</strong></p>
+                    <pre><code><span class="function">sort</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());</code></pre>
+                    <p>Here:</p>
+                    <ul>
+                        <li>v.begin() → starting iterator</li>
+                        <li>v.end() → ending iterator</li>
+                    </ul>
+                    <p>So algorithm works on <strong>range</strong>.</p>
+                </div>
+
+                <h3>What is Range?</h3>
+                <p>Range means:</p>
+                <pre><code>[start, end)</code></pre>
+                <div class="info-box">
+                    <ul>
+                        <li>👉 Includes start</li>
+                        <li>👉 Excludes end</li>
+                    </ul>
+                    <p>So:</p>
+                    <pre><code><span class="function">sort</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());</code></pre>
+                    <p>Means sort from first element to last element.</p>
+                </div>
+
+                <h3>Basic Structure of Algorithm</h3>
+                <p>Most algorithms follow this pattern:</p>
+                <pre><code><span class="function">algorithm_name</span>(start_iterator, end_iterator, extra_parameters);</code></pre>
+
+                <h3>Important STL Algorithms with FULL THEORY + SYNTAX</h3>
+
+                <!-- sort() -->
+                <h3>🔵 1. sort()</h3>
+                
+                <h4>📘 Theory:</h4>
+                <ul>
+                    <li>Used to sort elements</li>
+                    <li>Default: ascending order</li>
+                    <li>Time Complexity: O(n log n)</li>
+                    <li>Works only on random access iterators (vector, array, deque)</li>
+                </ul>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">sort</span>(start, end);</code></pre>
+
+                <table>
+                    <tr>
+                        <th>Part</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>sort</td>
+                        <td>function name</td>
+                    </tr>
+                    <tr>
+                        <td>start</td>
+                        <td>starting iterator</td>
+                    </tr>
+                    <tr>
+                        <td>end</td>
+                        <td>ending iterator</td>
+                    </tr>
+                </table>
+
+                <h4>✅ Example:</h4>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; v = {<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">1</span>};
+
+    <span class="function">sort</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());
+
+    <span class="keyword">for</span>(<span class="keyword">int</span> x : v)
+        cout &lt;&lt; x &lt;&lt; <span class="string">" "</span>;
+}</code></pre>
+
+                <p><strong>Output:</strong></p>
+                <pre><code><span class="number">1 2 5 8</span></code></pre>
+
+                <h4>🔥 Custom Sorting (Descending)</h4>
+                <pre><code><span class="function">sort</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), greater&lt;<span class="keyword">int</span>&gt;());</code></pre>
+
+                <p><strong>Syntax Explanation:</strong></p>
+                <pre><code><span class="function">sort</span>(start, end, comparator);</code></pre>
+                <p>Comparator decides order.</p>
+
+                <!-- find() -->
+                <h3>🔵 2. find()</h3>
+
+                <h4>📘 Theory:</h4>
+                <ul>
+                    <li>Finds first occurrence of value</li>
+                    <li>If found → returns iterator</li>
+                    <li>If not found → returns end()</li>
+                    <li>Time Complexity: O(n)</li>
+                </ul>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">find</span>(start, end, value);</code></pre>
+
+                <table>
+                    <tr>
+                        <th>Part</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>start</td>
+                        <td>start of range</td>
+                    </tr>
+                    <tr>
+                        <td>end</td>
+                        <td>end of range</td>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>element to search</td>
+                    </tr>
+                </table>
+
+                <h4>✅ Example:</h4>
+                <pre><code><span class="keyword">auto</span> it = <span class="function">find</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), <span class="number">8</span>);
+
+<span class="keyword">if</span>(it != v.<span class="function">end</span>())
+    cout &lt;&lt; <span class="string">"Found"</span>;</code></pre>
+
+                <!-- count() -->
+                <h3>🔵 3. count()</h3>
+
+                <h4>📘 Theory:</h4>
+                <p>Counts how many times a value appears.</p>
+                <p>Time Complexity: O(n)</p>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">count</span>(start, end, value);</code></pre>
+
+                <h4>✅ Example:</h4>
+                <pre><code><span class="keyword">int</span> c = <span class="function">count</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), <span class="number">2</span>);
+cout &lt;&lt; c;</code></pre>
+
+                <!-- binary_search() -->
+                <h3>🔵 4. binary_search()</h3>
+
+                <h4>📘 Theory:</h4>
+                <ul>
+                    <li>Works only on sorted container</li>
+                    <li>Faster search</li>
+                    <li>Time Complexity: O(log n)</li>
+                    <li>Returns true or false</li>
+                </ul>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">binary_search</span>(start, end, value);</code></pre>
+
+                <h4>✅ Example:</h4>
+                <pre><code><span class="function">sort</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());
+
+<span class="keyword">if</span>(<span class="function">binary_search</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), <span class="number">5</span>))
+    cout &lt;&lt; <span class="string">"Found"</span>;</code></pre>
+
+                <!-- lower_bound() -->
+                <h3>🔵 5. lower_bound()</h3>
+
+                <h4>📘 Theory:</h4>
+                <p>Returns first element ≥ value.</p>
+                <p>Container must be sorted.</p>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">lower_bound</span>(start, end, value);</code></pre>
+                <p>Returns iterator.</p>
+
+                <h4>✅ Example:</h4>
+                <pre><code><span class="keyword">auto</span> it = <span class="function">lower_bound</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), <span class="number">4</span>);
+cout &lt;&lt; *it;</code></pre>
+
+                <!-- upper_bound() -->
+                <h3>🔵 6. upper_bound()</h3>
+
+                <h4>📘 Theory:</h4>
+                <p>Returns first element &gt; value.</p>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">upper_bound</span>(start, end, value);</code></pre>
+
+                <!-- reverse() -->
+                <h3>🔵 7. reverse()</h3>
+
+                <h4>📘 Theory:</h4>
+                <p>Reverses container elements.</p>
+                <p>Time Complexity: O(n)</p>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">reverse</span>(start, end);</code></pre>
+
+                <h4>✅ Example:</h4>
+                <pre><code><span class="function">reverse</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());</code></pre>
+
+                <!-- max_element() -->
+                <h3>🔵 8. max_element()</h3>
+
+                <h4>📘 Theory:</h4>
+                <p>Finds maximum element.</p>
+                <p>Returns iterator.</p>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">max_element</span>(start, end);</code></pre>
+
+                <h4>Example:</h4>
+                <pre><code><span class="keyword">auto</span> it = <span class="function">max_element</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());
+cout &lt;&lt; *it;</code></pre>
+
+                <!-- min_element() -->
+                <h3>🔵 9. min_element()</h3>
+                <p>Same as max but for minimum.</p>
+
+                <!-- accumulate() -->
+                <h3>🔵 10. accumulate()</h3>
+                <p>Header:</p>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;numeric&gt;</span></code></pre>
+
+                <h4>📘 Theory:</h4>
+                <p>Used to calculate sum.</p>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">accumulate</span>(start, end, initial_value);</code></pre>
+
+                <table>
+                    <tr>
+                        <th>Part</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>start</td>
+                        <td>start of range</td>
+                    </tr>
+                    <tr>
+                        <td>end</td>
+                        <td>end of range</td>
+                    </tr>
+                    <tr>
+                        <td>initial_value</td>
+                        <td>starting sum</td>
+                    </tr>
+                </table>
+
+                <h4>Example:</h4>
+                <pre><code><span class="keyword">int</span> sum = <span class="function">accumulate</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), <span class="number">0</span>);</code></pre>
+
+                <!-- transform() -->
+                <h3>🔵 11. transform()</h3>
+
+                <h4>📘 Theory:</h4>
+                <p>Modifies elements using function.</p>
+
+                <h4>📌 Syntax:</h4>
+                <pre><code><span class="function">transform</span>(start, end, destination, function);</code></pre>
+
+                <h4>Example:</h4>
+                <pre><code><span class="function">transform</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), v.<span class="function">begin</span>(), [](<span class="keyword">int</span> x){
+    <span class="keyword">return</span> x * <span class="number">2</span>;
+});</code></pre>
+
+                <!-- remove() -->
+                <h3>🔵 12. remove()</h3>
+
+                <div class="warning-box">
+                    <h4>📘 Very Important Theory:</h4>
+                    <p>remove() does NOT delete element.</p>
+                    <p>It only shifts unwanted elements to end.</p>
+                    <p>So use with erase:</p>
+                    <pre><code>v.<span class="function">erase</span>(<span class="function">remove</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), value), v.<span class="function">end</span>());</code></pre>
+                </div>
+
+                <h3>Complete Example (All in One)</h3>
+                <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;numeric&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+
+    vector&lt;<span class="keyword">int</span>&gt; v = {<span class="number">4</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">2</span>};
+
+    <span class="function">sort</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());
+
+    cout &lt;&lt; <span class="string">"Sorted: "</span>;
+    <span class="keyword">for</span>(<span class="keyword">int</span> x : v) cout &lt;&lt; x &lt;&lt; <span class="string">" "</span>;
+
+    cout &lt;&lt; <span class="string">"\nCount of 7: "</span>
+         &lt;&lt; <span class="function">count</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), <span class="number">7</span>);
+
+    cout &lt;&lt; <span class="string">"\nSum: "</span>
+         &lt;&lt; <span class="function">accumulate</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>(), <span class="number">0</span>);
+
+    <span class="keyword">auto</span> it = <span class="function">max_element</span>(v.<span class="function">begin</span>(), v.<span class="function">end</span>());
+    cout &lt;&lt; <span class="string">"\nMax: "</span> &lt;&lt; *it;
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+                <h3>Final Important Concepts</h3>
+                <div class="success-box">
+                    <ul>
+                        <li>✅ Algorithms use Iterators</li>
+                        <li>✅ Most use range (start, end)</li>
+                        <li>✅ Some require sorted container</li>
+                        <li>✅ Some return iterator</li>
+                        <li>✅ Some return bool</li>
+                        <li>✅ Some modify container</li>
+                    </ul>
+                </div>
+
+                <h3>Interview Important Algorithms</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><span class="badge">sort()</span></li>
+                        <li><span class="badge">binary_search()</span></li>
+                        <li><span class="badge">lower_bound()</span></li>
+                        <li><span class="badge">upper_bound()</span></li>
+                        <li><span class="badge">find()</span></li>
+                        <li><span class="badge">count()</span></li>
+                        <li><span class="badge">reverse()</span></li>
+                        <li><span class="badge">accumulate()</span></li>
+                        <li><span class="badge">max_element()</span></li>
+                        <li><span class="badge">remove + erase trick</span></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>📚 C++ Complete Guide: Templates • Iterators • STL Algorithms</p>
+            <p>Reference: templates <a href="https://www.geeksforgeeks.org/cpp/templates-cpp/" style="color: #4299e1;">GeeksforGeeks C++ Resources</a></p>
+            <p>Reference: algorithms<a href="https://www.geeksforgeeks.org/cpp/c-magicians-stl-algorithms/" style="color: #4299e1;">GeeksforGeeks C++ Resources</a></p>
+            <p>Reference: iterators <a href=https://www.geeksforgeeks.org/cpp/iterators-c-stl/ style="color: #4299e1;">GeeksforGeeks C++ Resources</a></p>
+
+        </footer>
+    </div>
+</body>
+</html>

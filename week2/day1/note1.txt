@@ -1,0 +1,1281 @@
+https://www.geeksforgeeks.org/cpp/lambda-expression-in-c/
+https://www.youtube.com/watch?v=9nAkD1JJFYI&list=PLqu1LEUz3ju04dXn0JOgKYPHHnV2at-lG&index=65
+1️⃣ What is a Lambda Expression?
+🔹 Definition
+
+A lambda expression is an unnamed function written directly inside code.
+
+Before C++11:
+
+We had normal functions
+
+Member functions
+
+Functors (function objects)
+
+After C++11:
+
+We also have Lambdas
+
+2️⃣ Why Lambda Was Introduced?
+
+Main reasons:
+
+To write small functions quickly
+
+To use with STL algorithms
+
+To avoid writing separate functor classes
+
+To improve readability
+
+3️⃣ Three Callable Entities in C++
+
+After C++11 we have:
+
+Normal Functions
+
+Functors (classes with operator())
+
+Lambdas
+
+All three can be used similarly.
+
+4️⃣ Lambda Basic Syntax
+[capture_list] (parameter_list) -> return_type {
+    function_body
+};
+🔹 Structure Explained
+Part	Meaning
+[ ]	Capture List (very important)
+( )	Parameters
+-> type	Return type (optional sometimes)
+{ }	Function body
+5️⃣ Smallest Lambda Example
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    []() {
+        cout << "Hello Lambda!\n";
+    }();   // Immediately invoked
+
+    return 0;
+}
+Explanation:
+
+No capture
+
+No parameters
+
+No return
+
+Immediately invoked
+
+6️⃣ Assign Lambda to Variable
+
+We use auto because lambda type is complex.
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    auto greet = []() {
+        cout << "Hello C++ Lambda\n";
+    };
+
+    greet();   // call
+
+    return 0;
+}
+7️⃣ Lambda with Parameters
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    auto add = [](int a, int b) {
+        return a + b;
+    };
+
+    cout << add(5, 7);
+
+    return 0;
+}
+Return Type?
+
+Compiler deduces it automatically.
+
+8️⃣ Lambda with Explicit Return Type
+
+Required when:
+
+Multiple return statements
+
+You want different return type
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    auto func = [](double x, double y) -> int {
+        return x + y;   // double converted to int
+    };
+
+    cout << func(3.5, 2.5);
+
+    return 0;
+}
+9️⃣ Bound Variables vs Free Variables
+🔹 Bound Variable
+
+Parameter of lambda.
+
+Example:
+
+[](int x) { return x * 2; }
+
+x is bound variable.
+
+🔹 Free Variable
+
+Variable coming from outside context.
+
+Example:
+
+int n = 5;
+
+auto func = [](int x) {
+    return x % n;  // ERROR
+};
+
+Here n is free variable.
+
+To use it, we must capture it.
+
+🔟 Capture Concept (VERY IMPORTANT)
+
+Capture tells:
+
+How to bring outside variables inside lambda
+
+1️⃣1️⃣ Capture by Value
+[n]
+
+Copies value inside lambda.
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n = 5;
+
+    auto mod = [n](int x) {
+        return x % n;
+    };
+
+    cout << mod(12);
+
+    return 0;
+}
+Important:
+
+n is copied
+
+Cannot modify n inside lambda
+
+1️⃣2️⃣ Capture by Reference
+[&n]
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    int sum = 0;
+
+    auto add = [&sum](int x) {
+        sum += x;
+    };
+
+    add(5);
+    add(10);
+
+    cout << sum;
+
+    return 0;
+}
+Important:
+
+Changes affect original variable
+
+No copy created
+
+1️⃣3️⃣ Capture All by Value
+[=]
+
+All free variables captured by value.
+
+1️⃣4️⃣ Capture All by Reference
+[&]
+
+All free variables captured by reference.
+
+1️⃣5️⃣ Mixed Capture
+[=, &x]
+
+All by value
+
+Except x by reference
+
+1️⃣6️⃣ What is a Closure Object?
+
+Very Important Concept.
+
+🔹 Lambda Expression
+
+The code you write in source file.
+
+🔹 Closure Object
+
+The object created at runtime.
+
+Internally Lambda Becomes Functor Class
+
+Example:
+
+int val = 10;
+
+auto func = [val](int x) {
+    return x + val;
+};
+
+Compiler internally generates something like:
+
+class LambdaClass {
+    int val;
+
+public:
+    LambdaClass(int v) : val(v) {}
+
+    int operator()(int x) const {
+        return x + val;
+    }
+};
+
+This object is called Closure Object.
+
+1️⃣7️⃣ Lambdas are First-Class Objects
+
+They can be:
+
+Copied
+
+Passed as arguments
+
+Returned from functions
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    auto square = [](int x) {
+        return x * x;
+    };
+
+    auto copySquare = square;  // copy
+
+    cout << copySquare(6);
+
+    return 0;
+}
+1️⃣8️⃣ Capture by Value is Const by Default
+int x = 5;
+
+auto f = [x]() {
+    x++;   // ERROR
+};
+
+Because captured values are treated as const.
+
+1️⃣9️⃣ Using mutable
+
+Allows modification of copied value.
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    int x = 5;
+
+    auto f = [x]() mutable {
+        x++;
+        cout << "Inside: " << x << endl;
+    };
+
+    f();
+
+    cout << "Outside: " << x << endl;
+
+    return 0;
+}
+Output:
+Inside: 6
+Outside: 5
+
+Important:
+
+Only copy changes
+
+Original doesn't change
+
+2️⃣0️⃣ Capture by Reference vs Mutable
+Feature	By Value	By Reference
+Copy created	Yes	No
+Modify original	No	Yes
+Needs mutable?	Yes	No
+2️⃣1️⃣ Lambda with STL (Most Important Use)
+
+Example with for_each
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+
+    vector<int> v = {1, 2, 3, 4};
+
+    for_each(v.begin(), v.end(), [](int x) {
+        cout << x * 2 << " ";
+    });
+
+    return 0;
+}
+2️⃣2️⃣ Example: Accumulation Using Lambda
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+
+    vector<int> v = {1, 2, 3, 4};
+    int total = 0;
+
+    for_each(v.begin(), v.end(), [&total](int x) {
+        total += x;
+    });
+
+    cout << total;
+
+    return 0;
+}
+
+If capture is [total] → ERROR
+Because modifying requires reference.
+
+2️⃣3️⃣ Important Rules
+
+Cannot capture same variable twice.
+
+Cannot modify value capture without mutable.
+
+Reference capture reflects changes.
+
+Lambda generates closure object.
+
+Closure object has operator().
+
+2️⃣4️⃣ When Lambda Cannot Work
+
+Example:
+
+auto f;
+
+{
+    int x = 10;
+    f = [&x]() {
+        cout << x;
+    };
+}   // x destroyed here
+
+f();  // Undefined Behavior
+
+Because reference to destroyed variable.
+
+2️⃣5️⃣ Summary (Complete Theory Covered)
+
+✅ Lambda = unnamed function
+✅ Syntax = [capture](params) -> return {}
+✅ Bound variables = parameters
+✅ Free variables = captured
+✅ Capture by value = copy
+✅ Capture by reference = original
+✅ Mutable allows modifying copy
+✅ Generates closure object
+✅ Closure object = functor class internally
+✅ Can be copied
+✅ Used heavily in STL
+
+
+🔷 2️⃣ std::function – Polymorphic Wrapper
+🔹 Why Needed?
+
+Problem:
+
+Function pointer syntax is complex
+
+Functor syntax different
+
+Lambda syntax different
+
+We want uniform way to store callable objects.
+
+🔹 What is std::function?
+
+Defined in:
+
+#include <functional>
+Basic Syntax:
+std::function<ReturnType(ParameterTypes)>
+
+Example:
+
+std::function<int(int)>
+
+Means:
+
+Takes int
+
+Returns int
+
+🔷 3️⃣ Example of std::function
+Different Callable Types
+#include <iostream>
+#include <functional>
+using namespace std;
+
+// Normal function
+int square(int x) {
+    return x * x;
+}
+
+// Functor
+struct Cube {
+    int operator()(int x) {
+        return x * x * x;
+    }
+};
+
+int main() {
+
+    std::function<int(int)> f1 = square;
+    std::function<int(int)> f2 = Cube();
+    std::function<int(int)> f3 = [](int x) {
+        return x + 10;
+    };
+
+    cout << f1(3) << endl;  // 9
+    cout << f2(3) << endl;  // 27
+    cout << f3(3) << endl;  // 13
+
+    return 0;
+}
+✔ Key Point:
+
+All are treated uniformly.
+
+🔷 4️⃣ std::function as First-Class Object
+
+You can store in containers:
+
+#include <iostream>
+#include <functional>
+#include <vector>
+using namespace std;
+
+int main() {
+
+    vector<std::function<int(int)>> pipeline;
+
+    pipeline.push_back([](int x){ return x + 1; });
+    pipeline.push_back([](int x){ return x * 2; });
+    pipeline.push_back([](int x){ return x - 3; });
+
+    int value = 5;
+
+    for (auto& func : pipeline)
+        value = func(value);
+
+    cout << value;  // ((5+1)*2)-3 = 9
+
+    return 0;
+}
+✔ Important:
+
+Enables generic programming
+
+Enables function pipelines
+
+🔷 5️⃣ Generic Lambda (C++14)
+Problem in C++11
+auto addInt = [](int a, int b){ return a + b; };
+auto addDouble = [](double a, double b){ return a + b; };
+
+Too many versions.
+
+Solution in C++14
+
+Use auto in parameter list.
+
+auto add = [](auto a, auto b) {
+    return a + b;
+};
+Example:
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    auto add = [](auto a, auto b) {
+        return a + b;
+    };
+
+    cout << add(3, 4) << endl;          // int
+    cout << add(3.5, 2.5) << endl;      // double
+    cout << add(string("Hi "), string("CPP")) << endl;
+
+    return 0;
+}
+🔹 Important Note (From Transcript)
+
+If you write:
+
+add("Hi", "CPP");
+
+This fails because:
+
+They are C-string (const char*)
+
+Cannot add pointers
+
+Must use std::string.
+
+🔷 6️⃣ Sorting Example (Generic Lambda)
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+
+    auto comp = [](auto a, auto b) {
+        return a > b;
+    };
+
+    vector<int> vi = {3, 1, 5};
+    vector<double> vd = {2.2, 1.1, 4.4};
+    vector<string> vs = {"cat", "apple", "dog"};
+
+    sort(vi.begin(), vi.end(), comp);
+    sort(vd.begin(), vd.end(), comp);
+    sort(vs.begin(), vs.end(), comp);
+
+    for(auto x: vi) cout << x << " ";
+    cout << endl;
+
+    for(auto x: vd) cout << x << " ";
+    cout << endl;
+
+    for(auto x: vs) cout << x << " ";
+
+    return 0;
+}
+✔ One lambda works for all types.
+🔷 7️⃣ Recursive Lambda in C++11
+Problem
+
+This will fail:
+
+auto factorial = [](int n) {
+    return n * factorial(n - 1); // ERROR
+};
+
+Because:
+
+Type deduction incomplete
+
+Symbol not yet defined
+
+Solution Using std::function
+#include <iostream>
+#include <functional>
+using namespace std;
+
+int main() {
+
+    std::function<int(int)> factorial;
+
+    factorial = [&](int n) {
+        if (n == 0)
+            return 1;
+        return n * factorial(n - 1);
+    };
+
+    cout << factorial(5);
+
+    return 0;
+}
+✔ Why capture by reference?
+
+Because factorial is free variable inside lambda.
+
+🔷 8️⃣ Example from Transcript: Count 1s in Binary
+#include <iostream>
+#include <functional>
+using namespace std;
+
+int main() {
+
+    std::function<int(int)> countOnes;
+
+    countOnes = [&](int n) {
+        if (n == 0)
+            return 0;
+        return countOnes(n / 2) + (n % 2);
+    };
+
+    cout << countOnes(14);  // 3
+
+    return 0;
+}
+🔷 9️⃣ Recursive Lambda in C++14 (Without std::function)
+
+Trick:
+Pass lambda to itself.
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    auto factorial = [](auto&& self, int n) -> int {
+        if (n == 0)
+            return 1;
+        return n * self(self, n - 1);
+    };
+
+    cout << factorial(factorial, 5);
+
+    return 0;
+}
+✔ No std::function required
+✔ Uses auto parameter
+🔷 1️⃣0️⃣ Wrapper Trick (Cleaner Call)
+auto fact = [](auto&& self, int n) -> int {
+    if (n == 0)
+        return 1;
+    return n * self(self, n - 1);
+};
+
+auto factorial = [fact](int n) {
+    return fact(fact, n);
+};
+
+cout << factorial(5);
+
+Cleaner syntax.
+
+🔷 1️⃣1️⃣ Generalized Lambda Capture (C++14)
+
+C++11:
+
+[x]
+
+C++14 allows:
+
+[newName = expression]
+Example:
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    int x = 5;
+
+    auto f = [r = x + 1]() {
+        return r * 2;
+    };
+
+    cout << f();  // 12
+
+    return 0;
+}
+Capture by Move
+#include <iostream>
+#include <memory>
+using namespace std;
+
+int main() {
+
+    unique_ptr<int> ptr = make_unique<int>(10);
+
+    auto f = [p = move(ptr)]() {
+        cout << *p;
+    };
+
+    f();
+
+    return 0;
+}
+✔ Move ownership into lambda
+🔷 1️⃣2️⃣ Local Variables Inside Capture
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    int x = 5;
+
+    auto f = [&r = x, y = x + 1]() {
+        r += 2;      // modifies x
+        return y + 1;
+    };
+
+    cout << f() << endl;  // 7
+    cout << x << endl;    // 7
+
+    return 0;
+}
+🔷 1️⃣3️⃣ Summary (Following Transcript)
+✔ std::function
+
+Polymorphic wrapper
+
+Uniform callable storage
+
+Needed for recursive lambda in C++11
+
+✔ Generic Lambda (C++14)
+
+Use auto parameters
+
+Type deduced automatically
+
+Works like template
+
+✔ Recursive Lambda
+
+C++11 → use std::function
+
+C++14 → pass lambda to itself
+
+✔ Generalized Capture (C++14)
+
+Rename variable
+
+Capture expressions
+
+Move semantics supported
+
+Can define local variables inside capture
+
+🔥 Practice Problems (From Transcript Style)
+
+Write recursive Fibonacci using:
+
+std::function
+
+generic lambda trick
+
+Write power(base, exponent) recursive lambda.
+
+Create vector of std::function<int(int)> and apply pipeline.
+
+Capture unique_ptr by move.
+
+
+
+https://www.youtube.com/watch?v=Q0v-8NZBWM8&list=PLqu1LEUz3ju04dXn0JOgKYPHHnV2at-lG&index=66
+
+🔷 1️⃣ What is a Function Pointer? (Very Simple)
+
+A function pointer is:
+
+A variable that stores the address of a function.
+
+✅ Example
+#include <iostream>
+using namespace std;
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+
+    int (*ptr)(int, int);  // function pointer
+
+    ptr = add;             // store address of add
+
+    cout << ptr(5, 3);     // call through pointer
+
+    return 0;
+}
+What is happening?
+
+ptr stores address of add
+
+ptr(5,3) calls the function
+
+So function pointer allows:
+
+Calling function indirectly.
+
+🔷 2️⃣ Why Is Function Pointer Important?
+
+Function pointers are important for 3 main reasons:
+
+🔥 1. Runtime Function Selection
+
+Suppose:
+
+int add(int a, int b);
+int sub(int a, int b);
+int mul(int a, int b);
+
+Instead of writing:
+
+if(choice == 1) add(a,b);
+else if(choice == 2) sub(a,b);
+else if(choice == 3) mul(a,b);
+
+You can do:
+
+int (*operation)(int,int);
+
+if(choice == 1) operation = add;
+else if(choice == 2) operation = sub;
+else operation = mul;
+
+cout << operation(a,b);
+
+✔ Cleaner
+✔ Flexible
+✔ Dynamic behavior
+
+🔥 2. Callbacks (Very Important)
+
+This is where function pointers are powerful.
+
+Imagine:
+
+You give your function to a library.
+
+Later library calls your function.
+
+Example:
+
+void greet() {
+    cout << "Hello!";
+}
+
+void execute(void (*func)()) {
+    func();   // callback
+}
+
+int main() {
+    execute(greet);
+}
+
+Here:
+
+execute does not know what function is passed.
+
+It just calls it.
+
+This is called callback mechanism.
+
+Used in:
+
+Event handling
+
+GUI programming
+
+Game engines
+
+Embedded systems
+
+🔥 3. Virtual Functions Internally Use Function Pointers
+
+Virtual function mechanism works using:
+
+Function pointer table (vtable)
+
+So understanding function pointers helps understand:
+
+Polymorphism
+
+Runtime binding
+
+🔷 3️⃣ Then Why Do We Need Functors?
+
+Now important comparison.
+
+Function pointer has limitations:
+
+❌ Cannot store data (no memory)
+❌ No internal state
+❌ Less flexible
+❌ Cannot overload
+
+Functors solve these problems.
+
+🔷 4️⃣ Example Where Function Pointer Fails
+
+Suppose we want to count how many times function is called.
+
+Function pointer version:
+
+int counter = 0;
+
+void fun() {
+    counter++;
+}
+
+Problem:
+
+Counter is global.
+
+Not clean design.
+
+🔷 Functor Version (Better)
+class Counter {
+    int count;
+public:
+    Counter() : count(0) {}
+
+    void operator()() {
+        count++;
+        cout << "Called " << count << " times\n";
+    }
+};
+
+Now:
+
+Counter obj;
+obj();
+obj();
+obj();
+
+It remembers count internally.
+
+✔ Clean
+✔ Safe
+✔ Object-oriented
+
+🔷 5️⃣ So Which One Is More Important?
+
+Answer:
+
+Both are important.
+
+Feature	Function Pointer	Functor
+Basic C-style programming	✅ Very important	❌
+Object-Oriented programming	⚠ Limited	✅ Very important
+STL algorithms	⚠ Rare	✅ Very common
+Simple callbacks	✅	✅
+Store state	❌	✅
+🔷 6️⃣ In Modern C++
+
+Nowadays we mostly use:
+
+Functors
+
+Lambdas
+
+But internally many systems still use:
+
+Function pointers
+Step 1: What is a Function?
+
+You already know this:
+
+int add(int a, int b) {
+    return a + b;
+}
+
+We call it like:
+
+add(5, 3);
+
+👉 The () tells the compiler:
+
+"Call this function"
+
+🔷 Step 2: What is Special About () ?
+
+When we write:
+
+add(5,3);
+
+Actually compiler does:
+
+Go to function
+
+Execute code
+
+Return result
+
+So anything that can be used like this:
+
+something(5,3);
+
+is called a callable entity.
+
+🔷 Step 3: What is a Functor?
+
+Now comes important part 🔥
+
+A functor is:
+
+An object that behaves like a function.
+
+Means:
+
+It is a class object
+
+But we can call it using ()
+
+🔷 Step 4: How Can Object Act Like Function?
+
+Answer:
+By overloading operator()
+
+🔷 Simple Example (Very Easy)
+🔹 Normal Function
+int add(int a, int b) {
+    return a + b;
+}
+
+Call:
+
+add(5,3);
+🔹 Functor Version
+#include <iostream>
+using namespace std;
+
+class Add {
+public:
+    int operator()(int a, int b) {
+        return a + b;
+    }
+};
+
+int main() {
+
+    Add obj;
+
+    cout << obj(5,3);   // looks like function
+
+    return 0;
+}
+🔥 Important Line
+cout << obj(5,3);
+
+Wait 😲
+obj is not a function…
+It is an object!
+
+So what is happening?
+
+Compiler converts this:
+
+obj(5,3);
+
+into:
+
+obj.operator()(5,3);
+
+That’s it ✅
+
+🔷 Why Do We Need Functor?
+
+You may ask:
+
+If normal function already works, why functor?
+
+Very good question 👌
+
+Because functor can do something normal function cannot do.
+
+🔥 Biggest Advantage: Functor Can Store Data (State)
+
+Normal function:
+
+int add(int a, int b) {
+    return a + b;
+}
+
+It does not remember anything.
+
+But functor can remember values.
+
+🔷 Example: Sum of All Numbers
+
+Suppose we want to add all elements of vector.
+
+❌ Normal Function Cannot Store Sum Internally
+
+But functor can.
+
+✅ Functor with State
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Adder {
+    int sum;   // state
+
+public:
+    Adder() {
+        sum = 0;
+    }
+
+    void operator()(int x) {
+        sum += x;
+    }
+
+    int getSum() {
+        return sum;
+    }
+};
+
+int main() {
+
+    vector<int> v = {1,2,3,4};
+
+    Adder obj;
+
+    for_each(v.begin(), v.end(), ref(obj));
+
+    cout << "Total = " << obj.getSum();
+
+    return 0;
+}
+🔎 What Happens Here?
+
+sum = 0
+
+First element = 1 → sum = 1
+
+Next element = 2 → sum = 3
+
+Next element = 3 → sum = 6
+
+Next element = 4 → sum = 10
+
+Functor remembers previous sum.
+
+Normal function cannot do this easily.
+
+🔷 Where STL Uses Functors?
+
+In:
+
+sort()
+
+for_each()
+
+generate()
+
+count_if()
+
+remove_if()
+
+🔷 Example: Sort Using Functor
+
+Sort in descending order:
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Compare {
+public:
+    bool operator()(int a, int b) {
+        return a > b;  // descending
+    }
+};
+
+int main() {
+
+    vector<int> v = {5,1,9,3};
+
+    sort(v.begin(), v.end(), Compare());
+
+    for(int x : v)
+        cout << x << " ";
+
+    return 0;
+}
+🔎 What is Happening?
+
+sort() asks:
+
+How should I compare numbers?
+
+You give it a functor.
+
+Sort calls your functor again and again.
+
+🔷 Difference Between Function and Functor
+Feature	Function	Functor
+Is it object?	❌ No	✅ Yes
+Can store data?	❌ No	✅ Yes
+Can overload?	❌ No	✅ Yes
+Used in STL?	Limited	Very Common
+🔷 Simple Real-Life Analogy
+
+Normal function = Calculator machine
+
+Functor = Smart calculator with memory
+
+Example:
+
+Calculator just adds
+
+Smart calculator remembers previous result
+
+🔷 Very Simple Definition (For Exam)
+
+A functor is a class object that overloads operator() so that it behaves like a function.
+
+🔷 Important Syntax to Remember
+class Name {
+public:
+    return_type operator()(parameters) {
+        // code
+    }
+};
+🔷 Final Concept in One Line
+
+When you write:
+
+obj(10,20);
+
+It means:
+
+obj.operator()(10,20);
+https://www.youtube.com/watch?v=i7-jWzWOBbk&list=PLqu1LEUz3ju04dXn0JOgKYPHHnV2at-lG&index=50

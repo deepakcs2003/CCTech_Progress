@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Lambdas, Functors & Function Pointers - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .emoji {
+            font-size: 1.2em;
+        }
+
+        .subsection {
+            margin: 30px 0;
+            padding-left: 20px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .subsection-title {
+            font-size: 1.5em;
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .concept-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .concept-box.important {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+
+        .concept-box.warning {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .concept-box.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        .syntax-highlight {
+            color: #c678dd;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e9ecef;
+        }
+
+        .comparison-table th {
+            background: #764ba2;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-item strong {
+            color: #667eea;
+        }
+
+        .note {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #2196F3;
+        }
+
+        .output {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .output::before {
+            content: "Output: ";
+            color: #9cdcfe;
+            font-weight: bold;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            padding: 8px 0;
+        }
+
+        .toc a {
+            color: #764ba2;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin: 5px 5px 5px 0;
+        }
+
+        .badge.cpp11 {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge.cpp14 {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .badge.important {
+            background: #ffc107;
+            color: #333;
+        }
+
+        footer {
+            background: #282c34;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+
+            pre {
+                font-size: 0.85em;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 C++ Lambda Expressions, Functors & Function Pointers</h1>
+            <p>Complete Guide with Examples</p>
+        </header>
+
+        <div class="content">
+            <div class="toc">
+                <h2>📑 Table of Contents</h2>
+                <ul>
+                    <li><a href="#lambdas">1. Lambda Expressions</a></li>
+                    <li><a href="#capture">2. Capture Mechanisms</a></li>
+                    <li><a href="#closures">3. Closure Objects</a></li>
+                    <li><a href="#std-function">4. std::function</a></li>
+                    <li><a href="#generic-lambdas">5. Generic Lambdas (C++14)</a></li>
+                    <li><a href="#recursive-lambdas">6. Recursive Lambdas</a></li>
+                    <li><a href="#functors">7. Functors</a></li>
+                    <li><a href="#function-pointers">8. Function Pointers</a></li>
+                    <li><a href="#comparison">9. Comparison & Summary</a></li>
+                </ul>
+            </div>
+
+            <!-- Lambda Expressions -->
+            <div class="section" id="lambdas">
+                <h2 class="section-title"><span class="emoji">🎯</span> Lambda Expressions</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">What is a Lambda Expression?</h3>
+                    <div class="concept-box">
+                        <p><strong>Definition:</strong> A lambda expression is an <strong>unnamed function</strong> written directly inside code.</p>
+                        <p style="margin-top: 10px;">Before C++11, we had normal functions, member functions, and functors. After C++11, we also have lambdas.</p>
+                    </div>
+
+                    <h4>Why Lambda Was Introduced?</h4>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <strong>Quick Functions:</strong> Write small functions quickly
+                        </div>
+                        <div class="feature-item">
+                            <strong>STL Integration:</strong> Use with STL algorithms
+                        </div>
+                        <div class="feature-item">
+                            <strong>No Separate Classes:</strong> Avoid writing functor classes
+                        </div>
+                        <div class="feature-item">
+                            <strong>Better Readability:</strong> Code is more concise and readable
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Lambda Basic Syntax</h3>
+                    <pre><code>[capture_list] (parameter_list) -&gt; return_type {
+    function_body
+};</code></pre>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Part</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>[ ]</code></td>
+                                <td>Capture List (very important)</td>
+                            </tr>
+                            <tr>
+                                <td><code>( )</code></td>
+                                <td>Parameters</td>
+                            </tr>
+                            <tr>
+                                <td><code>-&gt; type</code></td>
+                                <td>Return type (optional sometimes)</td>
+                            </tr>
+                            <tr>
+                                <td><code>{ }</code></td>
+                                <td>Function body</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Smallest Lambda Example</h3>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    []() {
+        cout &lt;&lt; "Hello Lambda!\n";
+    }();   // Immediately invoked
+
+    return 0;
+}</code></pre>
+                    <div class="note">
+                        <strong>Note:</strong> No capture, no parameters, no return, immediately invoked.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Assign Lambda to Variable</h3>
+                    <p>We use <code>auto</code> because lambda type is complex.</p>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    auto greet = []() {
+        cout &lt;&lt; "Hello C++ Lambda\n";
+    };
+
+    greet();   // call
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Lambda with Parameters</h3>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    auto add = [](int a, int b) {
+        return a + b;
+    };
+
+    cout &lt;&lt; add(5, 7);  // Output: 12
+
+    return 0;
+}</code></pre>
+                    <div class="concept-box success">
+                        <p><strong>Return Type:</strong> Compiler deduces it automatically.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Lambda with Explicit Return Type</h3>
+                    <p>Required when you have multiple return statements or want a different return type.</p>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    auto func = [](double x, double y) -&gt; int {
+        return x + y;   // double converted to int
+    };
+
+    cout &lt;&lt; func(3.5, 2.5);  // Output: 6
+
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Capture Mechanisms -->
+            <div class="section" id="capture">
+                <h2 class="section-title"><span class="emoji">🔒</span> Capture Mechanisms</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Bound vs Free Variables</h3>
+                    
+                    <div class="concept-box">
+                        <h4>Bound Variable</h4>
+                        <p>Parameter of lambda.</p>
+                        <pre><code>[](int x) { return x * 2; }  // x is bound variable</code></pre>
+                    </div>
+
+                    <div class="concept-box important">
+                        <h4>Free Variable</h4>
+                        <p>Variable coming from outside context.</p>
+                        <pre><code>int n = 5;
+auto func = [](int x) {
+    return x % n;  // ERROR: n is free variable
+};</code></pre>
+                        <p><strong>To use free variables, we must capture them.</strong></p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">1. Capture by Value <code>[n]</code></h3>
+                    <p>Copies value inside lambda.</p>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n = 5;
+
+    auto mod = [n](int x) {
+        return x % n;
+    };
+
+    cout &lt;&lt; mod(12);  // Output: 2
+
+    return 0;
+}</code></pre>
+                    <div class="note">
+                        <strong>Important:</strong> <code>n</code> is copied. Cannot modify <code>n</code> inside lambda without <code>mutable</code>.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">2. Capture by Reference <code>[&n]</code></h3>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int sum = 0;
+
+    auto add = [&sum](int x) {
+        sum += x;
+    };
+
+    add(5);
+    add(10);
+
+    cout &lt;&lt; sum;  // Output: 15
+
+    return 0;
+}</code></pre>
+                    <div class="note">
+                        <strong>Important:</strong> Changes affect original variable. No copy created.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">3. Capture All by Value <code>[=]</code></h3>
+                    <p>All free variables captured by value.</p>
+                    <pre><code>int a = 5, b = 10;
+auto func = [=]() { return a + b; };</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">4. Capture All by Reference <code>[&]</code></h3>
+                    <p>All free variables captured by reference.</p>
+                    <pre><code>int a = 5, b = 10;
+auto func = [&]() { a += b; };</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">5. Mixed Capture <code>[=, &x]</code></h3>
+                    <p>All by value except <code>x</code> by reference.</p>
+                    <pre><code>int a = 5, b = 10, x = 0;
+auto func = [=, &x]() { x = a + b; };  // a, b by value; x by reference</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Capture Summary Table</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Capture</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>[]</code></td>
+                                <td>No capture</td>
+                            </tr>
+                            <tr>
+                                <td><code>[x]</code></td>
+                                <td>Capture x by value</td>
+                            </tr>
+                            <tr>
+                                <td><code>[&x]</code></td>
+                                <td>Capture x by reference</td>
+                            </tr>
+                            <tr>
+                                <td><code>[=]</code></td>
+                                <td>Capture all by value</td>
+                            </tr>
+                            <tr>
+                                <td><code>[&]</code></td>
+                                <td>Capture all by reference</td>
+                            </tr>
+                            <tr>
+                                <td><code>[=, &x]</code></td>
+                                <td>All by value except x by reference</td>
+                            </tr>
+                            <tr>
+                                <td><code>[&, x]</code></td>
+                                <td>All by reference except x by value</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Closures -->
+            <div class="section" id="closures">
+                <h2 class="section-title"><span class="emoji">📦</span> Closure Objects & mutable</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">What is a Closure Object?</h3>
+                    <span class="badge important">VERY IMPORTANT</span>
+                    
+                    <div class="concept-box">
+                        <p><strong>Lambda Expression:</strong> The code you write in source file.</p>
+                        <p><strong>Closure Object:</strong> The object created at runtime.</p>
+                    </div>
+
+                    <h4>Lambda Internally Becomes Functor Class</h4>
+                    <p>Example:</p>
+                    <pre><code>int val = 10;
+auto func = [val](int x) {
+    return x + val;
+};</code></pre>
+
+                    <p>Compiler internally generates something like:</p>
+                    <pre><code>class LambdaClass {
+    int val;
+
+public:
+    LambdaClass(int v) : val(v) {}
+
+    int operator()(int x) const {
+        return x + val;
+    }
+};</code></pre>
+                    <div class="note">
+                        <strong>Note:</strong> This generated object is called <strong>Closure Object</strong>.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Lambdas are First-Class Objects</h3>
+                    <p>They can be: copied, passed as arguments, returned from functions.</p>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    auto square = [](int x) {
+        return x * x;
+    };
+
+    auto copySquare = square;  // copy
+
+    cout &lt;&lt; copySquare(6);  // Output: 36
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Capture by Value is Const by Default</h3>
+                    <div class="concept-box warning">
+                        <pre><code>int x = 5;
+auto f = [x]() {
+    x++;   // ERROR: captured value is const
+};</code></pre>
+                        <p>Because captured values are treated as <code>const</code>.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Using mutable</h3>
+                    <p>Allows modification of copied value.</p>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int x = 5;
+
+    auto f = [x]() mutable {
+        x++;
+        cout &lt;&lt; "Inside: " &lt;&lt; x &lt;&lt; endl;
+    };
+
+    f();
+
+    cout &lt;&lt; "Outside: " &lt;&lt; x &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                    <div class="output">Inside: 6<br>Outside: 5</div>
+                    <div class="note">
+                        <strong>Important:</strong> Only copy changes. Original doesn't change.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Capture Comparison Table</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>By Value</th>
+                                <th>By Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Copy created</td>
+                                <td>✅ Yes</td>
+                                <td>❌ No</td>
+                            </tr>
+                            <tr>
+                                <td>Modify original</td>
+                                <td>❌ No</td>
+                                <td>✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Needs mutable?</td>
+                                <td>✅ Yes</td>
+                                <td>❌ No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">When Lambda Cannot Work</h3>
+                    <div class="concept-box warning">
+                        <pre><code>auto f;
+{
+    int x = 10;
+    f = [&x]() {
+        cout &lt;&lt; x;
+    };
+}   // x destroyed here
+
+f();  // Undefined Behavior</code></pre>
+                        <p><strong>Problem:</strong> Reference to destroyed variable.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lambda with STL -->
+            <div class="section">
+                <h2 class="section-title"><span class="emoji">🔧</span> Lambda with STL</h2>
+                <span class="badge important">MOST IMPORTANT USE</span>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example with for_each</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main() {
+    vector&lt;int&gt; v = {1, 2, 3, 4};
+
+    for_each(v.begin(), v.end(), [](int x) {
+        cout &lt;&lt; x * 2 &lt;&lt; " ";
+    });
+
+    return 0;
+}</code></pre>
+                    <div class="output">2 4 6 8</div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Accumulation Using Lambda</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main() {
+    vector&lt;int&gt; v = {1, 2, 3, 4};
+    int total = 0;
+
+    for_each(v.begin(), v.end(), [&total](int x) {
+        total += x;
+    });
+
+    cout &lt;&lt; total;  // Output: 10
+
+    return 0;
+}</code></pre>
+                    <div class="concept-box warning">
+                        <strong>Important:</strong> If capture is <code>[total]</code> → ERROR<br>
+                        Because modifying requires reference.
+                    </div>
+                </div>
+            </div>
+
+            <!-- std::function -->
+            <div class="section" id="std-function">
+                <h2 class="section-title"><span class="emoji">🎭</span> std::function - Polymorphic Wrapper</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Why Needed?</h3>
+                    <div class="concept-box">
+                        <p><strong>Problem:</strong></p>
+                        <ul>
+                            <li>Function pointer syntax is complex</li>
+                            <li>Functor syntax different</li>
+                            <li>Lambda syntax different</li>
+                        </ul>
+                        <p><strong>Solution:</strong> We want a uniform way to store callable objects.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">What is std::function?</h3>
+                    <p>Defined in: <code>#include &lt;functional&gt;</code></p>
+                    
+                    <h4>Basic Syntax:</h4>
+                    <pre><code>std::function&lt;ReturnType(ParameterTypes)&gt;</code></pre>
+
+                    <p>Example:</p>
+                    <pre><code>std::function&lt;int(int)&gt;  // Takes int, Returns int</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Different Callable Types</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;functional&gt;
+using namespace std;
+
+// Normal function
+int square(int x) {
+    return x * x;
+}
+
+// Functor
+struct Cube {
+    int operator()(int x) {
+        return x * x * x;
+    }
+};
+
+int main() {
+    std::function&lt;int(int)&gt; f1 = square;
+    std::function&lt;int(int)&gt; f2 = Cube();
+    std::function&lt;int(int)&gt; f3 = [](int x) {
+        return x + 10;
+    };
+
+    cout &lt;&lt; f1(3) &lt;&lt; endl;  // 9
+    cout &lt;&lt; f2(3) &lt;&lt; endl;  // 27
+    cout &lt;&lt; f3(3) &lt;&lt; endl;  // 13
+
+    return 0;
+}</code></pre>
+                    <div class="concept-box success">
+                        <strong>Key Point:</strong> All are treated uniformly.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">std::function as First-Class Object</h3>
+                    <p>You can store in containers:</p>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+    vector&lt;std::function&lt;int(int)&gt;&gt; pipeline;
+
+    pipeline.push_back([](int x){ return x + 1; });
+    pipeline.push_back([](int x){ return x * 2; });
+    pipeline.push_back([](int x){ return x - 3; });
+
+    int value = 5;
+
+    for (auto& func : pipeline)
+        value = func(value);
+
+    cout &lt;&lt; value;  // ((5+1)*2)-3 = 9
+
+    return 0;
+}</code></pre>
+                    <div class="note">
+                        <strong>Benefits:</strong> Enables generic programming and function pipelines.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generic Lambdas -->
+            <div class="section" id="generic-lambdas">
+                <h2 class="section-title"><span class="emoji">⚡</span> Generic Lambda (C++14)</h2>
+                <span class="badge cpp14">C++14</span>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Problem in C++11</h3>
+                    <pre><code>auto addInt = [](int a, int b){ return a + b; };
+auto addDouble = [](double a, double b){ return a + b; };</code></pre>
+                    <p>Too many versions needed for different types.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Solution in C++14</h3>
+                    <p>Use <code>auto</code> in parameter list:</p>
+                    <pre><code>auto add = [](auto a, auto b) {
+    return a + b;
+};</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Generic Lambda</h3>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    auto add = [](auto a, auto b) {
+        return a + b;
+    };
+
+    cout &lt;&lt; add(3, 4) &lt;&lt; endl;          // int
+    cout &lt;&lt; add(3.5, 2.5) &lt;&lt; endl;      // double
+    cout &lt;&lt; add(string("Hi "), string("CPP")) &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                    <div class="output">7<br>6<br>Hi CPP</div>
+
+                    <div class="concept-box warning">
+                        <strong>Important Note:</strong> If you write <code>add("Hi", "CPP");</code> this fails because they are C-strings (const char*). Cannot add pointers. Must use std::string.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Sorting Example with Generic Lambda</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main() {
+    auto comp = [](auto a, auto b) {
+        return a &gt; b;  // descending
+    };
+
+    vector&lt;int&gt; vi = {3, 1, 5};
+    vector&lt;double&gt; vd = {2.2, 1.1, 4.4};
+    vector&lt;string&gt; vs = {"cat", "apple", "dog"};
+
+    sort(vi.begin(), vi.end(), comp);
+    sort(vd.begin(), vd.end(), comp);
+    sort(vs.begin(), vs.end(), comp);
+
+    for(auto x: vi) cout &lt;&lt; x &lt;&lt; " ";
+    cout &lt;&lt; endl;
+
+    for(auto x: vd) cout &lt;&lt; x &lt;&lt; " ";
+    cout &lt;&lt; endl;
+
+    for(auto x: vs) cout &lt;&lt; x &lt;&lt; " ";
+
+    return 0;
+}</code></pre>
+                    <div class="concept-box success">
+                        <strong>One lambda works for all types!</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recursive Lambdas -->
+            <div class="section" id="recursive-lambdas">
+                <h2 class="section-title"><span class="emoji">🔄</span> Recursive Lambda</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Problem in C++11</h3>
+                    <div class="concept-box warning">
+                        <p>This will fail:</p>
+                        <pre><code>auto factorial = [](int n) {
+    return n * factorial(n - 1); // ERROR
+};</code></pre>
+                        <p><strong>Reason:</strong> Type deduction incomplete, symbol not yet defined.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Solution 1: Using std::function (C++11)</h3>
+                    <span class="badge cpp11">C++11</span>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;functional&gt;
+using namespace std;
+
+int main() {
+    std::function&lt;int(int)&gt; factorial;
+
+    factorial = [&](int n) {
+        if (n == 0)
+            return 1;
+        return n * factorial(n - 1);
+    };
+
+    cout &lt;&lt; factorial(5);  // Output: 120
+
+    return 0;
+}</code></pre>
+                    <div class="note">
+                        <strong>Why capture by reference?</strong> Because factorial is a free variable inside lambda.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Count 1s in Binary</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;functional&gt;
+using namespace std;
+
+int main() {
+    std::function&lt;int(int)&gt; countOnes;
+
+    countOnes = [&](int n) {
+        if (n == 0)
+            return 0;
+        return countOnes(n / 2) + (n % 2);
+    };
+
+    cout &lt;&lt; countOnes(14);  // Output: 3
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Solution 2: Self-Passing Trick (C++14)</h3>
+                    <span class="badge cpp14">C++14</span>
+                    <p>Pass lambda to itself:</p>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    auto factorial = [](auto&& self, int n) -&gt; int {
+        if (n == 0)
+            return 1;
+        return n * self(self, n - 1);
+    };
+
+    cout &lt;&lt; factorial(factorial, 5);  // Output: 120
+
+    return 0;
+}</code></pre>
+                    <div class="concept-box success">
+                        <p>✅ No std::function required</p>
+                        <p>✅ Uses auto parameter</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Wrapper Trick (Cleaner Call)</h3>
+                    <pre><code>auto fact = [](auto&& self, int n) -&gt; int {
+    if (n == 0)
+        return 1;
+    return n * self(self, n - 1);
+};
+
+auto factorial = [fact](int n) {
+    return fact(fact, n);
+};
+
+cout &lt;&lt; factorial(5);  // Cleaner syntax</code></pre>
+                </div>
+            </div>
+
+            <!-- Generalized Capture -->
+            <div class="section">
+                <h2 class="section-title"><span class="emoji">🎁</span> Generalized Lambda Capture (C++14)</h2>
+                <span class="badge cpp14">C++14</span>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Syntax</h3>
+                    <p>C++11: <code>[x]</code></p>
+                    <p>C++14 allows: <code>[newName = expression]</code></p>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Capture Expression</h3>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int x = 5;
+
+    auto f = [r = x + 1]() {
+        return r * 2;
+    };
+
+    cout &lt;&lt; f();  // Output: 12
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Capture by Move</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+using namespace std;
+
+int main() {
+    unique_ptr&lt;int&gt; ptr = make_unique&lt;int&gt;(10);
+
+    auto f = [p = move(ptr)]() {
+        cout &lt;&lt; *p;
+    };
+
+    f();  // Output: 10
+
+    return 0;
+}</code></pre>
+                    <div class="concept-box success">
+                        <strong>Move ownership into lambda</strong>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Local Variables Inside Capture</h3>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int x = 5;
+
+    auto f = [&r = x, y = x + 1]() {
+        r += 2;      // modifies x
+        return y + 1;
+    };
+
+    cout &lt;&lt; f() &lt;&lt; endl;  // 7
+    cout &lt;&lt; x &lt;&lt; endl;    // 7
+
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Functors -->
+            <div class="section" id="functors">
+                <h2 class="section-title"><span class="emoji">🎪</span> Functors (Function Objects)</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">What is a Functor?</h3>
+                    <div class="concept-box">
+                        <p><strong>Definition:</strong> A functor is a <strong>class object</strong> that overloads <code>operator()</code> so that it behaves like a function.</p>
+                    </div>
+
+                    <p>When we write:</p>
+                    <pre><code>obj(5, 3);</code></pre>
+                    <p>It means:</p>
+                    <pre><code>obj.operator()(5, 3);</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Normal Function vs Functor</h3>
+                    
+                    <h4>Normal Function:</h4>
+                    <pre><code>int add(int a, int b) {
+    return a + b;
+}
+
+// Call
+add(5, 3);</code></pre>
+
+                    <h4>Functor Version:</h4>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Add {
+public:
+    int operator()(int a, int b) {
+        return a + b;
+    }
+};
+
+int main() {
+    Add obj;
+    cout &lt;&lt; obj(5, 3);   // looks like function!
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Why Do We Need Functors?</h3>
+                    <span class="badge important">BIGGEST ADVANTAGE</span>
+                    
+                    <div class="concept-box important">
+                        <p><strong>Functors Can Store Data (State)</strong></p>
+                        <p>Normal function does not remember anything, but functors can remember values.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Sum of All Numbers</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+class Adder {
+    int sum;   // state
+
+public:
+    Adder() {
+        sum = 0;
+    }
+
+    void operator()(int x) {
+        sum += x;
+    }
+
+    int getSum() {
+        return sum;
+    }
+};
+
+int main() {
+    vector&lt;int&gt; v = {1, 2, 3, 4};
+
+    Adder obj;
+
+    for_each(v.begin(), v.end(), ref(obj));
+
+    cout &lt;&lt; "Total = " &lt;&lt; obj.getSum();  // Output: Total = 10
+
+    return 0;
+}</code></pre>
+                    <div class="note">
+                        <strong>What Happens?</strong>
+                        <ul>
+                            <li>sum = 0</li>
+                            <li>First element = 1 → sum = 1</li>
+                            <li>Next element = 2 → sum = 3</li>
+                            <li>Next element = 3 → sum = 6</li>
+                            <li>Next element = 4 → sum = 10</li>
+                        </ul>
+                        <p>Functor remembers previous sum. Normal function cannot do this easily.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Sort Using Functor</h3>
+                    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+class Compare {
+public:
+    bool operator()(int a, int b) {
+        return a &gt; b;  // descending
+    }
+};
+
+int main() {
+    vector&lt;int&gt; v = {5, 1, 9, 3};
+
+    sort(v.begin(), v.end(), Compare());
+
+    for(int x : v)
+        cout &lt;&lt; x &lt;&lt; " ";  // Output: 9 5 3 1
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Where STL Uses Functors</h3>
+                    <ul>
+                        <li><code>sort()</code></li>
+                        <li><code>for_each()</code></li>
+                        <li><code>generate()</code></li>
+                        <li><code>count_if()</code></li>
+                        <li><code>remove_if()</code></li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Important Syntax to Remember</h3>
+                    <pre><code>class Name {
+public:
+    return_type operator()(parameters) {
+        // code
+    }
+};</code></pre>
+                </div>
+            </div>
+
+            <!-- Function Pointers -->
+            <div class="section" id="function-pointers">
+                <h2 class="section-title"><span class="emoji">👉</span> Function Pointers</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">What is a Function Pointer?</h3>
+                    <div class="concept-box">
+                        <p>A function pointer is a <strong>variable that stores the address of a function</strong>.</p>
+                    </div>
+
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int (*ptr)(int, int);  // function pointer
+
+    ptr = add;             // store address of add
+
+    cout &lt;&lt; ptr(5, 3);     // call through pointer
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Why Is Function Pointer Important?</h3>
+                    
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <strong>1. Runtime Function Selection</strong><br>
+                            Dynamically choose which function to call
+                        </div>
+                        <div class="feature-item">
+                            <strong>2. Callbacks</strong><br>
+                            Pass function to library for later execution
+                        </div>
+                        <div class="feature-item">
+                            <strong>3. Virtual Functions</strong><br>
+                            Internally use function pointer tables (vtable)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Runtime Function Selection</h3>
+                    <pre><code>int add(int a, int b) { return a + b; }
+int sub(int a, int b) { return a - b; }
+int mul(int a, int b) { return a * b; }
+
+int (*operation)(int, int);
+
+if(choice == 1) operation = add;
+else if(choice == 2) operation = sub;
+else operation = mul;
+
+cout &lt;&lt; operation(a, b);</code></pre>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example: Callback Mechanism</h3>
+                    <pre><code>void greet() {
+    cout &lt;&lt; "Hello!";
+}
+
+void execute(void (*func)()) {
+    func();   // callback
+}
+
+int main() {
+    execute(greet);
+}</code></pre>
+                    <div class="note">
+                        <strong>Used in:</strong> Event handling, GUI programming, Game engines, Embedded systems
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Why Do We Need Functors Then?</h3>
+                    <p>Function pointer has limitations:</p>
+                    <ul>
+                        <li>❌ Cannot store data (no memory)</li>
+                        <li>❌ No internal state</li>
+                        <li>❌ Less flexible</li>
+                        <li>❌ Cannot overload</li>
+                    </ul>
+                    <p><strong>Functors solve these problems.</strong></p>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Example Where Function Pointer Fails</h3>
+                    <p>Count how many times function is called:</p>
+                    
+                    <h4>Function pointer version:</h4>
+                    <pre><code>int counter = 0;
+
+void fun() {
+    counter++;
+}</code></pre>
+                    <p><strong>Problem:</strong> Counter is global. Not clean design.</p>
+
+                    <h4>Functor Version (Better):</h4>
+                    <pre><code>class Counter {
+    int count;
+public:
+    Counter() : count(0) {}
+
+    void operator()() {
+        count++;
+        cout &lt;&lt; "Called " &lt;&lt; count &lt;&lt; " times\n";
+    }
+};
+
+Counter obj;
+obj();  // Called 1 times
+obj();  // Called 2 times
+obj();  // Called 3 times</code></pre>
+                    <div class="concept-box success">
+                        <p>✔ Clean<br>✔ Safe<br>✔ Object-oriented</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison & Summary -->
+            <div class="section" id="comparison">
+                <h2 class="section-title"><span class="emoji">📊</span> Comparison & Summary</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Function vs Functor Comparison</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Function</th>
+                                <th>Functor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Is it object?</td>
+                                <td>❌ No</td>
+                                <td>✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Can store data?</td>
+                                <td>❌ No</td>
+                                <td>✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Can overload?</td>
+                                <td>❌ No</td>
+                                <td>✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Used in STL?</td>
+                                <td>Limited</td>
+                                <td>Very Common</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Function Pointer vs Functor</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Function Pointer</th>
+                                <th>Functor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Basic C-style programming</td>
+                                <td>✅ Very important</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>Object-Oriented programming</td>
+                                <td>⚠ Limited</td>
+                                <td>✅ Very important</td>
+                            </tr>
+                            <tr>
+                                <td>STL algorithms</td>
+                                <td>⚠ Rare</td>
+                                <td>✅ Very common</td>
+                            </tr>
+                            <tr>
+                                <td>Simple callbacks</td>
+                                <td>✅</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>Store state</td>
+                                <td>❌</td>
+                                <td>✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Three Callable Entities in Modern C++</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Normal Functions</strong></td>
+                                <td>Traditional functions</td>
+                                <td>Simple operations</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Functors</strong></td>
+                                <td>Classes with operator()</td>
+                                <td>Stateful operations, STL</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lambdas</strong></td>
+                                <td>Anonymous functions</td>
+                                <td>Quick operations, STL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Lambda Summary</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            ✅ Lambda = unnamed function
+                        </div>
+                        <div class="feature-item">
+                            ✅ Syntax = [capture](params) -&gt; return {}
+                        </div>
+                        <div class="feature-item">
+                            ✅ Bound variables = parameters
+                        </div>
+                        <div class="feature-item">
+                            ✅ Free variables = captured
+                        </div>
+                        <div class="feature-item">
+                            ✅ Capture by value = copy
+                        </div>
+                        <div class="feature-item">
+                            ✅ Capture by reference = original
+                        </div>
+                        <div class="feature-item">
+                            ✅ Mutable allows modifying copy
+                        </div>
+                        <div class="feature-item">
+                            ✅ Generates closure object
+                        </div>
+                        <div class="feature-item">
+                            ✅ Closure object = functor class internally
+                        </div>
+                        <div class="feature-item">
+                            ✅ Can be copied
+                        </div>
+                        <div class="feature-item">
+                            ✅ Used heavily in STL
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">std::function Summary</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            ✔ Polymorphic wrapper
+                        </div>
+                        <div class="feature-item">
+                            ✔ Uniform callable storage
+                        </div>
+                        <div class="feature-item">
+                            ✔ Needed for recursive lambda in C++11
+                        </div>
+                        <div class="feature-item">
+                            ✔ Enables generic programming
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">C++14 Features Summary</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            ✔ Generic Lambda - Use auto parameters
+                        </div>
+                        <div class="feature-item">
+                            ✔ Type deduced automatically
+                        </div>
+                        <div class="feature-item">
+                            ✔ Works like template
+                        </div>
+                        <div class="feature-item">
+                            ✔ Generalized Capture - Rename variables
+                        </div>
+                        <div class="feature-item">
+                            ✔ Capture expressions
+                        </div>
+                        <div class="feature-item">
+                            ✔ Move semantics supported
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Important Rules</h3>
+                    <div class="concept-box important">
+                        <ul>
+                            <li>Cannot capture same variable twice</li>
+                            <li>Cannot modify value capture without mutable</li>
+                            <li>Reference capture reflects changes</li>
+                            <li>Lambda generates closure object</li>
+                            <li>Closure object has operator()</li>
+                            <li>Avoid dangling references with captures</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Practice Problems</h3>
+                    <ol>
+                        <li>Write recursive Fibonacci using std::function</li>
+                        <li>Write recursive Fibonacci using generic lambda trick</li>
+                        <li>Write power(base, exponent) recursive lambda</li>
+                        <li>Create vector of std::function&lt;int(int)&gt; and apply pipeline</li>
+                        <li>Capture unique_ptr by move</li>
+                        <li>Create a functor that counts prime numbers in a vector</li>
+                        <li>Use lambda with transform() to square all elements</li>
+                        <li>Implement a generic comparator using lambda</li>
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>📚 C++ Lambda Expressions, Functors & Function Pointers - Complete Guide</p>
+            <p>References: GeeksforGeeks, C++ Documentation</p>
+        </footer>
+    </div>
+</body>
+</html>
