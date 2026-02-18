@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ File Handling & I/O — Complete Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13151c;
+    --surface2: #1a1d27;
+    --border: #252836;
+    --accent: #6ee7b7;
+    --accent2: #38bdf8;
+    --accent3: #f472b6;
+    --accent4: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0a0c10;
+    --keyword: #c792ea;
+    --type: #82aaff;
+    --string: #c3e88d;
+    --comment: #546e7a;
+    --number: #f78c6c;
+    --function: #82aaff;
+    --macro: #ffcb6b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0d0f14 0%, #13151c 50%, #0d1520 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(110,231,183,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+  .badge {
+    display: inline-block;
+    background: rgba(110,231,183,0.1);
+    border: 1px solid rgba(110,231,183,0.3);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle { color: var(--muted); font-weight: 300; font-size: 16px; }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+  }
+  .toc h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 6px;
+  }
+  .toc a {
+    color: var(--accent2);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    display: block;
+    padding: 3px 0;
+  }
+  .toc a:hover { opacity: 1; color: var(--accent); }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 56px;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(110,231,183,0.08);
+    border: 1px solid rgba(110,231,183,0.2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin: 24px 0 10px;
+  }
+
+  p { margin-bottom: 12px; color: #b0bec5; }
+  p strong { color: var(--text); }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .code-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-title span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+  .dots { display: flex; gap: 5px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot:nth-child(1) { background: #ff5f57; }
+  .dot:nth-child(2) { background: #febc2e; }
+  .dot:nth-child(3) { background: #28c840; }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    tab-size: 4;
+  }
+
+  /* Syntax highlighting via spans */
+  .kw { color: var(--keyword); }
+  .ty { color: var(--type); }
+  .st { color: var(--string); }
+  .cm { color: var(--comment); font-style: italic; }
+  .nm { color: var(--number); }
+  .fn { color: #82aaff; }
+  .mc { color: var(--macro); }
+  .op { color: #89ddff; }
+  .id { color: var(--text); }
+
+  /* INLINE CODE */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: rgba(110,231,183,0.08);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 1px solid rgba(110,231,183,0.15);
+  }
+
+  /* THEORY BOX */
+  .theory-box {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .theory-box.green { border-color: var(--accent); }
+  .theory-box.yellow { border-color: var(--accent4); }
+  .theory-box.pink { border-color: var(--accent3); }
+  .theory-box p { margin-bottom: 6px; }
+  .theory-box p:last-child { margin-bottom: 0; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: rgba(255,255,255,0.04); }
+  th {
+    text-align: left;
+    padding: 11px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+  }
+  td {
+    padding: 10px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #b0bec5;
+  }
+  td:first-child { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent4); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* SYNTAX ANATOMY */
+  .syntax-anatomy {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .syntax-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .syntax-explain {
+    display: grid;
+    gap: 6px;
+  }
+  .syn-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .syn-part {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    min-width: 160px;
+    font-size: 12px;
+  }
+  .syn-desc { color: #90a4ae; }
+
+  /* NOTE / TIP */
+  .note {
+    display: flex;
+    gap: 12px;
+    background: rgba(56,189,248,0.07);
+    border: 1px solid rgba(56,189,248,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: #90caf9;
+  }
+  .note::before { content: '💡'; font-size: 16px; flex-shrink: 0; }
+  .warn {
+    display: flex;
+    gap: 12px;
+    background: rgba(251,191,36,0.07);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: #fde68a;
+  }
+  .warn::before { content: '⚠️'; font-size: 16px; flex-shrink: 0; }
+
+  /* COMPARISON CARDS */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .compare-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .compare-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-card.left h4 { color: var(--accent); }
+  .compare-card.right h4 { color: var(--accent3); }
+  .compare-card ul { list-style: none; padding: 0; }
+  .compare-card ul li { font-size: 13.5px; color: #90a4ae; padding: 3px 0; }
+  .compare-card ul li::before { content: '→ '; color: var(--muted); }
+
+  /* FEATURE CHIPS */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .chip-green { color: var(--accent); border-color: rgba(110,231,183,0.3); background: rgba(110,231,183,0.07); }
+  .chip-blue { color: var(--accent2); border-color: rgba(56,189,248,0.3); background: rgba(56,189,248,0.07); }
+  .chip-yellow { color: var(--accent4); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.07); }
+  .chip-pink { color: var(--accent3); border-color: rgba(244,114,182,0.3); background: rgba(244,114,182,0.07); }
+
+  /* DIVIDER */
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    header { padding: 40px 20px 36px; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="badge">Module M42 — Complete Notes</div>
+    <h1>C++ File Handling<br><span>&amp; I/O Streams</span></h1>
+    <p class="subtitle">Object-Oriented I/O · Type-Safe · Extensible · Stream Classes · File Modes · Binary I/O</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h3>Contents</h3>
+    <div class="toc-grid">
+      <a href="#s1">01. Why C++ I/O?</a>
+      <a href="#s2">02. What is a Stream?</a>
+      <a href="#s3">03. Stream Class Hierarchy</a>
+      <a href="#s4">04. Three Core Features</a>
+      <a href="#s5">05. Text vs Binary Files</a>
+      <a href="#s6">06. File Opening Modes</a>
+      <a href="#s7">07. File Pointers</a>
+      <a href="#s8">08. Input Functions</a>
+      <a href="#s9">09. Formatting / iomanip</a>
+      <a href="#s10">10. Operator Overloading</a>
+      <a href="#s11">11. Error Handling</a>
+      <a href="#s12">12. Buffered I/O</a>
+      <a href="#s13">13. Block (Binary Struct) I/O</a>
+      <a href="#s14">14. Complete Practice Program</a>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Why C++ I/O Over C?</h2>
+    </div>
+    <p>C used <code>stdio.h</code> with functions like <code>printf()</code>, <code>scanf()</code>, and <code>FILE*</code>. C++ replaces this entire system with a cleaner, safer, object-oriented approach using <strong>stream classes</strong>.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card left">
+        <h4>C Style (Old)</h4>
+        <ul>
+          <li>Uses FILE*, fopen(), fclose()</li>
+          <li>Format strings: %d, %f, %s</li>
+          <li>Type mismatch possible at runtime</li>
+          <li>No overloading for custom types</li>
+          <li>Manual memory &amp; error handling</li>
+        </ul>
+      </div>
+      <div class="compare-card right">
+        <h4>C++ Style (Modern)</h4>
+        <ul>
+          <li>Uses stream objects: ifstream, ofstream</li>
+          <li>No format strings needed — type-safe</li>
+          <li>Type mismatch caught at compile time</li>
+          <li>Extendable with operator overloading</li>
+          <li>RAII: file closes on object destruction</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Required Header Files</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Header</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>&lt;iostream&gt;</td><td>Console I/O (cin, cout, cerr, clog)</td></tr>
+          <tr><td>&lt;fstream&gt;</td><td>File I/O (ifstream, ofstream, fstream)</td></tr>
+          <tr><td>&lt;sstream&gt;</td><td>String stream I/O (istringstream, ostringstream)</td></tr>
+          <tr><td>&lt;iomanip&gt;</td><td>Formatting manipulators (setw, setprecision, hex)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>What is a Stream?</h2>
+    </div>
+    <div class="theory-box green">
+      <p>A <strong>stream</strong> is a logical flow of data between a program and a device (keyboard, screen, file). Think of it like water in a pipe — data flows in one direction at a time.</p>
+      <p>You never access a file or device directly. You access it <em>through</em> a stream object.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Stream Object</th><th>Direction</th><th>Connected To</th><th>Class Type</th></tr></thead>
+        <tbody>
+          <tr><td>cin</td><td>Input ←</td><td>Keyboard</td><td>istream</td></tr>
+          <tr><td>cout</td><td>Output →</td><td>Screen</td><td>ostream</td></tr>
+          <tr><td>cerr</td><td>Output → (unbuffered)</td><td>Screen (errors)</td><td>ostream</td></tr>
+          <tr><td>clog</td><td>Output → (buffered)</td><td>Screen (logs)</td><td>ostream</td></tr>
+          <tr><td>ifstream</td><td>Input ←</td><td>File</td><td>ifstream</td></tr>
+          <tr><td>ofstream</td><td>Output →</td><td>File</td><td>ofstream</td></tr>
+          <tr><td>fstream</td><td>Both ↔</td><td>File</td><td>fstream</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>File vs Stream — Key Distinction</h3>
+    <div class="compare-grid">
+      <div class="compare-card left">
+        <h4>File</h4>
+        <ul>
+          <li>Physical object stored on disk</li>
+          <li>Permanent — exists outside program</li>
+          <li>You can't use it directly in C++</li>
+        </ul>
+      </div>
+      <div class="compare-card right">
+        <h4>Stream</h4>
+        <ul>
+          <li>Logical connection inside program</li>
+          <li>Temporary — lives while object lives</li>
+          <li>Your program interacts through this</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Stream Class Hierarchy</h2>
+    </div>
+    <p>All stream classes in C++ inherit from a common base class <code>ios</code>. This is why they all share common features like error flags, state checking, and modes.</p>
+    <img src="https://jcodebook.com/wp-content/uploads/2023/12/FileStream-1.jpg" alt="Stream Class Hierarchy" style="width:100%; border-radius:8px; margin: 16px 0;">
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>Class Hierarchy (Conceptual)</span></div>
+      <pre>
+<span class="cm">// Base class — holds state flags, mode flags</span>
+<span class="ty">ios</span>
+  ├── <span class="ty">istream</span>          <span class="cm">// input operations (>> , get, getline)</span>
+  │     └── <span class="ty">ifstream</span>     <span class="cm">// reads from FILE</span>
+  │
+  ├── <span class="ty">ostream</span>          <span class="cm">// output operations (&lt;&lt;, put, write)</span>
+  │     └── <span class="ty">ofstream</span>     <span class="cm">// writes to FILE</span>
+  │
+  └── <span class="ty">iostream</span>         <span class="cm">// both input + output</span>
+        └── <span class="ty">fstream</span>      <span class="cm">// read/write from FILE</span></pre>
+    </div>
+
+    <div class="note">Inheritance means <code>fstream</code> has ALL features of both <code>istream</code> and <code>ostream</code> — you can read AND write with one object.</div>
+
+    <h3>cout, cerr, clog — Differences</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Stream</th><th>Buffered?</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>cout</td><td>Yes</td><td>Normal output — display results to user</td></tr>
+          <tr><td>cerr</td><td>No (immediate)</td><td>Error messages — must display instantly</td></tr>
+          <tr><td>clog</td><td>Yes</td><td>Logging messages — can wait in buffer</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>cerr_clog_example.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"Normal output"</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+    <span class="id">cerr</span> <span class="op">&lt;&lt;</span> <span class="st">"Error! shown immediately"</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+    <span class="id">clog</span> <span class="op">&lt;&lt;</span> <span class="st">"Log message (buffered)"</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Three Core Features of C++ I/O</h2>
+    </div>
+
+    <h3>1 — Object-Oriented I/O</h3>
+    <p>I/O in C++ is done via <strong>objects of stream classes</strong>, not standalone functions. <code>cout</code> is an object of <code>ostream</code>, <code>cin</code> is an object of <code>istream</code>.</p>
+    <div class="theory-box">
+      <p>This means I/O operations benefit from all OOP features: inheritance, encapsulation, and polymorphism.</p>
+    </div>
+
+    <h3>2 — Type-Safe I/O</h3>
+    <p>The compiler automatically selects the correct behavior based on the variable's type. No format strings like <code>%d</code> or <code>%lf</code> — no room for type mismatch.</p>
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>type_safety.cpp</span></div>
+      <pre>
+<span class="ty">int</span>    <span class="id">x</span>  <span class="op">=</span> <span class="nm">10</span>;
+<span class="ty">double</span> <span class="id">y</span>  <span class="op">=</span> <span class="nm">3.14</span>;
+<span class="ty">char</span>   <span class="id">ch</span> <span class="op">=</span> <span class="st">'A'</span>;
+<span class="ty">string</span> <span class="id">s</span>  <span class="op">=</span> <span class="st">"Hello"</span>;
+
+<span class="cm">// C approach — error prone:</span>
+<span class="fn">printf</span>(<span class="st">"%d %lf %c %s"</span>, <span class="id">x</span>, <span class="id">y</span>, <span class="id">ch</span>, <span class="id">s</span>.<span class="fn">c_str</span>());
+
+<span class="cm">// C++ approach — type-safe, compiler verifies each type:</span>
+<span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">x</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="id">y</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="id">ch</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>;</pre>
+    </div>
+
+    <h3>3 — Extensibility (Operator Overloading)</h3>
+    <p>You can overload <code>&lt;&lt;</code> and <code>&gt;&gt;</code> for your own classes, making user-defined types work <em>exactly</em> like built-in types with streams.</p>
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>extensibility.cpp</span></div>
+      <pre>
+<span class="kw">class</span> <span class="ty">Complex</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="id">real</span>, <span class="id">imag</span>;
+
+    <span class="cm">// overload &lt;&lt; so cout &lt;&lt; c works</span>
+    <span class="kw">friend</span> <span class="ty">ostream</span><span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;</span>(<span class="ty">ostream</span><span class="op">&amp;</span> <span class="id">out</span>, <span class="kw">const</span> <span class="ty">Complex</span><span class="op">&amp;</span> <span class="id">c</span>) {
+        <span class="id">out</span> <span class="op">&lt;&lt;</span> <span class="id">c</span>.<span class="id">real</span> <span class="op">&lt;&lt;</span> <span class="st">"+"</span> <span class="op">&lt;&lt;</span> <span class="id">c</span>.<span class="id">imag</span> <span class="op">&lt;&lt;</span> <span class="st">"i"</span>;
+        <span class="kw">return</span> <span class="id">out</span>; <span class="cm">// return ref enables cascading: cout &lt;&lt; a &lt;&lt; b</span>
+    }
+
+    <span class="cm">// overload &gt;&gt; so cin &gt;&gt; c works</span>
+    <span class="kw">friend</span> <span class="ty">istream</span><span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&gt;&gt;</span>(<span class="ty">istream</span><span class="op">&amp;</span> <span class="id">in</span>, <span class="ty">Complex</span><span class="op">&amp;</span> <span class="id">c</span>) {
+        <span class="id">in</span> <span class="op">&gt;&gt;</span> <span class="id">c</span>.<span class="id">real</span> <span class="op">&gt;&gt;</span> <span class="id">c</span>.<span class="id">imag</span>;
+        <span class="kw">return</span> <span class="id">in</span>;
+    }
+};
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">Complex</span> <span class="id">c</span>;
+    <span class="id">cin</span>  <span class="op">&gt;&gt;</span> <span class="id">c</span>;     <span class="cm">// reads real and imag</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">c</span>;     <span class="cm">// prints e.g. 3+4i</span>
+}</pre>
+    </div>
+
+    <h3>Syntax: Why Return by Reference?</h3>
+    <div class="syntax-anatomy">
+      <div class="syntax-line"><span class="ty">ostream</span><span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;</span>(<span class="ty">ostream</span><span class="op">&amp;</span> out, <span class="kw">const</span> <span class="ty">Complex</span><span class="op">&amp;</span> c)</div>
+      <div class="syntax-explain">
+        <div class="syn-row"><span class="syn-part">ostream&amp; (return type)</span><span class="syn-desc">Returns the same stream by reference, enabling chaining: <code>cout &lt;&lt; a &lt;&lt; b &lt;&lt; c</code></span></div>
+        <div class="syn-row"><span class="syn-part">ostream&amp; out</span><span class="syn-desc">The stream object being written to — passed by reference so we modify the actual stream</span></div>
+        <div class="syn-row"><span class="syn-part">const Complex&amp; c</span><span class="syn-desc">Object to print — const ref avoids copying, prevents accidental modification</span></div>
+        <div class="syn-row"><span class="syn-part">return out</span><span class="syn-desc">Returns the stream so the next <code>&lt;&lt;</code> in the chain has something to work on</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Text Files vs Binary Files</h2>
+    </div>
+    <p>These are the two fundamental modes of storing data. Understanding how each stores data in memory is critical.</p>
+
+    <h3>Text File — Character-Based Storage</h3>
+    <div class="theory-box green">
+      <p>Every value is <strong>converted to its ASCII character representation</strong> before writing. The integer <code>768</code> is stored as three bytes: the characters <code>'7'</code>, <code>'6'</code>, <code>'8'</code> — not as a 4-byte integer.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>text_file.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;fstream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">ofstream</span> <span class="id">fout</span>(<span class="st">"data.txt"</span>);  <span class="cm">// creates/opens for writing</span>
+
+    <span class="ty">int</span>  <span class="id">num</span> <span class="op">=</span> <span class="nm">768</span>;
+    <span class="ty">char</span> <span class="id">ch</span>  <span class="op">=</span> <span class="st">'A'</span>;
+
+    <span class="id">fout</span> <span class="op">&lt;&lt;</span> <span class="id">num</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="id">ch</span>;
+    <span class="cm">// File contains literally: 768 A</span>
+    <span class="cm">// Stored as ASCII bytes:  55 54 56 32 65</span>
+
+    <span class="id">fout</span>.<span class="fn">close</span>();
+}</pre>
+    </div>
+
+    <h3>Binary File — Raw Memory Storage</h3>
+    <div class="theory-box yellow">
+      <p>Data is written in <strong>raw binary format</strong> — exactly as it exists in RAM. The integer <code>768</code> (which is <code>0x00000300</code>) is stored as 4 bytes: <code>00 03 00 00</code>. No conversion, no ASCII.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>binary_file.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;fstream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">ofstream</span> <span class="id">fout</span>(<span class="st">"data.bin"</span>, <span class="id">ios</span>::<span class="id">binary</span>);
+
+    <span class="ty">int</span>  <span class="id">num</span> <span class="op">=</span> <span class="nm">768</span>;
+    <span class="ty">char</span> <span class="id">ch</span>  <span class="op">=</span> <span class="st">'A'</span>;
+
+    <span class="cm">// write() takes: (char* pointer to data, number of bytes)</span>
+    <span class="id">fout</span>.<span class="fn">write</span>((<span class="ty">char</span><span class="op">*</span>)<span class="op">&amp;</span><span class="id">num</span>, <span class="kw">sizeof</span>(<span class="id">num</span>));  <span class="cm">// writes 4 raw bytes</span>
+    <span class="id">fout</span>.<span class="fn">write</span>(<span class="op">&amp;</span><span class="id">ch</span>,         <span class="kw">sizeof</span>(<span class="id">ch</span>));   <span class="cm">// writes 1 raw byte</span>
+
+    <span class="id">fout</span>.<span class="fn">close</span>();
+}</pre>
+    </div>
+
+    <h3>Syntax: write() and read() Explained</h3>
+    <div class="syntax-anatomy">
+      <div class="syntax-line"><span class="id">fout</span>.<span class="fn">write</span>( (<span class="ty">char</span><span class="op">*</span>)<span class="op">&amp;</span><span class="id">num</span>, <span class="kw">sizeof</span>(<span class="id">num</span>) );</div>
+      <div class="syntax-explain">
+        <div class="syn-row"><span class="syn-part">(char*)&amp;num</span><span class="syn-desc">Cast the address of <code>num</code> to a <code>char*</code>. Since write() operates byte-by-byte, it needs a char pointer regardless of data type.</span></div>
+        <div class="syn-row"><span class="syn-part">sizeof(num)</span><span class="syn-desc">Number of bytes to write. For <code>int</code> this is typically 4. Using sizeof ensures portability.</span></div>
+        <div class="syn-row"><span class="syn-part">read() equivalent</span><span class="syn-desc"><code>fin.read((char*)&amp;num, sizeof(num));</code> — reads back those exact bytes into num.</span></div>
+      </div>
+    </div>
+
+    <h3>Text vs Binary — Full Comparison</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Text File</th><th>Binary File</th></tr></thead>
+        <tbody>
+          <tr><td>Storage format</td><td>ASCII / UTF characters</td><td>Raw memory bytes</td></tr>
+          <tr><td>Human readable</td><td>Yes — open in Notepad</td><td>No — looks like garbage</td></tr>
+          <tr><td>Type conversion</td><td>Yes — int→chars on write</td><td>No — direct copy of RAM</td></tr>
+          <tr><td>Speed</td><td>Slower (conversion overhead)</td><td>Faster (no conversion)</td></tr>
+          <tr><td>File size</td><td>Larger (e.g. 768 = 3 bytes)</td><td>Smaller (768 = always 4 bytes)</td></tr>
+          <tr><td>Use case</td><td>Config files, logs, CSV</td><td>Images, audio, structs, databases</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>File Opening Modes</h2>
+    </div>
+    <p>Modes are specified as <code>ios</code> flags. Multiple modes are combined using the <code>|</code> (OR) operator.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mode Flag</th><th>Meaning</th><th>Behavior</th></tr></thead>
+        <tbody>
+          <tr><td>ios::in</td><td>Read mode</td><td>File must exist; opens for reading</td></tr>
+          <tr><td>ios::out</td><td>Write mode</td><td>Creates file; truncates if exists</td></tr>
+          <tr><td>ios::app</td><td>Append mode</td><td>Writes at end; existing data preserved</td></tr>
+          <tr><td>ios::binary</td><td>Binary mode</td><td>No newline/encoding conversion</td></tr>
+          <tr><td>ios::ate</td><td>At End</td><td>Opens file and positions pointer at end</td></tr>
+          <tr><td>ios::trunc</td><td>Truncate</td><td>Deletes all existing content on open</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>file_modes.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;fstream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+
+    <span class="cm">// Read-only: file MUST already exist</span>
+    <span class="ty">ifstream</span> <span class="id">fin</span>(<span class="st">"data.txt"</span>);
+    <span class="cm">// Same as: ifstream fin("data.txt", ios::in);</span>
+
+    <span class="cm">// Write: creates file or clears existing</span>
+    <span class="ty">ofstream</span> <span class="id">fout</span>(<span class="st">"data.txt"</span>);
+    <span class="cm">// Same as: ofstream fout("data.txt", ios::out | ios::trunc);</span>
+
+    <span class="cm">// Append: adds to end, original data safe</span>
+    <span class="ty">ofstream</span> <span class="id">fapp</span>(<span class="st">"data.txt"</span>, <span class="id">ios</span>::<span class="id">app</span>);
+
+    <span class="cm">// Read + Write combined (needs repositioning between switches)</span>
+    <span class="ty">fstream</span>  <span class="id">frw</span>(<span class="st">"data.txt"</span>, <span class="id">ios</span>::<span class="id">in</span> <span class="op">|</span> <span class="id">ios</span>::<span class="id">out</span>);
+
+    <span class="cm">// Binary write</span>
+    <span class="ty">ofstream</span> <span class="id">fbin</span>(<span class="st">"data.bin"</span>, <span class="id">ios</span>::<span class="id">binary</span>);
+
+    <span class="cm">// Binary read+write</span>
+    <span class="ty">fstream</span>  <span class="id">fbrw</span>(<span class="st">"data.bin"</span>, <span class="id">ios</span>::<span class="id">in</span> <span class="op">|</span> <span class="id">ios</span>::<span class="id">out</span> <span class="op">|</span> <span class="id">ios</span>::<span class="id">binary</span>);
+
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+    </div>
+    <div class="warn">When opening in read+write mode (<code>ios::in | ios::out</code>), you must reposition the file pointer when switching between reading and writing — otherwise behavior is undefined.</div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>File Pointers &amp; Repositioning</h2>
+    </div>
+    <div class="theory-box">
+      <p>Every open file has an internal <strong>position marker (cursor)</strong> that tracks where the next read or write will happen. It advances automatically as you read/write. You can also move it manually using seek functions.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Function</th><th>For</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>seekg(pos)</td><td>Reading</td><td>Move GET (read) pointer to byte position pos</td></tr>
+          <tr><td>seekg(offset, origin)</td><td>Reading</td><td>Move GET pointer offset bytes from origin</td></tr>
+          <tr><td>seekp(pos)</td><td>Writing</td><td>Move PUT (write) pointer to byte position pos</td></tr>
+          <tr><td>seekp(offset, origin)</td><td>Writing</td><td>Move PUT pointer offset bytes from origin</td></tr>
+          <tr><td>tellg()</td><td>Reading</td><td>Returns current GET pointer position (byte number)</td></tr>
+          <tr><td>tellp()</td><td>Writing</td><td>Returns current PUT pointer position</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Origin Constants</h3>
+    <div class="chips">
+      <span class="chip chip-green">ios::beg — start of file</span>
+      <span class="chip chip-blue">ios::cur — current position</span>
+      <span class="chip chip-yellow">ios::end — end of file</span>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>file_pointer.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;fstream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">fstream</span> <span class="id">file</span>(<span class="st">"data.txt"</span>, <span class="id">ios</span>::<span class="id">in</span> <span class="op">|</span> <span class="id">ios</span>::<span class="id">out</span>);
+
+    <span class="cm">// Move write pointer to END, then append a line</span>
+    <span class="id">file</span>.<span class="fn">seekp</span>(<span class="nm">0</span>, <span class="id">ios</span>::<span class="id">end</span>);
+    <span class="id">file</span> <span class="op">&lt;&lt;</span> <span class="st">"\nNew Line Added"</span>;
+
+    <span class="cm">// Move read pointer to BEGINNING to read all</span>
+    <span class="id">file</span>.<span class="fn">seekg</span>(<span class="nm">0</span>, <span class="id">ios</span>::<span class="id">beg</span>);
+
+    <span class="ty">string</span> <span class="id">line</span>;
+    <span class="kw">while</span>(<span class="fn">getline</span>(<span class="id">file</span>, <span class="id">line</span>))
+        <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">line</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+
+    <span class="cm">// Get current read position (useful for file size)</span>
+    <span class="id">file</span>.<span class="fn">seekg</span>(<span class="nm">0</span>, <span class="id">ios</span>::<span class="id">end</span>);
+    <span class="ty">streampos</span> <span class="id">size</span> <span class="op">=</span> <span class="id">file</span>.<span class="fn">tellg</span>();
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"File size: "</span> <span class="op">&lt;&lt;</span> <span class="id">size</span> <span class="op">&lt;&lt;</span> <span class="st">" bytes"</span>;
+
+    <span class="id">file</span>.<span class="fn">close</span>();
+}</pre>
+    </div>
+
+    <div class="syntax-anatomy">
+      <div class="syntax-line"><span class="id">file</span>.<span class="fn">seekg</span>( <span class="nm">0</span>, <span class="id">ios</span>::<span class="id">beg</span> );</div>
+      <div class="syntax-explain">
+        <div class="syn-row"><span class="syn-part">seekg</span><span class="syn-desc">Move GET pointer — used before reading. (seekp moves PUT pointer — used before writing)</span></div>
+        <div class="syn-row"><span class="syn-part">0 (offset)</span><span class="syn-desc">Move 0 bytes from the origin. Use positive values to skip forward, negative from ios::end to go back.</span></div>
+        <div class="syn-row"><span class="syn-part">ios::beg</span><span class="syn-desc">Origin = beginning of file. Other options: <code>ios::cur</code> (current), <code>ios::end</code> (end of file)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2>Input Stream Functions</h2>
+    </div>
+    <p>Beyond the <code>&gt;&gt;</code> operator, <code>istream</code> provides several specialized functions for reading.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Function</th><th>Usage</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>cin &gt;&gt; x</td><td>Read formatted input</td><td>Skips whitespace; stops on space/newline</td></tr>
+          <tr><td>cin.get(ch)</td><td>Read one character</td><td>Reads whitespace too (including newline)</td></tr>
+          <tr><td>cin.getline(buf, n)</td><td>Read whole line</td><td>Stops at newline; stores in C-string buffer</td></tr>
+          <tr><td>getline(cin, str)</td><td>Read whole line</td><td>Stores in std::string — preferred modern way</td></tr>
+          <tr><td>cin.ignore(n, delim)</td><td>Skip characters</td><td>Useful to flush newline left in buffer</td></tr>
+          <tr><td>cin.peek()</td><td>Preview next char</td><td>Doesn't remove from buffer</td></tr>
+          <tr><td>cin.putback(ch)</td><td>Push char back</td><td>Next read will see it again</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>input_functions.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">int</span> <span class="id">age</span>;
+    <span class="id">cin</span> <span class="op">&gt;&gt;</span> <span class="id">age</span>;                   <span class="cm">// reads integer, leaves '\n' in buffer</span>
+
+    <span class="id">cin</span>.<span class="fn">ignore</span>();                  <span class="cm">// clears that leftover '\n'</span>
+
+    <span class="ty">string</span> <span class="id">name</span>;
+    <span class="fn">getline</span>(<span class="id">cin</span>, <span class="id">name</span>);           <span class="cm">// reads full line including spaces</span>
+
+    <span class="ty">char</span> <span class="id">ch</span>;
+    <span class="id">cin</span>.<span class="fn">get</span>(<span class="id">ch</span>);                  <span class="cm">// reads exactly one char (any char)</span>
+
+    <span class="cm">// peek without consuming</span>
+    <span class="kw">if</span> (<span class="id">cin</span>.<span class="fn">peek</span>() <span class="op">==</span> <span class="st">'q'</span>) {
+        <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"Quit detected"</span>;
+    }
+
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">age</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="id">name</span>;
+}</pre>
+    </div>
+    <div class="note">Common bug: after reading an int with <code>&gt;&gt;</code>, a <code>'\n'</code> stays in the buffer. Always use <code>cin.ignore()</code> before calling <code>getline()</code> or you'll get an empty string.</div>
+
+    <h3>Output Character Functions</h3>
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>char_io.cpp</span></div>
+      <pre>
+<span class="ty">char</span> <span class="id">ch</span> <span class="op">=</span> <span class="st">'X'</span>;
+
+<span class="id">cout</span>.<span class="fn">put</span>(<span class="id">ch</span>);     <span class="cm">// writes one character to output</span>
+<span class="id">cout</span>.<span class="fn">put</span>(<span class="st">'\n'</span>);   <span class="cm">// writes newline</span>
+
+<span class="id">cin</span>.<span class="fn">get</span>(<span class="id">ch</span>);      <span class="cm">// reads one character (including whitespace)</span></pre>
+    </div>
+
+    <h3>Flushing Output</h3>
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>flush.cpp</span></div>
+      <pre>
+<span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"Saving..."</span> <span class="op">&lt;&lt;</span> <span class="id">flush</span>;   <span class="cm">// forces immediate display (no newline)</span>
+<span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"Done!"</span>    <span class="op">&lt;&lt;</span> <span class="id">endl</span>;    <span class="cm">// newline + flush combined</span></pre>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2>Formatting with &lt;iomanip&gt;</h2>
+    </div>
+
+    <div class="warn">Precedence trap: <code>cout &lt;&lt; a + b;</code> works fine, but <code>cout &lt;&lt; a &amp; b;</code> may not due to operator precedence. Always use parentheses with bitwise or complex expressions: <code>cout &lt;&lt; (a &amp; b);</code></div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>formatting.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;iomanip&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">int</span>    <span class="id">x</span>  <span class="op">=</span> <span class="nm">17</span>;
+    <span class="ty">double</span> <span class="id">pi</span> <span class="op">=</span> <span class="nm">3.14159265</span>;
+
+    <span class="cm">// ── Number Bases ───────────────────────────</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">dec</span> <span class="op">&lt;&lt;</span> <span class="id">x</span>;    <span class="cm">// 17  (decimal, default)</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">hex</span> <span class="op">&lt;&lt;</span> <span class="id">x</span>;    <span class="cm">// 11  (hexadecimal)</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">oct</span> <span class="op">&lt;&lt;</span> <span class="id">x</span>;    <span class="cm">// 21  (octal)</span>
+    <span class="cm">// Note: hex/oct persist until you change back with dec!</span>
+
+    <span class="cm">// ── Field Width ────────────────────────────</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">10</span>) <span class="op">&lt;&lt;</span> <span class="nm">100</span>;        <span class="cm">// "       100" (right-aligned)</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">left</span> <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">10</span>) <span class="op">&lt;&lt;</span> <span class="nm">100</span>; <span class="cm">// "100       " (left-aligned)</span>
+    <span class="cm">// setw only affects the NEXT output item</span>
+
+    <span class="cm">// ── Floating Point Precision ───────────────</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="fn">setprecision</span>(<span class="nm">4</span>) <span class="op">&lt;&lt;</span> <span class="id">pi</span>;          <span class="cm">// 3.142</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">fixed</span> <span class="op">&lt;&lt;</span> <span class="fn">setprecision</span>(<span class="nm">2</span>) <span class="op">&lt;&lt;</span> <span class="id">pi</span>;  <span class="cm">// 3.14 (always 2 decimal places)</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">scientific</span> <span class="op">&lt;&lt;</span> <span class="id">pi</span>;               <span class="cm">// 3.14159e+00</span>
+
+    <span class="cm">// ── Fill Character ─────────────────────────</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="fn">setfill</span>(<span class="st">'0'</span>) <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">5</span>) <span class="op">&lt;&lt;</span> <span class="nm">42</span>;   <span class="cm">// 00042</span>
+}</pre>
+    </div>
+
+    <div class="theory-box">
+      <p><strong>Sticky vs Non-Sticky Manipulators:</strong> Most manipulators like <code>hex</code>, <code>fixed</code>, <code>setprecision</code>, <code>left</code>, <code>setfill</code> are <em>sticky</em> — they stay in effect for all subsequent output until changed. But <code>setw()</code> is <em>non-sticky</em> — it only applies to the very next item.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 10 -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2>Operator Overloading for I/O</h2>
+    </div>
+    <p>This is what makes C++ I/O truly extensible. Once overloaded, your class prints and reads exactly like an <code>int</code>.</p>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>complex_io.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="kw">class</span> <span class="ty">Complex</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> <span class="id">real</span>, <span class="id">imag</span>;
+
+    <span class="ty">Complex</span>(<span class="ty">double</span> <span class="id">r</span><span class="op">=</span><span class="nm">0</span>, <span class="ty">double</span> <span class="id">i</span><span class="op">=</span><span class="nm">0</span>) : <span class="id">real</span>(<span class="id">r</span>), <span class="id">imag</span>(<span class="id">i</span>) {}
+
+    <span class="cm">// Must be friend: ostream is not this class</span>
+    <span class="kw">friend</span> <span class="ty">ostream</span><span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;</span>(<span class="ty">ostream</span><span class="op">&amp;</span> <span class="id">out</span>, <span class="kw">const</span> <span class="ty">Complex</span><span class="op">&amp;</span> <span class="id">c</span>) {
+        <span class="id">out</span> <span class="op">&lt;&lt;</span> <span class="id">c</span>.<span class="id">real</span>;
+        <span class="kw">if</span> (<span class="id">c</span>.<span class="id">imag</span> <span class="op">&gt;=</span> <span class="nm">0</span>) <span class="id">out</span> <span class="op">&lt;&lt;</span> <span class="st">"+"</span>;
+        <span class="id">out</span> <span class="op">&lt;&lt;</span> <span class="id">c</span>.<span class="id">imag</span> <span class="op">&lt;&lt;</span> <span class="st">"i"</span>;
+        <span class="kw">return</span> <span class="id">out</span>; <span class="cm">// crucial: return stream for chaining</span>
+    }
+
+    <span class="kw">friend</span> <span class="ty">istream</span><span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&gt;&gt;</span>(<span class="ty">istream</span><span class="op">&amp;</span> <span class="id">in</span>, <span class="ty">Complex</span><span class="op">&amp;</span> <span class="id">c</span>) {
+        <span class="cm">// Expects input format: 3.0 4.0</span>
+        <span class="id">in</span> <span class="op">&gt;&gt;</span> <span class="id">c</span>.<span class="id">real</span> <span class="op">&gt;&gt;</span> <span class="id">c</span>.<span class="id">imag</span>;
+        <span class="kw">return</span> <span class="id">in</span>; <span class="cm">// crucial: return stream for chaining</span>
+    }
+};
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">Complex</span> <span class="id">a</span>(<span class="nm">3</span>,<span class="nm">4</span>), <span class="id">b</span>(<span class="nm">1</span>,<span class="op">-</span><span class="nm">2</span>);
+
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">a</span> <span class="op">&lt;&lt;</span> <span class="st">" and "</span> <span class="op">&lt;&lt;</span> <span class="id">b</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>; <span class="cm">// 3+4i and 1-2i</span>
+
+    <span class="ty">Complex</span> <span class="id">c</span>;
+    <span class="id">cin</span> <span class="op">&gt;&gt;</span> <span class="id">c</span>;   <span class="cm">// reads two doubles</span>
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">c</span>;
+}</pre>
+    </div>
+  </div>
+
+  <!-- SECTION 11 -->
+  <div class="section" id="s11">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <h2>Error Handling &amp; File State</h2>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>error_handling.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;fstream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="ty">ifstream</span> <span class="id">fin</span>(<span class="st">"data.txt"</span>);
+
+    <span class="cm">// Method 1: Implicit bool conversion</span>
+    <span class="kw">if</span> (<span class="op">!</span><span class="id">fin</span>) {
+        <span class="id">cerr</span> <span class="op">&lt;&lt;</span> <span class="st">"ERROR: Could not open file!"</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+        <span class="kw">return</span> <span class="nm">1</span>;
+    }
+
+    <span class="cm">// Method 2: is_open() — more explicit</span>
+    <span class="kw">if</span> (<span class="op">!</span><span class="id">fin</span>.<span class="fn">is_open</span>()) {
+        <span class="id">cerr</span> <span class="op">&lt;&lt;</span> <span class="st">"File not opened"</span>;
+        <span class="kw">return</span> <span class="nm">1</span>;
+    }
+
+    <span class="cm">// ── Stream State Flags ────────────────────</span>
+    <span class="cm">// fin.good()  → all OK, no errors</span>
+    <span class="cm">// fin.eof()   → end of file reached</span>
+    <span class="cm">// fin.fail()  → recoverable error (bad format)</span>
+    <span class="cm">// fin.bad()   → unrecoverable error (disk failure)</span>
+
+    <span class="ty">string</span> <span class="id">line</span>;
+    <span class="kw">while</span> (<span class="fn">getline</span>(<span class="id">fin</span>, <span class="id">line</span>)) {  <span class="cm">// loop until EOF or error</span>
+        <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">line</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+    }
+
+    <span class="kw">if</span> (<span class="id">fin</span>.<span class="fn">eof</span>()) <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"Reached end of file."</span>;
+    <span class="kw">if</span> (<span class="id">fin</span>.<span class="fn">bad</span>()) <span class="id">cerr</span> <span class="op">&lt;&lt;</span> <span class="st">"Unrecoverable I/O error!"</span>;
+
+    <span class="id">fin</span>.<span class="fn">close</span>();  <span class="cm">// explicit close (or RAII handles it)</span>
+}</pre>
+    </div>
+
+    <h3>RAII — Automatic File Closing</h3>
+    <div class="theory-box green">
+      <p><strong>RAII</strong> (Resource Acquisition Is Initialization): when an <code>fstream</code> object goes out of scope, its destructor automatically calls <code>close()</code>. You don't need to call it manually — but doing so explicitly is good practice for clarity.</p>
+    </div>
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>raii_example.cpp</span></div>
+      <pre>
+<span class="ty">void</span> <span class="fn">readFile</span>() {
+    <span class="ty">ifstream</span> <span class="id">fin</span>(<span class="st">"data.txt"</span>);  <span class="cm">// opened here</span>
+    <span class="cm">// ... do stuff ...</span>
+}   <span class="cm">// &lt;-- fin destroyed here → close() called AUTOMATICALLY</span></pre>
+    </div>
+  </div>
+
+  <!-- SECTION 12 -->
+  <div class="section" id="s12">
+    <div class="section-header">
+      <span class="section-num">12</span>
+      <h2>Buffered I/O</h2>
+    </div>
+    <div class="theory-box yellow">
+      <p><strong>Why Buffering?</strong> Disk access is hundreds of times slower than RAM. Writing one byte at a time to disk would be catastrophically slow. So C++ collects data in a memory buffer first. When the buffer fills up (or you flush it), everything is written to disk in one fast operation.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>buffering_concept.cpp</span></div>
+      <pre>
+<span class="cm">// Without buffering (cerr-style): every byte → disk immediately</span>
+<span class="cm">// SLOW for large data</span>
+<span class="id">cerr</span> <span class="op">&lt;&lt;</span> <span class="st">"Error!"</span>;  <span class="cm">// written to screen right away</span>
+
+<span class="cm">// With buffering (cout/file-style):</span>
+<span class="cm">// Data → memory buffer → (when full or flushed) → disk/screen</span>
+
+<span class="ty">ofstream</span> <span class="id">fout</span>(<span class="st">"log.txt"</span>);
+<span class="kw">for</span> (<span class="ty">int</span> <span class="id">i</span> <span class="op">=</span> <span class="nm">0</span>; <span class="id">i</span> <span class="op">&lt;</span> <span class="nm">1000</span>; <span class="id">i</span><span class="op">++</span>) {
+    <span class="id">fout</span> <span class="op">&lt;&lt;</span> <span class="id">i</span> <span class="op">&lt;&lt;</span> <span class="st">"\n"</span>;  <span class="cm">// buffered — not written 1000 times to disk</span>
+}
+<span class="cm">// close() flushes remaining buffer → disk in one shot</span>
+<span class="id">fout</span>.<span class="fn">close</span>();
+
+<span class="cm">// Force flush mid-stream:</span>
+<span class="id">fout</span> <span class="op">&lt;&lt;</span> <span class="st">"critical data"</span> <span class="op">&lt;&lt;</span> <span class="id">flush</span>;  <span class="cm">// forced write now</span></pre>
+    </div>
+  </div>
+
+  <!-- SECTION 13 -->
+  <div class="section" id="s13">
+    <div class="section-header">
+      <span class="section-num">13</span>
+      <h2>Block I/O — Structures in Binary Files</h2>
+    </div>
+    <p>The real power of binary files: writing and reading entire structs (or objects) as raw memory blocks. This is fast and compact — perfect for databases and records.</p>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>struct_binary_io.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;fstream&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="kw">struct</span> <span class="ty">Student</span> {
+    <span class="ty">int</span>  <span class="id">roll</span>;
+    <span class="ty">char</span> <span class="id">name</span>[<span class="nm">30</span>];
+    <span class="ty">float</span> <span class="id">marks</span>;
+};
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+
+    <span class="cm">// ── WRITE MULTIPLE RECORDS ───────────────</span>
+    <span class="ty">Student</span> <span class="id">students</span>[] <span class="op">=</span> {
+        {<span class="nm">1</span>, <span class="st">"Deepak"</span>, <span class="nm">89.5</span>},
+        {<span class="nm">2</span>, <span class="st">"Priya"</span>,  <span class="nm">94.0</span>},
+        {<span class="nm">3</span>, <span class="st">"Raj"</span>,    <span class="nm">76.5</span>}
+    };
+
+    <span class="ty">ofstream</span> <span class="id">fout</span>(<span class="st">"students.bin"</span>, <span class="id">ios</span>::<span class="id">binary</span>);
+    <span class="kw">for</span> (<span class="kw">auto</span><span class="op">&amp;</span> <span class="id">s</span> : <span class="id">students</span>)
+        <span class="id">fout</span>.<span class="fn">write</span>((<span class="ty">char</span><span class="op">*</span>)<span class="op">&amp;</span><span class="id">s</span>, <span class="kw">sizeof</span>(<span class="ty">Student</span>));
+    <span class="id">fout</span>.<span class="fn">close</span>();
+
+    <span class="cm">// ── READ ALL RECORDS ─────────────────────</span>
+    <span class="ty">ifstream</span> <span class="id">fin</span>(<span class="st">"students.bin"</span>, <span class="id">ios</span>::<span class="id">binary</span>);
+    <span class="ty">Student</span> <span class="id">s</span>;
+    <span class="kw">while</span> (<span class="id">fin</span>.<span class="fn">read</span>((<span class="ty">char</span><span class="op">*</span>)<span class="op">&amp;</span><span class="id">s</span>, <span class="kw">sizeof</span>(<span class="ty">Student</span>))) {
+        <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>.<span class="id">roll</span> <span class="op">&lt;&lt;</span> <span class="st">" | "</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>.<span class="id">name</span> <span class="op">&lt;&lt;</span> <span class="st">" | "</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>.<span class="id">marks</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+    }
+
+    <span class="cm">// ── READ SPECIFIC RECORD (seek) ───────────</span>
+    <span class="cm">// Read 2nd record (index 1): seek to byte offset = 1 * sizeof(Student)</span>
+    <span class="id">fin</span>.<span class="fn">clear</span>();  <span class="cm">// clear EOF flag before seeking</span>
+    <span class="id">fin</span>.<span class="fn">seekg</span>(<span class="nm">1</span> <span class="op">*</span> <span class="kw">sizeof</span>(<span class="ty">Student</span>), <span class="id">ios</span>::<span class="id">beg</span>);
+    <span class="id">fin</span>.<span class="fn">read</span>((<span class="ty">char</span><span class="op">*</span>)<span class="op">&amp;</span><span class="id">s</span>, <span class="kw">sizeof</span>(<span class="ty">Student</span>));
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"Record 2: "</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>.<span class="id">name</span>;
+
+    <span class="id">fin</span>.<span class="fn">close</span>();
+}</pre>
+    </div>
+
+    <div class="syntax-anatomy">
+      <div class="syntax-line"><span class="id">fin</span>.<span class="fn">seekg</span>( <span class="nm">1</span> <span class="op">*</span> <span class="kw">sizeof</span>(<span class="ty">Student</span>), <span class="id">ios</span>::<span class="id">beg</span> );</div>
+      <div class="syntax-explain">
+        <div class="syn-row"><span class="syn-part">1 * sizeof(Student)</span><span class="syn-desc">Jump 1 record forward from beginning. Each record occupies exactly <code>sizeof(Student)</code> bytes — so record N is at byte <code>N * sizeof(Student)</code></span></div>
+        <div class="syn-row"><span class="syn-part">ios::beg</span><span class="syn-desc">Count from the start of file. This makes random access to any record possible in O(1) time.</span></div>
+        <div class="syn-row"><span class="syn-part">fin.clear()</span><span class="syn-desc">Must call before seekg if EOF was reached. Clears the error state flags so seeking works.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 14 -->
+  <div class="section" id="s14">
+    <div class="section-header">
+      <span class="section-num">14</span>
+      <h2>Complete Practice Program</h2>
+    </div>
+    <p>This program demonstrates all major concepts: text file I/O, binary file I/O, formatting, error handling, and iomanip in one cohesive example.</p>
+
+    <div class="code-block">
+      <div class="code-title"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>complete_demo.cpp</span></div>
+      <pre>
+<span class="mc">#include</span> <span class="st">&lt;iostream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;fstream&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;iomanip&gt;</span>
+<span class="mc">#include</span> <span class="st">&lt;string&gt;</span>
+<span class="kw">using namespace</span> <span class="id">std</span>;
+
+<span class="kw">struct</span> <span class="ty">Student</span> { <span class="ty">int</span> <span class="id">roll</span>; <span class="ty">char</span> <span class="id">name</span>[<span class="nm">20</span>]; <span class="ty">float</span> <span class="id">marks</span>; };
+
+<span class="ty">void</span> <span class="fn">textFileDemo</span>() {
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"\n=== TEXT FILE DEMO ==="</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+
+    <span class="ty">ofstream</span> <span class="id">fout</span>(<span class="st">"students.txt"</span>);
+    <span class="kw">if</span> (<span class="op">!</span><span class="id">fout</span>) { <span class="id">cerr</span> <span class="op">&lt;&lt;</span> <span class="st">"Cannot write"</span>; <span class="kw">return</span>; }
+
+    <span class="id">fout</span> <span class="op">&lt;&lt;</span> <span class="nm">1</span> <span class="op">&lt;&lt;</span> <span class="st">" Alice 91.5\n"</span>
+         <span class="op">&lt;&lt;</span> <span class="nm">2</span> <span class="op">&lt;&lt;</span> <span class="st">" Bob   83.0\n"</span>
+         <span class="op">&lt;&lt;</span> <span class="nm">3</span> <span class="op">&lt;&lt;</span> <span class="st">" Carol 78.5\n"</span>;
+    <span class="id">fout</span>.<span class="fn">close</span>();
+
+    <span class="ty">ifstream</span> <span class="id">fin</span>(<span class="st">"students.txt"</span>);
+    <span class="ty">int</span> <span class="id">roll</span>; <span class="ty">string</span> <span class="id">name</span>; <span class="ty">float</span> <span class="id">m</span>;
+
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="fn">left</span>
+         <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">6</span>)  <span class="op">&lt;&lt;</span> <span class="st">"Roll"</span>
+         <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">10</span>) <span class="op">&lt;&lt;</span> <span class="st">"Name"</span>
+         <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">8</span>)  <span class="op">&lt;&lt;</span> <span class="st">"Marks"</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="ty">string</span>(<span class="nm">24</span>, <span class="st">'-'</span>) <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+
+    <span class="kw">while</span> (<span class="id">fin</span> <span class="op">&gt;&gt;</span> <span class="id">roll</span> <span class="op">&gt;&gt;</span> <span class="id">name</span> <span class="op">&gt;&gt;</span> <span class="id">m</span>) {
+        <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">6</span>)  <span class="op">&lt;&lt;</span> <span class="id">roll</span>
+             <span class="op">&lt;&lt;</span> <span class="fn">setw</span>(<span class="nm">10</span>) <span class="op">&lt;&lt;</span> <span class="id">name</span>
+             <span class="op">&lt;&lt;</span> <span class="id">fixed</span> <span class="op">&lt;&lt;</span> <span class="fn">setprecision</span>(<span class="nm">1</span>) <span class="op">&lt;&lt;</span> <span class="id">m</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+    }
+}
+
+<span class="ty">void</span> <span class="fn">binaryFileDemo</span>() {
+    <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="st">"\n=== BINARY FILE DEMO ==="</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+
+    <span class="ty">Student</span> <span class="id">data</span>[] <span class="op">=</span> { {<span class="nm">1</span>,<span class="st">"Alice"</span>,<span class="nm">91.5</span>}, {<span class="nm">2</span>,<span class="st">"Bob"</span>,<span class="nm">83.0</span>} };
+
+    <span class="cm">// Write</span>
+    <span class="ty">ofstream</span> <span class="id">fout</span>(<span class="st">"students.bin"</span>, <span class="id">ios</span>::<span class="id">binary</span>);
+    <span class="id">fout</span>.<span class="fn">write</span>((<span class="ty">char</span><span class="op">*</span>)<span class="id">data</span>, <span class="kw">sizeof</span>(<span class="id">data</span>));
+    <span class="id">fout</span>.<span class="fn">close</span>();
+
+    <span class="cm">// Read back</span>
+    <span class="ty">Student</span> <span class="id">s</span>;
+    <span class="ty">ifstream</span> <span class="id">fin</span>(<span class="st">"students.bin"</span>, <span class="id">ios</span>::<span class="id">binary</span>);
+    <span class="kw">while</span> (<span class="id">fin</span>.<span class="fn">read</span>((<span class="ty">char</span><span class="op">*</span>)<span class="op">&amp;</span><span class="id">s</span>, <span class="kw">sizeof</span>(<span class="ty">Student</span>)))
+        <span class="id">cout</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>.<span class="id">roll</span> <span class="op">&lt;&lt;</span> <span class="st">" | "</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>.<span class="id">name</span> <span class="op">&lt;&lt;</span> <span class="st">" | "</span> <span class="op">&lt;&lt;</span> <span class="id">s</span>.<span class="id">marks</span> <span class="op">&lt;&lt;</span> <span class="id">endl</span>;
+}
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="fn">textFileDemo</span>();
+    <span class="fn">binaryFileDemo</span>();
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+    </div>
+
+    <hr>
+
+    <h3>Homework Challenges</h3>
+    <div class="theory-box pink">
+      <p><strong>1.</strong> Store 5 integers in a text file. Read them back and print their sum and average.</p>
+      <p><strong>2.</strong> Create a binary file with 10 Student records. Display only students scoring above 80.</p>
+      <p><strong>3.</strong> Use <code>seekg</code> to read only the last integer from a text file without reading the whole file.</p>
+      <p><strong>4.</strong> Overload <code>&lt;&lt;</code> for a <code>Point</code> class (x, y) and write 5 points to a file, then read them back.</p>
+      <p><strong>5.</strong> Append new records to an existing binary file using <code>ios::app | ios::binary</code>.</p>
+    </div>
+
+    <h3>Quick Reference Summary</h3>
+    <div class="chips">
+      <span class="chip chip-green">OOP-based I/O</span>
+      <span class="chip chip-green">Type Safe</span>
+      <span class="chip chip-green">Extensible</span>
+      <span class="chip chip-blue">ifstream / ofstream / fstream</span>
+      <span class="chip chip-blue">Text vs Binary</span>
+      <span class="chip chip-yellow">seekg / seekp / tellg / tellp</span>
+      <span class="chip chip-yellow">iomanip formatting</span>
+      <span class="chip chip-pink">operator &lt;&lt; overload</span>
+      <span class="chip chip-pink">RAII auto-close</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
