@@ -2,7 +2,9 @@
 #include <stdexcept>
 
  CurrentAccount::CurrentAccount(string accNo,string name,double bal,double overdraft):
- Account(accNo,name,bal),overdraftLimit(overdraft){};
+ Account(accNo,name,bal),overdraftLimit(overdraft)
+ {
+ };
 
 
  

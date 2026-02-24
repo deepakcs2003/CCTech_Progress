@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ Modern Features — Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1a1e2b;
+    --border: #252a3a;
+    --accent: #4ade80;
+    --accent2: #38bdf8;
+    --accent3: #f472b6;
+    --accent4: #fb923c;
+    --accent5: #a78bfa;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0a0c10;
+    --line-num: #374151;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.7;
+    padding: 2rem 1rem;
+  }
+
+  /* ─── Header ─────────────────────────────────── */
+  header {
+    max-width: 860px;
+    margin: 0 auto 3rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 1.5rem;
+  }
+  header .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--accent);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1.1;
+  }
+  header h1 span { color: var(--accent2); }
+  header p {
+    margin-top: .6rem;
+    color: var(--muted);
+    font-size: .95rem;
+  }
+
+  /* ─── Layout ─────────────────────────────────── */
+  main { max-width: 860px; margin: 0 auto; }
+
+  /* ─── Section ────────────────────────────────── */
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    animation: fadeUp .4s ease both;
+  }
+  section:nth-child(1) { animation-delay: .05s; }
+  section:nth-child(2) { animation-delay: .10s; }
+  section:nth-child(3) { animation-delay: .15s; }
+  section:nth-child(4) { animation-delay: .20s; }
+  section:nth-child(5) { animation-delay: .25s; }
+  section:nth-child(6) { animation-delay: .30s; }
+  section:nth-child(7) { animation-delay: .35s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── Section Header ─────────────────────────── */
+  .sec-head {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    padding: 1rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .sec-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--bg);
+    background: var(--accent);
+    padding: .2rem .55rem;
+    border-radius: 4px;
+    letter-spacing: .05em;
+  }
+  .sec-num.blue   { background: var(--accent2); }
+  .sec-num.pink   { background: var(--accent3); }
+  .sec-num.orange { background: var(--accent4); }
+  .sec-num.purple { background: var(--accent5); }
+  .sec-num.teal   { background: #2dd4bf; }
+  .sec-num.red    { background: #f87171; }
+
+  .sec-head h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+
+  /* ─── Section Body ───────────────────────────── */
+  .sec-body { padding: 1.4rem; }
+
+  p, li { font-size: .93rem; color: #cbd5e1; margin-bottom: .5rem; }
+  ul, ol { padding-left: 1.3rem; margin-bottom: .8rem; }
+  li { margin-bottom: .25rem; }
+
+  strong { color: var(--text); font-weight: 600; }
+
+  .note {
+    background: #0f2027;
+    border-left: 3px solid var(--accent2);
+    padding: .7rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: .8rem 0;
+    font-size: .875rem;
+    color: var(--accent2);
+  }
+
+  .warn {
+    background: #1a0f00;
+    border-left: 3px solid var(--accent4);
+    padding: .7rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: .8rem 0;
+    font-size: .875rem;
+    color: var(--accent4);
+  }
+
+  .rule {
+    background: #0f1a0f;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    margin: .8rem 0;
+    font-size: .9rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ─── Comparison Table ───────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .8rem 0;
+    font-size: .875rem;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--accent2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .6rem .9rem;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  td {
+    padding: .55rem .9rem;
+    border: 1px solid var(--border);
+    color: #cbd5e1;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #10131c; }
+
+  /* ─── VS Code style code block ───────────────── */
+  .code-block {
+    margin: 1rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: .82rem;
+  }
+
+  .code-title {
+    background: #1e2233;
+    padding: .45rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .code-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #f87171;
+    box-shadow: 14px 0 0 #fbbf24, 28px 0 0 #4ade80;
+  }
+  .code-title span { margin-left: 1.5rem; }
+
+  pre {
+    background: var(--code-bg);
+    padding: 1.1rem 1rem;
+    overflow-x: auto;
+    margin: 0;
+    counter-reset: line;
+  }
+
+  pre code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    line-height: 1.7;
+    display: block;
+  }
+
+  /* Syntax colouring */
+  .kw   { color: #c792ea; }   /* keywords */
+  .ty   { color: #82aaff; }   /* types */
+  .fn   { color: #82cfea; }   /* functions */
+  .str  { color: #c3e88d; }   /* strings */
+  .cm   { color: #546e7a; font-style: italic; } /* comments */
+  .num  { color: #f78c6c; }   /* numbers */
+  .pp   { color: #c17e70; }   /* preprocessor */
+  .op   { color: #89ddff; }   /* operators/punctuation */
+  .ns   { color: #ffcb6b; }   /* namespace */
+
+  /* ─── vTable grid ────────────────────────────── */
+  .vtable-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .vtable-card {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .vtable-card .vthead {
+    background: var(--surface2);
+    padding: .5rem .9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--accent2);
+    border-bottom: 1px solid var(--border);
+  }
+  .vtable-card table { margin: 0; }
+  .vtable-card table td, .vtable-card table th {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    padding: .4rem .9rem;
+  }
+  .vtable-card table td:first-child { color: var(--muted); width: 30px; }
+  .vtable-card table tr:last-child td { border-bottom: none; }
+  .changed { color: var(--accent) !important; }
+
+  /* ─── Summary table ──────────────────────────── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: .75rem;
+    margin: .5rem 0;
+  }
+  .summary-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    display: flex;
+    gap: .7rem;
+    align-items: flex-start;
+  }
+  .summary-item .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    padding: .2rem .5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .summary-item p { margin: 0; font-size: .85rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">C++ Modern Features</div>
+  <p>constexpr · noexcept · nullptr · Inline Namespaces · User-Defined Literals · Raw Strings · vtable / vptr</p>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════
+     1. constexpr
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2>constexpr — Compile-Time Computation</h2>
+  </div>
+  <div class="sec-body">
+    <p><strong>constexpr</strong> tells the compiler that an expression <em>must</em> be evaluated at compile time. It improves performance, safety, and gives compile-time guarantees.</p>
+
+    <table>
+      <tr><th>const</th><th>constexpr</th></tr>
+      <tr><td>Value cannot change</td><td>Must be evaluated at compile time</td></tr>
+      <tr><td>Can be a runtime constant</td><td>Must be a compile-time constant</td></tr>
+      <tr><td>Focus: immutability</td><td>Focus: compile-time evaluation</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-title"><span>basic_constexpr.cpp</span></div>
+<pre><code><span class="pp">#include &lt;iostream&gt;</span>
+<span class="kw">using namespace</span> <span class="ns">std</span>;
+
+<span class="kw">constexpr</span> <span class="ty">int</span> <span class="fn">square</span>(<span class="ty">int</span> x) {
+    <span class="kw">return</span> x <span class="op">*</span> x;
+}
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="kw">constexpr</span> <span class="ty">int</span> val <span class="op">=</span> <span class="fn">square</span>(<span class="num">5</span>);  <span class="cm">// evaluated at compile time</span>
+    cout <span class="op">&lt;&lt;</span> val <span class="op">&lt;&lt;</span> endl;           <span class="cm">// prints: 25</span>
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><span>constexpr_struct.cpp</span></div>
+<pre><code><span class="kw">struct</span> <span class="ty">Point</span> {
+    <span class="ty">int</span> x, y;
+    <span class="kw">constexpr</span> <span class="fn">Point</span>(<span class="ty">int</span> a, <span class="ty">int</span> b) <span class="op">:</span> x(a), y(b) {}
+};
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="kw">constexpr</span> <span class="ty">Point</span> origin(<span class="num">0</span>, <span class="num">0</span>);  <span class="cm">// constructed at compile time</span>
+    <span class="kw">constexpr</span> <span class="ty">int</span> value <span class="op">=</span> origin.x;
+    cout <span class="op">&lt;&lt;</span> value <span class="op">&lt;&lt;</span> endl;
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><span>constexpr_switch.cpp — switch case with enum operators</span></div>
+<pre><code><span class="kw">enum</span> <span class="ty">Flags</span> { GOOD <span class="op">=</span> <span class="num">1</span>, BAD <span class="op">=</span> <span class="num">2</span>, EOF_FLAG <span class="op">=</span> <span class="num">4</span> };
+
+<span class="kw">constexpr</span> <span class="ty">int</span> <span class="kw">operator</span><span class="op">|</span>(<span class="ty">Flags</span> a, <span class="ty">Flags</span> b) {
+    <span class="kw">return</span> <span class="ty">int</span>(a) <span class="op">|</span> <span class="ty">int</span>(b);
+}
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="kw">switch</span> (BAD <span class="op">|</span> EOF_FLAG) {
+        <span class="kw">case</span> BAD <span class="op">|</span> EOF_FLAG:          <span class="cm">// valid because result is constexpr</span>
+            cout <span class="op">&lt;&lt;</span> <span class="str">"Matched\n"</span>;
+            <span class="kw">break</span>;
+    }
+}</code></pre>
+    </div>
+
+    <div class="note">constexpr is required in: array sizes, switch cases, template parameters, and enum values.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     2. noexcept
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num blue">02</span>
+    <h2>noexcept — No-Exception Guarantee</h2>
+  </div>
+  <div class="sec-body">
+    <p><strong>noexcept</strong> declares that a function will never throw an exception. It is a compile-time feature. If a <code>noexcept</code> function <em>does</em> throw, <code>std::terminate()</code> is called immediately.</p>
+
+    <div class="code-block">
+      <div class="code-title"><span>noexcept_basic.cpp</span></div>
+<pre><code><span class="ty">void</span> <span class="fn">func</span>() <span class="kw">noexcept</span> {
+    cout <span class="op">&lt;&lt;</span> <span class="str">"Safe function\n"</span>;
+}
+<span class="cm">// If func() throws → std::terminate() is called</span></code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><span>conditional_noexcept.cpp — template with noexcept(noexcept(...))</span></div>
+<pre><code><span class="pp">#include &lt;vector&gt;</span>
+
+<span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span>
+<span class="ty">void</span> <span class="fn">callFunc</span>(T f, <span class="ty">vector</span><span class="op">&lt;</span><span class="ty">int</span><span class="op">&gt;&amp;</span> v)
+    <span class="kw">noexcept</span>(<span class="kw">noexcept</span>(f(v.at(<span class="num">0</span>))))   <span class="cm">// noexcept iff f(v.at(0)) doesn't throw</span>
+{
+    f(v.at(<span class="num">0</span>));
+}</code></pre>
+    </div>
+
+    <div class="note"><code>noexcept(expr)</code> checks at compile time whether <em>expr</em> can throw. If true → function is noexcept. Very powerful in template programming.</div>
+
+    <p><strong>When to use:</strong> always mark move constructors, swap functions, and destructors as <code>noexcept</code> — the STL uses this to apply optimisations.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     3. nullptr
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num pink">03</span>
+    <h2>nullptr — Type-Safe Null Pointer</h2>
+  </div>
+  <div class="sec-body">
+    <p>Before C++11, <code>NULL</code> was essentially <code>0</code> (an integer), causing overload-resolution ambiguity. <code>nullptr</code> is a keyword of type <code>std::nullptr_t</code> — it converts to any pointer but never to <code>int</code>.</p>
+
+    <div class="code-block">
+      <div class="code-title"><span>nullptr_overload.cpp — solving overload ambiguity</span></div>
+<pre><code><span class="ty">void</span> <span class="fn">func</span>(<span class="ty">int</span>)   { cout <span class="op">&lt;&lt;</span> <span class="str">"Integer version\n"</span>; }
+<span class="ty">void</span> <span class="fn">func</span>(<span class="ty">int*</span>)  { cout <span class="op">&lt;&lt;</span> <span class="str">"Pointer version\n"</span>; }
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="fn">func</span>(<span class="num">0</span>);        <span class="cm">// calls int version</span>
+    <span class="fn">func</span>(<span class="kw">nullptr</span>);  <span class="cm">// calls pointer version ✔</span>
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-title"><span>nullptr_template.cpp — correct template type deduction</span></div>
+<pre><code><span class="ty">void</span> <span class="fn">h</span>(<span class="ty">int*</span>) { cout <span class="op">&lt;&lt;</span> <span class="str">"Pointer function\n"</span>; }
+
+<span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> F, <span class="kw">typename</span> P<span class="op">&gt;</span>
+<span class="ty">void</span> <span class="fn">logAndCall</span>(F func, P param) { func(param); }
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="fn">logAndCall</span>(h, <span class="kw">nullptr</span>);  <span class="cm">// P deduced as nullptr_t → OK</span>
+    <span class="cm">// logAndCall(h, 0);     // P deduced as int → compile error</span>
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     4. Inline Namespaces
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num orange">04</span>
+    <h2>Inline Namespaces — Library Version Control</h2>
+  </div>
+  <div class="sec-body">
+    <p>An <strong>inline namespace</strong> makes its contents visible in the enclosing namespace automatically. This is the standard way to manage multiple library versions: the <code>inline</code> version is the default, older versions remain accessible by explicit qualification.</p>
+
+    <div class="code-block">
+      <div class="code-title"><span>inline_namespace.cpp</span></div>
+<pre><code><span class="kw">namespace</span> <span class="ns">Library</span> {
+
+    <span class="kw">namespace</span> <span class="ns">v1</span> {
+        <span class="ty">void</span> <span class="fn">show</span>() { cout <span class="op">&lt;&lt;</span> <span class="str">"Version 1\n"</span>; }
+    }
+
+    <span class="kw">inline namespace</span> <span class="ns">v2</span> {       <span class="cm">// v2 is the default</span>
+        <span class="ty">void</span> <span class="fn">show</span>() { cout <span class="op">&lt;&lt;</span> <span class="str">"Version 2\n"</span>; }
+    }
+}
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    Library<span class="op">::</span><span class="fn">show</span>();       <span class="cm">// → Version 2 (inline default)</span>
+    Library<span class="op">::</span>v1<span class="op">::</span><span class="fn">show</span>(); <span class="cm">// → Version 1 (explicit)</span>
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     5. User-Defined Literals
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num purple">05</span>
+    <h2>User-Defined Literals</h2>
+  </div>
+  <div class="sec-body">
+    <p>C++11 lets you define custom suffixes for literals, making code more readable. Syntax: <code>return_type operator "" _suffix(parameters)</code>. The suffix <strong>must start with an underscore</strong> <code>_</code>.</p>
+
+    <div class="code-block">
+      <div class="code-title"><span>literals.cpp — _sec, _kg, and complex _i</span></div>
+<pre><code><span class="pp">#include &lt;complex&gt;</span>
+
+<span class="cm">// seconds literal</span>
+<span class="ty">long double</span> <span class="kw">operator</span> <span class="str">""</span> <span class="fn">_sec</span>(<span class="ty">long double</span> val) { <span class="kw">return</span> val; }
+
+<span class="cm">// kg → grams conversion</span>
+<span class="ty">long double</span> <span class="kw">operator</span> <span class="str">""</span> <span class="fn">_kg</span>(<span class="ty">long double</span> val) { <span class="kw">return</span> val <span class="op">*</span> <span class="num">1000</span>; }
+
+<span class="cm">// imaginary complex number</span>
+<span class="ty">complex</span><span class="op">&lt;</span><span class="ty">double</span><span class="op">&gt;</span> <span class="kw">operator</span> <span class="str">""</span> <span class="fn">_i</span>(<span class="ty">long double</span> val) {
+    <span class="kw">return</span> <span class="ty">complex</span><span class="op">&lt;</span><span class="ty">double</span><span class="op">&gt;</span>(<span class="num">0</span>, val);
+}
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="kw">auto</span> time  <span class="op">=</span> <span class="num">5.0</span><span class="fn">_sec</span>;          <span class="cm">// 5.0</span>
+    <span class="kw">auto</span> mass  <span class="op">=</span> <span class="num">3.5</span><span class="fn">_kg</span>;           <span class="cm">// 3500.0 (grams)</span>
+    <span class="kw">auto</span> c     <span class="op">=</span> <span class="num">3.0</span> <span class="op">+</span> <span class="num">4.0</span><span class="fn">_i</span>;     <span class="cm">// (3, 4i)</span>
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     6. Raw String Literals
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num teal">06</span>
+    <h2>Raw String Literals</h2>
+  </div>
+  <div class="sec-body">
+    <p>Prefix <code>R"(...)"</code> disables all escape processing. Backslashes and newlines are treated literally — perfect for regex patterns, file paths, or multi-line text.</p>
+
+    <div class="code-block">
+      <div class="code-title"><span>raw_string.cpp</span></div>
+<pre><code><span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="cm">// normal string — \n is a newline</span>
+    string a <span class="op">=</span> <span class="str">"Line1\nLine2"</span>;
+
+    <span class="cm">// raw string — \n is two characters: \ and n</span>
+    string b <span class="op">=</span> <span class="str">R"(Line1\nLine2)"</span>;
+
+    <span class="cm">// multi-line raw string</span>
+    string c <span class="op">=</span> <span class="str">R"(
+No escape characters here.
+C:\Users\name\file.txt is printed as-is.
+)"</span>;
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     7. vTable & Virtual Functions
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num red">07</span>
+    <h2>vTable &amp; vPtr — Runtime Polymorphism Internals</h2>
+  </div>
+  <div class="sec-body">
+
+    <p>Without <code>virtual</code>, function dispatch depends on the <strong>pointer type</strong> (static binding). With <code>virtual</code>, dispatch depends on the <strong>object type</strong> (dynamic binding / runtime polymorphism).</p>
+
+    <div class="code-block">
+      <div class="code-title"><span>static_vs_dynamic.cpp</span></div>
+<pre><code><span class="cm">// WITHOUT virtual → static binding</span>
+<span class="kw">class</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="ty">void</span> <span class="fn">show</span>() { cout <span class="op">&lt;&lt;</span> <span class="str">"Base\n"</span>; }
+};
+<span class="kw">class</span> <span class="ty">Derived</span> <span class="op">:</span> <span class="kw">public</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="ty">void</span> <span class="fn">show</span>() { cout <span class="op">&lt;&lt;</span> <span class="str">"Derived\n"</span>; }
+};
+<span class="ty">Base</span><span class="op">*</span> ptr <span class="op">=</span> <span class="kw">new</span> <span class="ty">Derived</span>();
+ptr<span class="op">-&gt;</span><span class="fn">show</span>();   <span class="cm">// prints: Base  ← pointer type wins</span>
+
+<span class="cm">// WITH virtual → dynamic binding</span>
+<span class="kw">class</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="ty">void</span> <span class="fn">show</span>() { cout <span class="op">&lt;&lt;</span> <span class="str">"Base\n"</span>; }
+};
+ptr<span class="op">-&gt;</span><span class="fn">show</span>();   <span class="cm">// prints: Derived  ← object type wins</span></code></pre>
+    </div>
+
+    <p><strong>How it works internally:</strong> the compiler secretly creates a <strong>vTable</strong> per class and a <strong>vPtr</strong> per object.</p>
+
+    <ul>
+      <li><strong>vTable</strong> — an array of function pointers for all virtual functions of that class.</li>
+      <li><strong>vPtr</strong> — a hidden pointer stored at the start of every object that has virtual functions; it points to the class's vTable.</li>
+    </ul>
+
+    <div class="vtable-grid">
+      <div class="vtable-card">
+        <div class="vthead">Base vTable</div>
+        <table>
+          <tr><td>0</td><td>Base::function1</td></tr>
+          <tr><td>1</td><td>Base::function2</td></tr>
+          <tr><td>2</td><td>Base::function3</td></tr>
+        </table>
+      </div>
+      <div class="vtable-card">
+        <div class="vthead">Derived1 vTable <small>(overrides fn1)</small></div>
+        <table>
+          <tr><td>0</td><td class="changed">Derived1::function1</td></tr>
+          <tr><td>1</td><td>Base::function2</td></tr>
+          <tr><td>2</td><td>Base::function3</td></tr>
+        </table>
+      </div>
+      <div class="vtable-card">
+        <div class="vthead">Derived2 vTable <small>(overrides fn2)</small></div>
+        <table>
+          <tr><td>0</td><td>Derived1::function1</td></tr>
+          <tr><td>1</td><td class="changed">Derived2::function2</td></tr>
+          <tr><td>2</td><td>Base::function3</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <p>When you call <code>ptr3->function2()</code> (where ptr3 is a <code>Base*</code> pointing to a <code>Derived2</code> object):</p>
+    <ol>
+      <li>Compiler sees the function is virtual → don't bind at compile time.</li>
+      <li>At runtime: read the object's <strong>vPtr</strong>.</li>
+      <li>Go to <strong>Derived2 vTable</strong>, look up index 1.</li>
+      <li>Call <code>Derived2::function2()</code>. ✔</li>
+    </ol>
+
+    <div class="code-block">
+      <div class="code-title"><span>virtual_destructor.cpp — why destructor must be virtual</span></div>
+<pre><code><span class="kw">class</span> <span class="ty">Derived</span> <span class="op">:</span> <span class="kw">public</span> <span class="ty">Base</span> {
+    <span class="ty">int*</span> ptr;
+<span class="kw">public</span>:
+    <span class="ty">Derived</span>()  { ptr <span class="op">=</span> <span class="kw">new</span> <span class="ty">int</span>[<span class="num">100</span>]; }
+    <span class="op">~</span><span class="ty">Derived</span>() { <span class="kw">delete</span>[] ptr; }        <span class="cm">// NEVER runs if destructor is not virtual</span>
+};
+
+<span class="ty">Base</span><span class="op">*</span> b <span class="op">=</span> <span class="kw">new</span> <span class="ty">Derived</span>();
+<span class="kw">delete</span> b;   <span class="cm">// without virtual ~Base() → memory leak!</span>
+
+<span class="cm">// Fix: always declare destructor virtual in a polymorphic base class</span>
+<span class="kw">class</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="op">~</span><span class="ty">Base</span>() {}   <span class="cm">// ensures Derived destructor is also called</span>
+};</code></pre>
+    </div>
+
+    <div class="rule">🔥 Golden Rule: If a class has ANY virtual function → always declare the destructor virtual.</div>
+
+    <table>
+      <tr><th>Fact</th><th>Detail</th></tr>
+      <tr><td>vTable created per</td><td>Class</td></tr>
+      <tr><td>vPtr created per</td><td>Object</td></tr>
+      <tr><td>Object size overhead</td><td>+8 bytes (one pointer) when virtual exists</td></tr>
+      <tr><td>Only classes with virtual functions have</td><td>vPtr</td></tr>
+      <tr><td>Virtual destructor prevents</td><td>Memory leaks in polymorphic delete</td></tr>
+    </table>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     Summary
+════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num">✦</span>
+    <h2>Quick Summary</h2>
+  </div>
+  <div class="sec-body">
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="badge" style="background:#4ade80;color:#000">constexpr</span>
+        <p>Compile-time computation — arrays, switch, templates</p>
+      </div>
+      <div class="summary-item">
+        <span class="badge" style="background:#38bdf8;color:#000">noexcept</span>
+        <p>No-exception guarantee; conditional form for templates</p>
+      </div>
+      <div class="summary-item">
+        <span class="badge" style="background:#f472b6;color:#000">nullptr</span>
+        <p>Type-safe null pointer; fixes overload ambiguity</p>
+      </div>
+      <div class="summary-item">
+        <span class="badge" style="background:#fb923c;color:#000">inline ns</span>
+        <p>Library version control — default &amp; explicit versions</p>
+      </div>
+      <div class="summary-item">
+        <span class="badge" style="background:#a78bfa;color:#000">UDL</span>
+        <p>Custom literal suffixes: <code>3.5_kg</code>, <code>5.0_sec</code></p>
+      </div>
+      <div class="summary-item">
+        <span class="badge" style="background:#2dd4bf;color:#000">R"(...)"</span>
+        <p>Raw strings — no escape processing</p>
+      </div>
+      <div class="summary-item">
+        <span class="badge" style="background:#f87171;color:#000">vTable</span>
+        <p>Per-class table of virtual function pointers</p>
+      </div>
+      <div class="summary-item">
+        <span class="badge" style="background:#f87171;color:#000">vPtr</span>
+        <p>Per-object hidden pointer → enables runtime dispatch</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
