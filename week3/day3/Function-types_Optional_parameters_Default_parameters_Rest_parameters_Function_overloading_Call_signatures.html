@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript Function Types — Study Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2331;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #f78166;
+    --accent3: #7ee787;
+    --accent4: #d2a8ff;
+    --accent5: #ffa657;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+
+    /* Code colors - VS Code Dark+ */
+    --code-keyword: #569cd6;
+    --code-type: #4ec9b0;
+    --code-fn: #dcdcaa;
+    --code-string: #ce9178;
+    --code-number: #b5cea8;
+    --code-comment: #6a9955;
+    --code-operator: #d4d4d4;
+    --code-variable: #9cdcfe;
+    --code-property: #9cdcfe;
+    --code-punctuation: #d4d4d4;
+    --code-tag: #4ec9b0;
+    --code-bg: #1e1e1e;
+    --code-line-num: #3e3e3e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ─── Layout ─── */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .sidebar-logo {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .sidebar-logo span {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sidebar-logo p {
+    color: var(--text-muted);
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .toc-section-label {
+    padding: 0 20px 6px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-top: 16px;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 20px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    transition: all 0.15s ease;
+    border-left: 2px solid transparent;
+  }
+
+  .toc-item:hover, .toc-item.active {
+    color: var(--text);
+    background: rgba(88, 166, 255, 0.08);
+    border-left-color: var(--accent);
+  }
+
+  .toc-item.active {
+    color: var(--accent);
+  }
+
+  .toc-item .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    min-width: 18px;
+  }
+
+  .toc-item.sub {
+    padding-left: 36px;
+    font-size: 12px;
+  }
+
+  /* ─── Main Content ─── */
+  .main {
+    max-width: 860px;
+    padding: 60px 48px;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    margin-bottom: 64px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #e6edf3 0%, #8b949e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    color: var(--text-muted);
+    font-size: 15px;
+    max-width: 580px;
+  }
+
+  /* ─── Section ─── */
+  .section {
+    margin-bottom: 72px;
+    scroll-margin-top: 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(88,166,255,0.15), rgba(210,168,255,0.1));
+    border: 1px solid rgba(88,166,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-tag {
+    margin-left: auto;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  /* ─── Subsection ─── */
+  .subsection {
+    margin-bottom: 40px;
+  }
+
+  .subsection-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent4);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .subsection-title::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 16px;
+    background: var(--accent4);
+    border-radius: 2px;
+  }
+
+  p { color: var(--text-muted); margin-bottom: 12px; }
+
+  /* ─── Code Block ─── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #252526;
+    border-bottom: 1px solid #333;
+  }
+
+  .code-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .code-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #6e6e6e;
+  }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--code-operator);
+  }
+
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+
+  /* ─── Syntax Highlighting ─── */
+  .kw  { color: var(--code-keyword); }          /* keyword: function, const, let, return, if, else */
+  .ty  { color: var(--code-type); }             /* type: number, string, void, boolean */
+  .fn  { color: var(--code-fn); }               /* function name */
+  .str { color: var(--code-string); }           /* strings */
+  .num { color: var(--code-number); }           /* numbers */
+  .cm  { color: var(--code-comment); font-style:italic; } /* comments */
+  .va  { color: var(--code-variable); }         /* variables, params */
+  .op  { color: var(--code-operator); }         /* operators, punctuation */
+  .pr  { color: var(--code-property); }         /* properties */
+  .met { color: var(--code-fn); }               /* methods */
+
+  /* ─── Output Block ─── */
+  .output-block {
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    border-left: 3px solid var(--accent3);
+    border-radius: 8px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+
+  .output-label {
+    padding: 6px 14px;
+    background: rgba(126, 231, 135, 0.06);
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #1a2a1a;
+  }
+
+  .output-block pre {
+    padding: 14px;
+    color: var(--accent3);
+    font-size: 13px;
+  }
+
+  /* ─── Info Cards ─── */
+  .card-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .card-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  .card-val {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ─── Rule Items ─── */
+  .rule-list {
+    list-style: none;
+    margin: 12px 0;
+  }
+
+  .rule-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .rule-list li::before {
+    content: '▸';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .rule-list li.warn::before { color: var(--accent2); content: '✗'; }
+  .rule-list li.ok::before   { color: var(--accent3); content: '✓'; }
+
+  /* ─── Table ─── */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+
+  .styled-table th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .styled-table td {
+    padding: 10px 14px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .styled-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .styled-table td code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(88,166,255,0.1);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  /* ─── Callout ─── */
+  .callout {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13.5px;
+  }
+
+  .callout.tip  { background: rgba(126,231,135,0.08); border: 1px solid rgba(126,231,135,0.2); }
+  .callout.warn { background: rgba(247,129,102,0.08); border: 1px solid rgba(247,129,102,0.2); }
+  .callout.info { background: rgba(88,166,255,0.08);  border: 1px solid rgba(88,166,255,0.2); }
+
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout p { margin: 0; color: var(--text-muted); }
+
+  /* ─── Badge inline ─── */
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .badge.blue  { background: rgba(88,166,255,0.15);  color: var(--accent); }
+  .badge.green { background: rgba(126,231,135,0.15); color: var(--accent3); }
+  .badge.purple{ background: rgba(210,168,255,0.15); color: var(--accent4); }
+  .badge.orange{ background: rgba(255,166,87,0.15);  color: var(--accent5); }
+
+  /* ─── Divider ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* ─── Best Practices section ─── */
+  .bp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .bp-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .bp-card h4 {
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .bp-card p { font-size: 13px; margin: 0; }
+
+  /* ─── Inline TOC ─── */
+  .inline-toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .inline-toc::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent4), var(--accent3));
+  }
+
+  .inline-toc-title {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .inline-toc-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .inline-toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 6px;
+  }
+
+  .inline-toc-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+  }
+
+  .inline-toc-link:hover {
+    background: rgba(88, 166, 255, 0.08);
+    border-color: rgba(88, 166, 255, 0.2);
+    color: var(--text);
+  }
+
+  .inline-toc-link:hover .itoc-num {
+    color: var(--accent);
+  }
+
+  .itoc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    min-width: 22px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 5px;
+    text-align: center;
+    transition: color 0.15s;
+  }
+
+  .itoc-label { flex: 1; }
+
+  .itoc-arrow {
+    font-size: 10px;
+    color: var(--text-dim);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.15s ease;
+  }
+
+  .inline-toc-link:hover .itoc-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 32px 24px; }
+    .bp-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ─── SIDEBAR / TABLE OF CONTENTS ─── -->
+  <aside class="sidebar">
+   
+
+    <div class="toc-section-label">Contents</div>
+
+    <a class="toc-item" href="#named"><span class="num">01</span>Named Functions</a>
+    <a class="toc-item" href="#anonymous"><span class="num">02</span>Anonymous Functions</a>
+    <a class="toc-item" href="#arrow"><span class="num">03</span>Arrow Functions</a>
+    <a class="toc-item" href="#optional"><span class="num">04</span>Optional Parameters</a>
+    <a class="toc-item sub" href="#optional">→ Default Parameters</a>
+    <a class="toc-item" href="#return"><span class="num">05</span>Return Types</a>
+    <a class="toc-item sub" href="#return">→ void Return</a>
+    <a class="toc-item" href="#rest"><span class="num">06</span>Rest Parameters</a>
+    <a class="toc-item" href="#overload"><span class="num">07</span>Function Overloading</a>
+    <a class="toc-item" href="#callback"><span class="num">08</span>Callback Functions</a>
+    <a class="toc-item" href="#callsig"><span class="num">09</span>Call Signatures</a>
+    <a class="toc-item" href="#summary"><span class="num">10</span>Summary &amp; Cheatsheet</a>
+  </aside>
+
+  <!-- ─── MAIN ─── -->
+  <main class="main">
+
+   
+
+    <!-- Intro -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">00</div>
+        <div class="section-title">What Are Function Types?</div>
+        <span class="section-tag">concept</span>
+      </div>
+      <p>In TypeScript, function types define <strong>what parameters a function accepts</strong> and <strong>what it returns</strong>. This prevents bugs, makes code safer, and improves readability.</p>
+
+      <div class="card-row">
+        <div class="card"><div class="card-title">Prevents</div><div class="card-val">Type errors at compile time</div></div>
+        <div class="card"><div class="card-title">Improves</div><div class="card-val">Code readability &amp; safety</div></div>
+        <div class="card"><div class="card-title">Enables</div><div class="card-val">Better editor intellisense</div></div>
+      </div>
+
+      <div class="subsection-title">Basic Syntax</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">function</span> <span class="fn">functionName</span>(<span class="va">param1</span>: <span class="ty">type</span>, <span class="va">param2</span>: <span class="ty">type</span>): <span class="ty">returnType</span> <span class="op">{</span>
+    <span class="kw">return</span> <span class="va">value</span><span class="op">;</span>
+<span class="op">}</span></pre>
+      </div>
+    </div>
+
+    <!-- 01 Named -->
+    <div class="section" id="named">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title">Named Functions</div>
+        <span class="section-tag">basic</span>
+      </div>
+      <p>A named function has a proper identifier name and is declared with the <code style="font-family:'JetBrains Mono',monospace;color:var(--accent)">function</code> keyword.</p>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">function</span> <span class="fn">add</span>(<span class="va">a</span>: <span class="ty">number</span>, <span class="va">b</span>: <span class="ty">number</span>): <span class="ty">number</span> <span class="op">{</span>
+    <span class="cm">// a and b are numbers</span>
+    <span class="kw">return</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span><span class="op">;</span>  <span class="cm">// returns a number</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">add</span><span class="op">(</span><span class="num">3</span><span class="op">,</span> <span class="num">4</span><span class="op">));</span>  <span class="cm">// Output: 7</span></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-label">▶ Output</div>
+        <pre>7</pre>
+      </div>
+
+      <ul class="rule-list">
+        <li class="ok"><code style="font-family:'JetBrains Mono',monospace">a: number</code> — <em>a</em> must be a number</li>
+        <li class="ok"><code style="font-family:'JetBrains Mono',monospace">b: number</code> — <em>b</em> must be a number</li>
+        <li class="ok"><code style="font-family:'JetBrains Mono',monospace">: number</code> after params — function returns a number</li>
+      </ul>
+    </div>
+
+    <!-- 02 Anonymous -->
+    <div class="section" id="anonymous">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title">Anonymous Functions</div>
+        <span class="section-tag">basic</span>
+      </div>
+      <p>Anonymous functions have <strong>no name</strong>. They are assigned to a variable and called through that variable.</p>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">const</span> <span class="va">subtract</span> <span class="op">=</span> <span class="kw">function</span>(<span class="va">a</span>: <span class="ty">number</span>, <span class="va">b</span>: <span class="ty">number</span>): <span class="ty">number</span> <span class="op">{</span>
+    <span class="cm">// anonymous function assigned to variable 'subtract'</span>
+    <span class="kw">return</span> <span class="va">a</span> <span class="op">-</span> <span class="va">b</span><span class="op">;</span>
+<span class="op">};</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">subtract</span><span class="op">(</span><span class="num">5</span><span class="op">,</span> <span class="num">2</span><span class="op">));</span>  <span class="cm">// Output: 3</span></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-label">▶ Output</div>
+        <pre>3</pre>
+      </div>
+    </div>
+
+    <!-- 03 Arrow -->
+    <div class="section" id="arrow">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title">Arrow Functions</div>
+        <span class="section-tag">important</span>
+      </div>
+      <p>Arrow functions use the <span class="badge blue">=&gt;</span> syntax and are shorter than regular functions. Mostly used in callbacks.</p>
+
+      <div class="subsection-title">Full Arrow Function</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">const</span> <span class="va">multiply</span> <span class="op">=</span> (<span class="va">a</span>: <span class="ty">number</span>, <span class="va">b</span>: <span class="ty">number</span>): <span class="ty">number</span> <span class="op">=></span> <span class="op">{</span>
+    <span class="kw">return</span> <span class="va">a</span> <span class="op">*</span> <span class="va">b</span><span class="op">;</span>
+<span class="op">};</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">multiply</span><span class="op">(</span><span class="num">2</span><span class="op">,</span> <span class="num">5</span><span class="op">));</span>  <span class="cm">// Output: 10</span></pre>
+      </div>
+
+      <div class="subsection-title">Short Arrow (Expression Body)</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="cm">// No curly braces needed when returning a single expression</span>
+<span class="kw">const</span> <span class="va">multiply</span> <span class="op">=</span> (<span class="va">a</span>: <span class="ty">number</span>, <span class="va">b</span>: <span class="ty">number</span>): <span class="ty">number</span> <span class="op">=></span> <span class="va">a</span> <span class="op">*</span> <span class="va">b</span><span class="op">;</span></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-label">▶ Output</div>
+        <pre>10</pre>
+      </div>
+    </div>
+
+    <!-- 04 Optional & Default -->
+    <div class="section" id="optional">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title">Optional &amp; Default Parameters</div>
+        <span class="section-tag">important</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Optional Parameters <span class="badge purple">?</span></div>
+        <p>Use <code style="font-family:'JetBrains Mono',monospace;color:var(--accent4)">?</code> after a parameter name to make it optional. TypeScript treats it internally as <code style="font-family:'JetBrains Mono',monospace">type | undefined</code>.</p>
+
+        <ul class="rule-list">
+          <li class="ok">Use <code style="font-family:'JetBrains Mono',monospace">?</code> after the parameter name</li>
+          <li class="ok">Optional parameters must come <em>after</em> required ones</li>
+          <li class="ok">If not provided, value becomes <code style="font-family:'JetBrains Mono',monospace">undefined</code></li>
+          <li class="warn">Required parameter cannot come after optional</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+          <pre><span class="kw">function</span> <span class="fn">greet</span>(<span class="va">name</span>: <span class="ty">string</span>, <span class="va">greeting</span>?: <span class="ty">string</span>): <span class="ty">string</span> <span class="op">{</span>
+    <span class="kw">if</span> (<span class="va">greeting</span>) <span class="op">{</span>
+        <span class="kw">return</span> <span class="op">`${</span><span class="va">greeting</span><span class="op">}</span><span class="str">, </span><span class="op">${</span><span class="va">name</span><span class="op">}</span><span class="str">!`</span><span class="op">;</span>
+    <span class="op">}</span>
+    <span class="kw">return</span> <span class="op">`</span><span class="str">Hello, </span><span class="op">${</span><span class="va">name</span><span class="op">}</span><span class="str">!`</span><span class="op">;</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">greet</span><span class="op">(</span><span class="str">"Alice"</span><span class="op">));</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">greet</span><span class="op">(</span><span class="str">"Bob"</span><span class="op">,</span> <span class="str">"Good morning"</span><span class="op">));</span></pre>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">▶ Output</div>
+          <pre>Hello, Alice!
+Good morning, Bob!</pre>
+        </div>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠️</span>
+          <p><strong>Wrong order:</strong> <code style="font-family:'JetBrains Mono',monospace">function example(a?: number, b: number)</code> — a required param cannot follow an optional one!</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Default Parameters <span class="badge orange">=</span></div>
+        <p>Give a parameter a fallback value using <code style="font-family:'JetBrains Mono',monospace;color:var(--accent5)">=</code>. If the argument is not passed, the default is used. Avoids manual <code style="font-family:'JetBrains Mono',monospace">undefined</code> checks.</p>
+
+        <div class="code-block">
+          <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+          <pre><span class="kw">function</span> <span class="fn">greet</span>(<span class="va">firstName</span>: <span class="ty">string</span>, <span class="va">lastName</span>: <span class="ty">string</span> <span class="op">=</span> <span class="str">"Doe"</span>): <span class="ty">string</span> <span class="op">{</span>
+    <span class="cm">// lastName defaults to "Doe" if not provided</span>
+    <span class="kw">return</span> <span class="op">`</span><span class="str">Hello, </span><span class="op">${</span><span class="va">firstName</span><span class="op">} ${</span><span class="va">lastName</span><span class="op">}</span><span class="str">`</span><span class="op">;</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">greet</span><span class="op">(</span><span class="str">"John"</span><span class="op">));</span>              <span class="cm">// Hello, John Doe</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">greet</span><span class="op">(</span><span class="str">"Joe"</span><span class="op">,</span> <span class="str">"Smith"</span><span class="op">));</span>     <span class="cm">// Hello, Joe Smith</span></pre>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">▶ Output</div>
+          <pre>Hello, John Doe
+Hello, Joe Smith</pre>
+        </div>
+      </div>
+
+      <!-- Multiple optional params -->
+      <div class="subsection">
+        <div class="subsection-title">Multiple Optional Parameters</div>
+        <div class="code-block">
+          <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+          <pre><span class="kw">function</span> <span class="fn">createUser</span>(<span class="va">username</span>: <span class="ty">string</span>, <span class="va">age</span>?: <span class="ty">number</span>, <span class="va">email</span>?: <span class="ty">string</span>): <span class="ty">string</span> <span class="op">{</span>
+    <span class="kw">let</span> <span class="va">userInfo</span> <span class="op">=</span> <span class="op">`</span><span class="str">Username: </span><span class="op">${</span><span class="va">username</span><span class="op">}</span><span class="str">`</span><span class="op">;</span>
+
+    <span class="kw">if</span> (<span class="va">age</span> <span class="op">!==</span> <span class="kw">undefined</span>) <span class="op">{</span>
+        <span class="va">userInfo</span> <span class="op">+=</span> <span class="op">`</span><span class="str">, Age: </span><span class="op">${</span><span class="va">age</span><span class="op">}</span><span class="str">`</span><span class="op">;</span>
+    <span class="op">}</span>
+    <span class="kw">if</span> (<span class="va">email</span> <span class="op">!==</span> <span class="kw">undefined</span>) <span class="op">{</span>
+        <span class="va">userInfo</span> <span class="op">+=</span> <span class="op">`</span><span class="str">, Email: </span><span class="op">${</span><span class="va">email</span><span class="op">}</span><span class="str">`</span><span class="op">;</span>
+    <span class="op">}</span>
+
+    <span class="kw">return</span> <span class="va">userInfo</span><span class="op">;</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">createUser</span><span class="op">(</span><span class="str">"john_doe"</span><span class="op">));</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">createUser</span><span class="op">(</span><span class="str">"jane_doe"</span><span class="op">,</span> <span class="num">28</span><span class="op">));</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">createUser</span><span class="op">(</span><span class="str">"sam_smith"</span><span class="op">,</span> <span class="num">30</span><span class="op">,</span> <span class="str">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4b7a5a984a1bca5a9b4a8a1eaa7aba9">[email&#160;protected]</a>"</span><span class="op">));</span></pre>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">▶ Output</div>
+          <pre>Username: john_doe
+Username: jane_doe, Age: 28
+Username: sam_smith, Age: 30, Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6e1d0f032e0b160f031e020b400d0103">[email&#160;protected]</a></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Return Types -->
+    <div class="section" id="return">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title">Return Types &amp; Void</div>
+        <span class="section-tag">important</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Typed Return Values</div>
+        <p>The return type after the <code style="font-family:'JetBrains Mono',monospace">)</code> tells TypeScript what value the function gives back. Always write it — it's good practice.</p>
+
+        <div class="code-block">
+          <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+          <pre><span class="kw">function</span> <span class="fn">square</span>(<span class="va">num</span>: <span class="ty">number</span>): <span class="ty">number</span> <span class="op">{</span>
+    <span class="kw">return</span> <span class="va">num</span> <span class="op">*</span> <span class="va">num</span><span class="op">;</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">square</span><span class="op">(</span><span class="num">4</span><span class="op">));</span>  <span class="cm">// Output: 16</span></pre>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">void — No Return Value <span class="badge blue">void</span></div>
+        <p>Use <code style="font-family:'JetBrains Mono',monospace;color:var(--code-keyword)">void</code> when a function does not return anything. Commonly used for logging and side effects.</p>
+
+        <div class="code-block">
+          <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+          <pre><span class="kw">function</span> <span class="fn">logMessage</span>(<span class="va">message</span>: <span class="ty">string</span>): <span class="ty">void</span> <span class="op">{</span>
+    <span class="cm">// Only prints — returns nothing</span>
+    <span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="va">message</span>)<span class="op">;</span>
+<span class="op">}</span>
+
+<span class="fn">logMessage</span><span class="op">(</span><span class="str">"Hello, Rahul!"</span><span class="op">);</span></pre>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">▶ Output</div>
+          <pre>Hello, Rahul!</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 Rest -->
+    <div class="section" id="rest">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title">Rest Parameters</div>
+        <span class="section-tag">flexible</span>
+      </div>
+      <p>Rest parameters let a function accept an <strong>unlimited number of arguments</strong>, collected into a single typed array using the <span class="badge blue">...</span> spread syntax.</p>
+
+      <ul class="rule-list">
+        <li class="ok">Must be the <strong>last</strong> parameter</li>
+        <li class="ok">Only <strong>one</strong> rest parameter allowed</li>
+        <li class="ok">Always typed as an array: <code style="font-family:'JetBrains Mono',monospace">type[]</code></li>
+        <li class="warn">Cannot have required params after rest</li>
+      </ul>
+
+      <div class="subsection-title">Example — Sum of Numbers</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">function</span> <span class="fn">sum</span>(<span class="op">...</span><span class="va">numbers</span>: <span class="ty">number</span><span class="op">[]</span>): <span class="ty">number</span> <span class="op">{</span>
+    <span class="cm">// 'numbers' becomes an array</span>
+    <span class="kw">return</span> <span class="va">numbers</span><span class="op">.</span><span class="met">reduce</span><span class="op">((</span><span class="va">total</span><span class="op">,</span> <span class="va">num</span><span class="op">) =></span> <span class="va">total</span> <span class="op">+</span> <span class="va">num</span><span class="op">,</span> <span class="num">0</span><span class="op">);</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">sum</span><span class="op">(</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">3</span><span class="op">));</span>       <span class="cm">// 6</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">sum</span><span class="op">(</span><span class="num">10</span><span class="op">,</span> <span class="num">20</span><span class="op">));</span>        <span class="cm">// 30</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span><span class="op">(</span><span class="fn">sum</span><span class="op">(</span><span class="num">1</span><span class="op">,</span><span class="num">2</span><span class="op">,</span><span class="num">3</span><span class="op">,</span><span class="num">4</span><span class="op">,</span><span class="num">5</span><span class="op">));</span>    <span class="cm">// 15</span></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-label">▶ Output</div>
+        <pre>6
+30
+15</pre>
+      </div>
+
+      <div class="subsection-title">Example — Joining Strings</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">function</span> <span class="fn">joinStrings</span>(<span class="op">...</span><span class="va">strings</span>: <span class="ty">string</span><span class="op">[]</span>): <span class="ty">string</span> <span class="op">{</span>
+    <span class="kw">return</span> <span class="va">strings</span><span class="op">.</span><span class="met">join</span>(<span class="str">', '</span>)<span class="op">;</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">joinStrings</span>(<span class="str">"rachel"</span><span class="op">,</span> <span class="str">"john"</span><span class="op">,</span> <span class="str">"peter"</span>) <span class="op">+</span> <span class="str">" are mathematicians"</span>)<span class="op">;</span></pre>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <p><strong>Wrong:</strong> <code style="font-family:'JetBrains Mono',monospace">function job(...people: string[], jobTitle: string)</code> — rest param must be last!</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript — Correct</span></div>
+        <pre><span class="kw">function</span> <span class="fn">job</span>(<span class="va">jobTitle</span>: <span class="ty">string</span><span class="op">,</span> <span class="op">...</span><span class="va">people</span>: <span class="ty">string</span><span class="op">[]</span>): <span class="ty">void</span> <span class="op">{</span>
+    <span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="op">`${</span><span class="va">people</span><span class="op">.</span><span class="met">join</span>(<span class="str">', '</span>)<span class="op">}</span><span class="str"> are </span><span class="op">${</span><span class="va">jobTitle</span><span class="op">}</span><span class="str">`</span>)<span class="op">;</span>
+<span class="op">}</span></pre>
+      </div>
+    </div>
+
+    <!-- 07 Overload -->
+    <div class="section" id="overload">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title">Function Overloading</div>
+        <span class="section-tag">advanced</span>
+      </div>
+      <p>Overloading allows the <strong>same function name</strong> to handle different parameter types or counts, with a single implementation handling all cases.</p>
+
+      <div class="callout info">
+        <span class="callout-icon">💡</span>
+        <p>Overload <strong>signatures</strong> have no body. Only the <strong>implementation</strong> has a body. The implementation must handle all overload cases.</p>
+      </div>
+
+      <div class="subsection-title">Example — Greet with 1 or 2 params</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="cm">// Overload signatures (no body)</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="va">person</span>: <span class="ty">string</span>): <span class="ty">string</span><span class="op">;</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="va">person</span>: <span class="ty">string</span>, <span class="va">age</span>: <span class="ty">number</span>): <span class="ty">string</span><span class="op">;</span>
+
+<span class="cm">// Implementation (has body)</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="va">person</span>: <span class="ty">string</span>, <span class="va">age</span>?: <span class="ty">number</span>): <span class="ty">string</span> <span class="op">{</span>
+    <span class="kw">if</span> (<span class="va">age</span> <span class="op">!==</span> <span class="kw">undefined</span>) <span class="op">{</span>
+        <span class="kw">return</span> <span class="op">`</span><span class="str">Hello, </span><span class="op">${</span><span class="va">person</span><span class="op">}</span><span class="str">! You are </span><span class="op">${</span><span class="va">age</span><span class="op">}</span><span class="str"> years old.`</span><span class="op">;</span>
+    <span class="op">}</span>
+    <span class="kw">return</span> <span class="op">`</span><span class="str">Hello, </span><span class="op">${</span><span class="va">person</span><span class="op">}</span><span class="str">!`</span><span class="op">;</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">greet</span>(<span class="str">"Alice"</span>)<span class="op">);</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">greet</span>(<span class="str">"Bob"</span><span class="op">,</span> <span class="num">30</span>)<span class="op">);</span></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-label">▶ Output</div>
+        <pre>Hello, Alice!
+Hello, Bob! You are 30 years old.</pre>
+      </div>
+
+      <div class="subsection-title">Example — Numbers or Strings</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">function</span> <span class="fn">combine</span>(<span class="va">a</span>: <span class="ty">number</span>, <span class="va">b</span>: <span class="ty">number</span>): <span class="ty">number</span><span class="op">;</span>
+<span class="kw">function</span> <span class="fn">combine</span>(<span class="va">a</span>: <span class="ty">string</span>, <span class="va">b</span>: <span class="ty">string</span>): <span class="ty">string</span><span class="op">;</span>
+
+<span class="kw">function</span> <span class="fn">combine</span>(<span class="va">a</span>: <span class="ty">any</span>, <span class="va">b</span>: <span class="ty">any</span>): <span class="ty">any</span> <span class="op">{</span>
+    <span class="kw">return</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span><span class="op">;</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">combine</span>(<span class="num">5</span><span class="op">,</span> <span class="num">10</span>)<span class="op">);</span>               <span class="cm">// 15</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">combine</span>(<span class="str">"Hello, "</span><span class="op">,</span> <span class="str">"World!"</span>)<span class="op">);</span>  <span class="cm">// Hello, World!</span></pre>
+      </div>
+
+      <div class="subsection-title">Example — Area Calculator</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">function</span> <span class="fn">calculateArea</span>(<span class="va">radius</span>: <span class="ty">number</span>): <span class="ty">number</span><span class="op">;</span>
+<span class="kw">function</span> <span class="fn">calculateArea</span>(<span class="va">length</span>: <span class="ty">number</span>, <span class="va">width</span>: <span class="ty">number</span>): <span class="ty">number</span><span class="op">;</span>
+
+<span class="kw">function</span> <span class="fn">calculateArea</span>(<span class="op">...</span><span class="va">args</span>: <span class="ty">number</span><span class="op">[]</span>): <span class="ty">number</span> <span class="op">{</span>
+    <span class="kw">if</span> (<span class="va">args</span><span class="op">.</span><span class="pr">length</span> <span class="op">===</span> <span class="num">1</span>) <span class="op">{</span>
+        <span class="kw">return</span> <span class="va">Math</span><span class="op">.</span><span class="pr">PI</span> <span class="op">*</span> <span class="va">args</span><span class="op">[</span><span class="num">0</span><span class="op">] **</span> <span class="num">2</span><span class="op">;</span>  <span class="cm">// Circle</span>
+    <span class="op">}</span>
+    <span class="kw">return</span> <span class="va">args</span><span class="op">[</span><span class="num">0</span><span class="op">]</span> <span class="op">*</span> <span class="va">args</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="op">;</span>              <span class="cm">// Rectangle</span>
+<span class="op">}</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">calculateArea</span>(<span class="num">5</span>)<span class="op">);</span>        <span class="cm">// Circle area</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">calculateArea</span>(<span class="num">10</span><span class="op">,</span> <span class="num">20</span>)<span class="op">);</span>   <span class="cm">// Rectangle area</span></pre>
+      </div>
+    </div>
+
+    <!-- 08 Callback -->
+    <div class="section" id="callback">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div class="section-title">Callback Functions</div>
+        <span class="section-tag">important</span>
+      </div>
+      <p>A callback is a function <strong>passed as an argument</strong> into another function, then called inside it. You define the callback's type inline using the arrow syntax.</p>
+
+      <div class="subsection-title">Callback Type Syntax</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="cm">// callback takes a number, returns nothing</span>
+(<span class="va">result</span>: <span class="ty">number</span>) <span class="op">=></span> <span class="ty">void</span></pre>
+      </div>
+
+      <div class="subsection-title">Full Example</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">function</span> <span class="fn">performOperation</span>(
+    <span class="va">a</span>: <span class="ty">number</span>,
+    <span class="va">b</span>: <span class="ty">number</span>,
+    <span class="va">callback</span>: (<span class="va">result</span>: <span class="ty">number</span>) <span class="op">=></span> <span class="ty">void</span>  <span class="cm">// callback type defined inline</span>
+): <span class="ty">void</span> <span class="op">{</span>
+    <span class="kw">let</span> <span class="va">result</span> <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span><span class="op">;</span>
+    <span class="fn">callback</span>(<span class="va">result</span>)<span class="op">;</span>   <span class="cm">// invoke the callback</span>
+<span class="op">}</span>
+
+<span class="fn">performOperation</span>(<span class="num">3</span><span class="op">,</span> <span class="num">4</span><span class="op">,</span> (<span class="va">result</span>) <span class="op">=></span> <span class="op">{</span>
+    <span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="va">result</span>)<span class="op">;</span>  <span class="cm">// Output: 7</span>
+<span class="op">});</span></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-label">▶ Output</div>
+        <pre>7</pre>
+      </div>
+    </div>
+
+    <!-- 09 Call Signatures -->
+    <div class="section" id="callsig">
+      <div class="section-header">
+        <div class="section-num">09</div>
+        <div class="section-title">Call Signatures</div>
+        <span class="section-tag">advanced</span>
+      </div>
+      <p>Call signatures allow an <strong>object to behave like a function</strong> while also having its own properties. Written inside an object type using the <code style="font-family:'JetBrains Mono',monospace">type</code> keyword.</p>
+
+      <div class="card-row">
+        <div class="card">
+          <div class="card-title">Normal Function Type</div>
+          <div class="card-val">Only callable</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Call Signature</div>
+          <div class="card-val">Callable + has properties</div>
+        </div>
+      </div>
+
+      <div class="subsection-title">Syntax</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">type</span> <span class="ty">MyCallableObject</span> <span class="op">=</span> <span class="op">{</span>
+    (<span class="va">param1</span>: <span class="ty">Type1</span>, <span class="va">param2</span>: <span class="ty">Type2</span>): <span class="ty">ReturnType</span><span class="op">;</span>  <span class="cm">// callable part</span>
+    <span class="pr">propertyName</span>: <span class="ty">PropertyType</span><span class="op">;</span>                  <span class="cm">// extra property</span>
+<span class="op">};</span></pre>
+      </div>
+
+      <div class="subsection-title">Example 1 — Greeting Function</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">type</span> <span class="ty">GreetingFunction</span> <span class="op">=</span> <span class="op">{</span>
+    (<span class="va">name</span>: <span class="ty">string</span>): <span class="ty">string</span><span class="op">;</span>  <span class="cm">// callable</span>
+    <span class="pr">description</span>: <span class="ty">string</span><span class="op">;</span>    <span class="cm">// property</span>
+<span class="op">};</span>
+
+<span class="kw">const</span> <span class="va">greet</span>: <span class="ty">GreetingFunction</span> <span class="op">=</span> (<span class="va">name</span>: <span class="ty">string</span>) <span class="op">=></span> <span class="op">{</span>
+    <span class="kw">return</span> <span class="op">`</span><span class="str">Hello, </span><span class="op">${</span><span class="va">name</span><span class="op">}</span><span class="str">!`</span><span class="op">;</span>
+<span class="op">};</span>
+
+<span class="cm">// Add property to the function</span>
+<span class="va">greet</span><span class="op">.</span><span class="pr">description</span> <span class="op">=</span> <span class="str">"A function to greet users"</span><span class="op">;</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="fn">greet</span>(<span class="str">"Alice"</span>)<span class="op">);</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="va">greet</span><span class="op">.</span><span class="pr">description</span>)<span class="op">;</span></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-label">▶ Output</div>
+        <pre>Hello, Alice!
+A function to greet users</pre>
+      </div>
+
+      <div class="subsection-title">Example 2 — Calculator</div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><span class="code-lang">typescript</span></div>
+        <pre><span class="kw">type</span> <span class="ty">Calculator</span> <span class="op">=</span> <span class="op">{</span>
+    (<span class="va">a</span>: <span class="ty">number</span>, <span class="va">b</span>: <span class="ty">number</span>): <span class="ty">number</span><span class="op">;</span>
+    <span class="pr">operation</span>: <span class="ty">string</span><span class="op">;</span>
+<span class="op">};</span>
+
+<span class="kw">const</span> <span class="va">add</span>: <span class="ty">Calculator</span> <span class="op">=</span> (<span class="va">a</span>, <span class="va">b</span>) <span class="op">=></span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span><span class="op">;</span>
+<span class="va">add</span><span class="op">.</span><span class="pr">operation</span> <span class="op">=</span> <span class="str">"Addition"</span><span class="op">;</span>
+
+<span class="kw">const</span> <span class="va">multiply</span>: <span class="ty">Calculator</span> <span class="op">=</span> (<span class="va">a</span>, <span class="va">b</span>) <span class="op">=></span> <span class="va">a</span> <span class="op">*</span> <span class="va">b</span><span class="op">;</span>
+<span class="va">multiply</span><span class="op">.</span><span class="pr">operation</span> <span class="op">=</span> <span class="str">"Multiplication"</span><span class="op">;</span>
+
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="op">`${</span><span class="va">add</span><span class="op">.</span><span class="pr">operation</span><span class="op">}</span><span class="str">: </span><span class="op">${</span><span class="fn">add</span>(<span class="num">5</span><span class="op">,</span> <span class="num">3</span>)<span class="op">}</span><span class="str">`</span>)<span class="op">;</span>       <span class="cm">// Addition: 8</span>
+<span class="va">console</span><span class="op">.</span><span class="met">log</span>(<span class="op">`${</span><span class="va">multiply</span><span class="op">.</span><span class="pr">operation</span><span class="op">}</span><span class="str">: </span><span class="op">${</span><span class="fn">multiply</span>(<span class="num">5</span><span class="op">,</span> <span class="num">3</span>)<span class="op">}</span><span class="str">`</span>)<span class="op">;</span>  <span class="cm">// Multiplication: 15</span></pre>
+      </div>
+    </div>
+
+    <!-- 10 Summary -->
+    <div class="section" id="summary">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div class="section-title">Summary &amp; Cheatsheet</div>
+        <span class="section-tag">reference</span>
+      </div>
+
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Syntax</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Parameter type</td><td><code>param: type</code></td><td>Define what a param accepts</td></tr>
+          <tr><td>Return type</td><td><code>: returnType</code></td><td>What value function gives back</td></tr>
+          <tr><td>Optional param</td><td><code>param?</code></td><td>Can be omitted; becomes <code>undefined</code></td></tr>
+          <tr><td>Default value</td><td><code>param = value</code></td><td>Fallback when arg not provided</td></tr>
+          <tr><td>No return</td><td><code>void</code></td><td>Function returns nothing</td></tr>
+          <tr><td>Rest params</td><td><code>...args: type[]</code></td><td>Unlimited args as array</td></tr>
+          <tr><td>Arrow function</td><td><code>=&gt;</code></td><td>Short function syntax</td></tr>
+          <tr><td>Overloading</td><td>Multiple signatures</td><td>Same name, different types</td></tr>
+          <tr><td>Callback type</td><td><code>(p: T) =&gt; R</code></td><td>Function passed as argument</td></tr>
+          <tr><td>Call signature</td><td><code>{ (p: T): R; prop: T }</code></td><td>Callable object with properties</td></tr>
+        </tbody>
+      </table>
+
+      <div class="subsection-title" style="margin-top:32px">When to Use What?</div>
+      <div class="bp-grid">
+        <div class="bp-card">
+          <h4>Rest Parameters</h4>
+          <p>Use when the <em>number of arguments</em> varies, but they're all the same type.</p>
+        </div>
+        <div class="bp-card">
+          <h4>Overloading</h4>
+          <p>Use when the <em>type or behavior</em> of the function changes based on inputs.</p>
+        </div>
+        <div class="bp-card">
+          <h4>Optional Params</h4>
+          <p>Use for truly optional data. Prefer default params when you need a fallback value.</p>
+        </div>
+        <div class="bp-card">
+          <h4>Call Signatures</h4>
+          <p>Use when building libraries or when a function also needs metadata as properties.</p>
+        </div>
+      </div>
+
+      <div class="callout tip" style="margin-top: 24px">
+        <span class="callout-icon">✅</span>
+            <p><strong>Best Practices:</strong> Always write return types. Use arrow functions for callbacks. Put optional/default params last. Use overloading only when necessary.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('[id]');
+  const sidebarLinks = document.querySelectorAll('.sidebar .toc-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        sidebarLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

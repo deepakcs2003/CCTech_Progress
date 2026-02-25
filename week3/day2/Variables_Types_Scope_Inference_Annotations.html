@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript Notes – Deepak</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f1a;
+    --surface: #13162a;
+    --surface2: #1a1e35;
+    --border: #2a2f52;
+    --accent: #5e7cff;
+    --accent2: #ff6b8a;
+    --accent3: #00e5b0;
+    --accent4: #f7c948;
+    --text: #e4e8ff;
+    --muted: #8890b8;
+    --code-bg: #0a0c1a;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  header {
+    background: linear-gradient(135deg, #1a1e35 0%, #0d0f1a 50%, #111428 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 40px 36px;
+    position: relative; overflow: hidden;
+  }
+  header::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(94,124,255,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(94,124,255,0.15); border: 1px solid rgba(94,124,255,0.35);
+    color: var(--accent); font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+  header h1 {
+    font-size: 2.4rem; font-weight: 800; letter-spacing: -1px;
+    background: linear-gradient(90deg, #ffffff, #5e7cff, #00e5b0);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 8px;
+  }
+  header p { color: var(--muted); font-size: 14px; font-weight: 300; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .toc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 4px solid var(--accent); border-radius: var(--radius);
+    padding: 24px 28px; margin-bottom: 48px;
+  }
+  .toc h2 { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .toc ol { padding-left: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+  .toc li { color: var(--muted); font-size: 13px; }
+  .toc a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent); }
+
+  section { margin-bottom: 56px; scroll-margin-top: 20px; }
+  section h2.section-title {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px;
+    margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+  section h2.section-title .num {
+    background: var(--accent); color: #fff; font-size: 11px; font-weight: 800;
+    padding: 3px 8px; border-radius: 6px; min-width: 28px; text-align: center;
+  }
+  section h3 {
+    font-size: 1rem; font-weight: 700; color: var(--accent3);
+    margin: 24px 0 10px; display: flex; align-items: center; gap: 8px;
+  }
+  section h3::before { content: '▸'; color: var(--accent2); font-size: 12px; }
+  section h4 { font-size: 0.85rem; font-weight: 700; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 18px 0 8px; }
+  section p { margin-bottom: 10px; color: #cdd3f5; }
+
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); border-radius: var(--radius);
+    padding: 20px 22px; overflow-x: auto; margin: 12px 0 20px; position: relative;
+  }
+  pre code { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.75; color: #c9d3ff; }
+  .lang-label {
+    position: absolute; top: 8px; right: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--accent); opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(94,124,255,0.12); color: #a0b0ff;
+    padding: 2px 6px; border-radius: 5px; font-size: 0.88em;
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .tip, .warn, .good, .bad, .note {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px; border-radius: var(--radius); margin: 14px 0; font-size: 14px;
+  }
+  .tip  { background: rgba(0,229,176,0.08);   border: 1px solid rgba(0,229,176,0.25);   color: #a0f5e0; }
+  .warn { background: rgba(247,201,72,0.08);  border: 1px solid rgba(247,201,72,0.25);  color: #f5e0a0; }
+  .good { background: rgba(0,229,176,0.07);   border: 1px solid rgba(0,229,176,0.2);    color: #a0f5e0; }
+  .bad  { background: rgba(255,107,138,0.07); border: 1px solid rgba(255,107,138,0.2);  color: #ffb0c0; }
+  .note { background: rgba(94,124,255,0.08);  border: 1px solid rgba(94,124,255,0.25);  color: #b0c0ff; }
+  .tip::before  { content: '💡'; font-size: 16px; }
+  .warn::before { content: '⚠️'; font-size: 16px; }
+  .good::before { content: '✅'; font-size: 16px; }
+  .bad::before  { content: '❌'; font-size: 16px; }
+  .note::before { content: '📌'; font-size: 16px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  thead tr { background: var(--surface2); }
+  thead th { padding: 12px 16px; text-align: left; font-weight: 700; color: var(--accent); font-size: 13px; letter-spacing: 0.5px; }
+  tbody tr { border-top: 1px solid var(--border); }
+  tbody tr:hover { background: rgba(94,124,255,0.05); }
+  tbody td { padding: 11px 16px; color: #cdd3f5; }
+  tbody td:first-child { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent3); }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .chip { background: var(--surface2); border: 1px solid var(--border); color: var(--accent3); font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 5px 12px; border-radius: 20px; }
+
+  .steps { list-style: none; padding: 0; margin: 12px 0 20px; }
+  .steps li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+  .steps li .step-num { background: var(--accent); color: #fff; font-size: 11px; font-weight: 800; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .steps li p { margin: 0; color: #cdd3f5; }
+
+  .scope-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+  .scope-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+  .scope-card .icon { font-size: 24px; margin-bottom: 8px; }
+  .scope-card h4 { color: var(--text); font-size: 14px; margin-bottom: 4px; text-transform: none; letter-spacing: 0; }
+  .scope-card p { color: var(--muted); font-size: 12px; margin: 0; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
+  .two-col .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .two-col .card h4 { color: var(--accent4); font-size: 13px; margin-bottom: 10px; text-transform: none; letter-spacing: 0; }
+  .two-col .card li { color: var(--muted); font-size: 13px; margin-left: 16px; margin-bottom: 4px; }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  .interview-box {
+    background: linear-gradient(135deg, rgba(94,124,255,0.08), rgba(0,229,176,0.05));
+    border: 1px solid rgba(94,124,255,0.3); border-radius: var(--radius);
+    padding: 20px 24px; margin: 20px 0;
+  }
+  .interview-box h4 { color: var(--accent4); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .interview-box p { color: #d0d8ff; font-style: italic; margin: 0; }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.7rem; }
+    .scope-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .toc ol { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="max-width:900px; margin:0 auto; padding:0 16px; position:relative; z-index:1;">
+    <div class="badge">Beginner Notes</div>
+    <h1>TypeScript Notes</h1>
+    <p>Variables · Types · Scope · Inference · Annotations — Explained Simply</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="toc">
+    <h2>📋 Table of Contents</h2>
+    <ol>
+      <li><a href="#s1">What is TypeScript?</a></li>
+      <li><a href="#s2">Statically Typed</a></li>
+      <li><a href="#s3">Compiled Language</a></li>
+      <li><a href="#s4">Hello, World!</a></li>
+      <li><a href="#s5">Comments</a></li>
+      <li><a href="#s6">Client vs Server Side</a></li>
+      <li><a href="#s7">JS vs TS Comparison</a></li>
+      <li><a href="#s8">Variables</a></li>
+      <li><a href="#s9">Variable Scope</a></li>
+      <li><a href="#s10">Data Types</a></li>
+      <li><a href="#s11">Advanced Types</a></li>
+      <li><a href="#s12">Type Annotations</a></li>
+      <li><a href="#s13">Type Inference</a></li>
+      <li><a href="#s14">Limitations &amp; Best Practices</a></li>
+    </ol>
+  </div>
+
+  <!-- S1 -->
+  <section id="s1">
+    <h2 class="section-title"><span class="num">01</span> What is TypeScript?</h2>
+    <p>TypeScript is a <strong>superset of JavaScript</strong>.</p>
+    <div class="note">Superset means it includes all JavaScript features <strong>plus</strong> extra features on top.</div>
+    <h4>Main Extra Features</h4>
+    <div class="chip-row">
+      <span class="chip">Static Typing</span>
+      <span class="chip">Interfaces</span>
+      <span class="chip">Generics</span>
+      <span class="chip">Better Tooling</span>
+      <span class="chip">Autocomplete</span>
+      <span class="chip">Better Debugging</span>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section id="s2">
+    <h2 class="section-title"><span class="num">02</span> What Does "Statically Typed" Mean?</h2>
+    <p>In <strong>JavaScript</strong>, types are checked at <em>runtime</em>. In <strong>TypeScript</strong>, types are checked at <em>compile time</em>.</p>
+    <h4>Example</h4>
+    <pre><span class="lang-label">TS</span><code>let age: number = 20;</code></pre>
+    <h4>Syntax Breakdown</h4>
+    <table>
+      <thead><tr><th>Part</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>let</td><td>keyword to declare variable</td></tr>
+        <tr><td>age</td><td>variable name</td></tr>
+        <tr><td>:</td><td>used to define type</td></tr>
+        <tr><td>number</td><td>data type</td></tr>
+        <tr><td>= 20</td><td>assigned value</td></tr>
+      </tbody>
+    </table>
+    <div class="bad">If you write <code>age = "hello";</code> — TypeScript gives an error because <code>string ≠ number</code>. This reduces runtime errors.</div>
+  </section>
+
+  <!-- S3 -->
+  <section id="s3">
+    <h2 class="section-title"><span class="num">03</span> What Does "Compiled Language" Mean?</h2>
+    <p>TypeScript <strong>cannot run directly</strong>. It must be compiled to JavaScript first.</p>
+    <ul class="steps">
+      <li><span class="step-num">1</span><p>Write TypeScript code in a <code>.ts</code> file</p></li>
+      <li><span class="step-num">2</span><p>Compile using: <code>tsc filename.ts</code></p></li>
+      <li><span class="step-num">3</span><p>It generates a <code>.js</code> file</p></li>
+      <li><span class="step-num">4</span><p>Run the <code>.js</code> file in browser or Node.js</p></li>
+    </ul>
+  </section>
+
+  <!-- S4 -->
+  <section id="s4">
+    <h2 class="section-title"><span class="num">04</span> Hello, World! Program</h2>
+
+    <h3>Step 1 – Create hello.ts</h3>
+    <pre><span class="lang-label">TS</span><code>let message: string = "Hello, World!";
+console.log(message);</code></pre>
+    <table>
+      <thead><tr><th>Part</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>let</td><td>declare variable</td></tr>
+        <tr><td>message</td><td>variable name</td></tr>
+        <tr><td>: string</td><td>type is string</td></tr>
+        <tr><td>"Hello, World!"</td><td>string value</td></tr>
+        <tr><td>console.log()</td><td>print output</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Step 2 – Compile</h3>
+    <pre><span class="lang-label">CMD</span><code>tsc hello.ts</code></pre>
+    <p>This creates <code>hello.js</code>.</p>
+
+    <h3>Step 3 – Run in Node.js</h3>
+    <pre><span class="lang-label">CMD</span><code>node hello.js</code></pre>
+    <pre><span class="lang-label">OUTPUT</span><code>Hello, World!</code></pre>
+
+    <h3>Use in Browser (HTML)</h3>
+    <pre><span class="lang-label">HTML</span><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Check the console for the message!&lt;/h1&gt;
+    &lt;script src="hello.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    <div class="warn">Browser does NOT understand <code>.ts</code> files. Always compile first and link the <code>.js</code> file.</div>
+
+    <h3>Adding TypeScript in HTML (types.ts Example)</h3>
+    <pre><span class="lang-label">TS</span><code>let myString;
+myString = 'Hello from ts';
+console.log(myString);</code></pre>
+    <div class="note"><code>let myString;</code> has no type — TypeScript treats it as <code>any</code>.</div>
+    <pre><span class="lang-label">CMD</span><code>tsc types.ts</code></pre>
+    <pre><span class="lang-label">HTML</span><code>&lt;html&gt;
+&lt;body&gt;
+  &lt;h2&gt;Welcome&lt;/h2&gt;
+  &lt;script src="types.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </section>
+
+  <!-- S5 -->
+  <section id="s5">
+    <h2 class="section-title"><span class="num">05</span> Comments in TypeScript</h2>
+    <p>Comments are ignored by TypeScript. They are only for humans reading the code.</p>
+    <h3>Single Line Comment</h3>
+    <pre><span class="lang-label">TS</span><code>// This is a single line comment</code></pre>
+    <h3>Multi Line Comment</h3>
+    <pre><span class="lang-label">TS</span><code>/* This is a multi-line comment
+   This continues on the next line */</code></pre>
+    <table>
+      <thead><tr><th>Syntax</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td>//</td><td>Single line comment</td></tr>
+        <tr><td>/* ... */</td><td>Multi-line comment</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- S6 -->
+  <section id="s6">
+    <h2 class="section-title"><span class="num">06</span> Client Side vs Server Side TypeScript</h2>
+    <div class="two-col">
+      <div class="card">
+        <h4>🔵 Client-Side (Browser)</h4>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:6px;">Used for:</p>
+        <ul><li>Button click handling</li><li>Form input</li><li>DOM manipulation</li></ul>
+        <p style="font-size:13px;color:var(--muted);margin:10px 0 6px;">Frameworks:</p>
+        <ul><li>Angular</li><li>React</li><li>Vue.js</li></ul>
+      </div>
+      <div class="card">
+        <h4>🟢 Server-Side (Node.js)</h4>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:6px;">Used for:</p>
+        <ul><li>APIs</li><li>Database operations</li><li>File handling</li></ul>
+        <p style="font-size:13px;color:var(--muted);margin:10px 0 6px;">Frameworks:</p>
+        <ul><li>Express</li><li>NestJS</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section id="s7">
+    <h2 class="section-title"><span class="num">07</span> JavaScript vs TypeScript</h2>
+    <table>
+      <thead><tr><th>JavaScript</th><th>TypeScript</th></tr></thead>
+      <tbody>
+        <tr><td>Dynamically typed</td><td>Statically typed</td></tr>
+        <tr><td>No compilation needed</td><td>Must compile (.ts → .js)</td></tr>
+        <tr><td>Errors at runtime</td><td>Errors at compile time</td></tr>
+        <tr><td>Prototype-based</td><td>Class-based + Interfaces</td></tr>
+        <tr><td>Basic editor support</td><td>Strong editor support</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- S8 -->
+  <section id="s8">
+    <h2 class="section-title"><span class="num">08</span> Variables in TypeScript</h2>
+    <p>A variable stores data. TypeScript has <strong>3 keywords</strong> to declare variables:</p>
+    <div class="chip-row">
+      <span class="chip">var</span>
+      <span class="chip">let</span>
+      <span class="chip">const</span>
+    </div>
+
+    <h3>1 – Declare Type and Value Together</h3>
+    <pre><span class="lang-label">SYNTAX</span><code>let variableName: type = value;
+const variableName: type = value;</code></pre>
+    <pre><span class="lang-label">TS</span><code>let name: string = "Amit";
+const age: number = 25;</code></pre>
+    <div class="note"><code>const age</code> cannot be changed after assignment.</div>
+
+    <h3>2 – Declare Type Without Value</h3>
+    <pre><span class="lang-label">SYNTAX</span><code>let variableName: type;</code></pre>
+    <pre><span class="lang-label">TS</span><code>let city: string;
+console.log(city); // undefined</code></pre>
+    <div class="note">Default value is <code>undefined</code> when no value is assigned.</div>
+
+    <h3>3 – Declare Value Without Type (Type Inference)</h3>
+    <pre><span class="lang-label">SYNTAX</span><code>let variableName = value;</code></pre>
+    <pre><span class="lang-label">TS</span><code>let country = "India";
+console.log(country);</code></pre>
+    <div class="tip">TypeScript automatically understands the type from the value. This is called <strong>Type Inference</strong>.</div>
+
+    <hr>
+
+    <h3>var – Avoid Using</h3>
+    <pre><span class="lang-label">TS</span><code>function testVar() {
+  var globalVar = "I am a function-scoped variable";
+  console.log(globalVar);
+}
+testVar();</code></pre>
+    <div class="bad"><strong>var</strong> is function-scoped and supports hoisting, which can cause bugs. Not recommended in modern TypeScript.</div>
+
+    <h3>let – Recommended</h3>
+    <pre><span class="lang-label">TS</span><code>let count = 5;
+
+if (count > 0) {
+  let message = "Count is positive";
+  console.log(message);
+}</code></pre>
+    <div class="good"><strong>let</strong> is block-scoped (inside <code>{ }</code>). Cannot be accessed outside its block.</div>
+
+    <h3>const</h3>
+    <pre><span class="lang-label">TS</span><code>const country = "India";
+console.log(country);</code></pre>
+    <div class="bad">Cannot reassign. Must be initialized when declared. <code>const city;</code> will give an error.</div>
+
+    <hr>
+    <h3>Variable Naming Rules</h3>
+    <table>
+      <thead><tr><th>Allowed</th><th>Not Allowed</th></tr></thead>
+      <tbody>
+        <tr><td>Letters a-z, A-Z</td><td>Start with a number</td></tr>
+        <tr><td>Numbers 0-9 (not at start)</td><td>Special chars @, #, % etc.</td></tr>
+        <tr><td>Underscore _</td><td></td></tr>
+        <tr><td>Dollar sign $</td><td></td></tr>
+      </tbody>
+    </table>
+    <pre><span class="lang-label">TS</span><code>let userName;    // ✅ valid
+let _count;      // ✅ valid
+let $price;      // ✅ valid
+let 1name;       // ❌ Error – starts with number</code></pre>
+  </section>
+
+  <!-- S9 -->
+  <section id="s9">
+    <h2 class="section-title"><span class="num">09</span> Variable Scope in TypeScript</h2>
+    <p>Scope = where a variable can be used.</p>
+    <div class="scope-grid">
+      <div class="scope-card"><div class="icon">🟢</div><h4>Local Scope</h4><p>Inside a function or block. Cannot be used outside.</p></div>
+      <div class="scope-card"><div class="icon">🔵</div><h4>Global Scope</h4><p>Declared outside all functions. Accessible everywhere.</p></div>
+      <div class="scope-card"><div class="icon">🟣</div><h4>Class Scope</h4><p>Variables inside a class. Accessed using <code>this</code>.</p></div>
+    </div>
+
+    <h3>Local Scope Example</h3>
+    <pre><span class="lang-label">TS</span><code>function testLocalScope() {
+  let localVar = "I am local";
+  console.log(localVar);
+}</code></pre>
+
+    <h3>Global Scope Example</h3>
+    <pre><span class="lang-label">TS</span><code>let globalVar = 10;
+
+function displayGlobalVar() {
+  console.log(globalVar);
+}
+
+displayGlobalVar();</code></pre>
+
+    <h3>Class Scope Example</h3>
+    <pre><span class="lang-label">TS</span><code>class Employee {
+  salary: number = 50000;
+
+  printSalary(): void {
+    console.log(this.salary);
+  }
+}
+
+const emp = new Employee();
+emp.printSalary();</code></pre>
+    <table>
+      <thead><tr><th>Part</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>salary: number</td><td>class property with type</td></tr>
+        <tr><td>this.salary</td><td>refers to the class's own property</td></tr>
+        <tr><td>: void</td><td>method returns nothing</td></tr>
+      </tbody>
+    </table>
+
+    <h3>All Three Scopes Together</h3>
+    <pre><span class="lang-label">TS</span><code>let globalVar: number = 10;
+
+class Geeks {
+  private classVar: number = 11;
+
+  assignNum(): void {
+    let localVar: number = 12;
+    console.log("Local Variable: " + localVar);
+  }
+}
+
+console.log("Global Variable: " + globalVar);
+
+let obj = new Geeks();
+obj.assignNum();</code></pre>
+    <table>
+      <thead><tr><th>Variable</th><th>Scope</th></tr></thead>
+      <tbody>
+        <tr><td>globalVar</td><td>Global</td></tr>
+        <tr><td>classVar</td><td>Class</td></tr>
+        <tr><td>localVar</td><td>Method (Local)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- S10 -->
+  <section id="s10">
+    <h2 class="section-title"><span class="num">10</span> TypeScript Data Types</h2>
+
+    <h3>Primitive Types</h3>
+    <table>
+      <thead><tr><th>Type</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>number</td><td>10, 5.5</td></tr>
+        <tr><td>string</td><td>"Hello"</td></tr>
+        <tr><td>boolean</td><td>true, false</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        <tr><td>undefined</td><td>undefined</td></tr>
+        <tr><td>symbol</td><td>Symbol()</td></tr>
+        <tr><td>bigint</td><td>123n</td></tr>
+      </tbody>
+    </table>
+    <pre><span class="lang-label">TS</span><code>let num: number = 100;
+let str: string = "Hello";
+let flag: boolean = true;</code></pre>
+
+    <h3>Array</h3>
+    <pre><span class="lang-label">SYNTAX</span><code>let arr: type[] = [values];</code></pre>
+    <pre><span class="lang-label">TS</span><code>let numbers: number[] = [1, 2, 3];</code></pre>
+
+    <h3>Tuple (Fixed-size array)</h3>
+    <pre><span class="lang-label">TS</span><code>let person: [string, number] = ["Amit", 25];</code></pre>
+
+    <h3>Enum</h3>
+    <pre><span class="lang-label">TS</span><code>enum Direction {
+  North,
+  South,
+  East,
+  West
+}
+
+let dir: Direction = Direction.North;</code></pre>
+
+    <h3>Function Type</h3>
+    <pre><span class="lang-label">TS</span><code>function add(a: number, b: number): number {
+  return a + b;
+}</code></pre>
+
+    <h3>Class</h3>
+    <pre><span class="lang-label">TS</span><code>class Person {
+  name: string;
+}</code></pre>
+
+    <h3>Interface</h3>
+    <pre><span class="lang-label">TS</span><code>interface User {
+  name: string;
+  age: number;
+}
+
+let user: User = {
+  name: "Amit",
+  age: 25
+};</code></pre>
+  </section>
+
+  <!-- S11 -->
+  <section id="s11">
+    <h2 class="section-title"><span class="num">11</span> Advanced Types</h2>
+
+    <h3>Union Type</h3>
+    <p>Variable can hold multiple types.</p>
+    <pre><span class="lang-label">TS</span><code>let id: number | string;
+
+id = 10;
+id = "ABC123";</code></pre>
+
+    <h3>Intersection Type</h3>
+    <p>Combine two types into one.</p>
+    <pre><span class="lang-label">TS</span><code>type A = { name: string };
+type B = { age: number };
+
+type C = A & B;
+
+let obj: C = {
+  name: "Amit",
+  age: 25
+};</code></pre>
+
+    <h3>Literal Type</h3>
+    <p>Variable can only hold specific values.</p>
+    <pre><span class="lang-label">TS</span><code>let direction: "left" | "right";
+
+direction = "left";   // ✅ correct
+direction = "up";     // ❌ error</code></pre>
+
+    <h3>Mapped Type</h3>
+    <p>Creates a new type from an existing type. Used in advanced TypeScript patterns.</p>
+  </section>
+
+  <!-- S12 -->
+  <section id="s12">
+    <h2 class="section-title"><span class="num">12</span> Type Annotations</h2>
+    <p><strong>Type Annotations</strong> = when you <em>explicitly tell</em> TypeScript what type a variable, function, object, array, or class property is using <code>: type</code>.</p>
+    <div class="tip">Improves: type safety · code readability · early error detection · IntelliSense support.</div>
+
+    <h3>Variable Annotation</h3>
+    <pre><span class="lang-label">TS</span><code>const str: string = "GeeksforGeeks";
+const num: number = 6;
+const arr: (number | string)[] = ["GFG", "TypeScript", 500, 20];</code></pre>
+
+    <h3>Function Annotation</h3>
+    <pre><span class="lang-label">SYNTAX</span><code>function functionName(parameter: type, parameter: type): returnType { }</code></pre>
+    <pre><span class="lang-label">TS</span><code>function greet(name: string): string {
+  return `Hello, ${name}!`;
+}</code></pre>
+    <table>
+      <thead><tr><th>Part</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>name: string</td><td>parameter type</td></tr>
+        <tr><td>): string</td><td>return type of function</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Function with Multiple Parameters</h3>
+    <pre><span class="lang-label">TS</span><code>function greetUser(name: string, age: number): string {
+  return `Hello, ${name}! You are ${age} years old.`;
+}</code></pre>
+
+    <h3>Object Annotation</h3>
+    <pre><span class="lang-label">TS</span><code>const person: { name: string; age: number } = {
+  name: "Alice",
+  age: 30
+};</code></pre>
+    <div class="bad">If you write <code>age: "30"</code>, TypeScript throws an error.</div>
+
+    <h3>Array Annotation</h3>
+    <pre><span class="lang-label">TS</span><code>const numbers: number[] = [1, 2, 3, 4, 5];</code></pre>
+
+    <h3>Class Annotation</h3>
+    <pre><span class="lang-label">TS</span><code>class Rectangle {
+  width: number;
+  height: number;
+
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
+
+  area(): number {
+    return this.width * this.height;
+  }
+}</code></pre>
+  </section>
+
+  <!-- S13 -->
+  <section id="s13">
+    <h2 class="section-title"><span class="num">13</span> Type Inference</h2>
+    <p><strong>Type Inference</strong> = TypeScript automatically guesses the type from the assigned value. You do NOT write the type manually.</p>
+
+    <h3>Variable Inference</h3>
+    <pre><span class="lang-label">TS</span><code>let age = 25;      // TypeScript knows: number
+let name = "John"; // TypeScript knows: string</code></pre>
+    <div class="note">Writing <code>let age: number = 25;</code> is optional — inference handles it automatically.</div>
+
+    <h3>Array Inference</h3>
+    <pre><span class="lang-label">TS</span><code>let fruits = ["Apple", "Banana", "Cherry"];
+// Inferred as: string[]
+
+fruits.push(10); // ❌ Error – number not allowed in string[]</code></pre>
+
+    <h3>Function Return Type Inference</h3>
+    <pre><span class="lang-label">TS</span><code>function add(a: number, b: number) {
+  return a + b;
+}
+// Return type automatically inferred as: number</code></pre>
+
+    <hr>
+
+    <h3>Annotation vs Inference – Comparison</h3>
+    <table>
+      <thead><tr><th>Type Annotation</th><th>Type Inference</th></tr></thead>
+      <tbody>
+        <tr><td>You manually specify type</td><td>TypeScript auto-detects type</td></tr>
+        <tr><td>More explicit</td><td>Less verbose</td></tr>
+        <tr><td>Better for large projects</td><td>Good for simple cases</td></tr>
+        <tr><td>Used when type is unclear</td><td>Used when type is obvious</td></tr>
+      </tbody>
+    </table>
+
+    <h3>When to Use What?</h3>
+    <div class="two-col">
+      <div class="card">
+        <h4>Use Inference when…</h4>
+        <ul><li>Type is obvious from value</li><li>Simple variable assignments</li></ul>
+      </div>
+      <div class="card">
+        <h4>Use Annotation when…</h4>
+        <ul><li>Working with functions</li><li>Complex objects or APIs</li><li>Large applications</li><li>Public libraries / code</li></ul>
+      </div>
+    </div>
+
+    <div class="interview-box">
+      <h4>🎯 Interview Answer</h4>
+      <p>Type Annotation is when we explicitly define types using <code>: type</code>, whereas Type Inference is when TypeScript automatically determines the type based on the assigned value.</p>
+    </div>
+  </section>
+
+  <!-- S14 -->
+  <section id="s14">
+    <h2 class="section-title"><span class="num">14</span> Limitations &amp; Best Practices</h2>
+    <table>
+      <thead><tr><th>#</th><th>Limitation</th><th>Explanation</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Compilation Overhead</td><td>Extra compile step required every time</td></tr>
+        <tr><td>2</td><td>Learning Curve</td><td>Need to learn types, interfaces, generics</td></tr>
+        <tr><td>3</td><td>Configuration</td><td>Large projects need <code>tsconfig.json</code> setup</td></tr>
+        <tr><td>4</td><td>Extra Build Step</td><td>Slightly slower workflow than plain JavaScript</td></tr>
+      </tbody>
+    </table>
+    <h3>Best Practices</h3>
+    <div class="good">Use <code>let</code> and <code>const</code></div>
+    <div class="bad">Avoid <code>var</code></div>
+    <div class="bad">Avoid <code>any</code> type</div>
+    <div class="good">Use Type Inference when type is obvious</div>
+    <div class="good">Use Utility Types for advanced patterns</div>
+  </section>
+
+</div>
+</body>
+</html>

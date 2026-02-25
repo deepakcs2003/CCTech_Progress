@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript Notes — Enum, Literal Types & More</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1e1e2e;
+    --sidebar-bg: #181825;
+    --surface: #252537;
+    --surface2: #2d2d44;
+    --border: #383850;
+    --text: #cdd6f4;
+    --muted: #7f849c;
+    --accent: #89b4fa;
+    --accent2: #cba6f7;
+    --green: #a6e3a1;
+    --yellow: #f9e2af;
+    --red: #f38ba8;
+    --teal: #94e2d5;
+    --orange: #fab387;
+    --pink: #f5c2e7;
+
+    /* VS Code token colors */
+    --c-keyword:  #569cd6;
+    --c-type:     #4ec9b0;
+    --c-string:   #ce9178;
+    --c-number:   #b5cea8;
+    --c-comment:  #6a9955;
+    --c-func:     #dcdcaa;
+    --c-var:      #9cdcfe;
+    --c-punct:    #d4d4d4;
+    --c-operator: #d4d4d4;
+    --c-class:    #4ec9b0;
+    --c-prop:     #9cdcfe;
+    --c-bool:     #569cd6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 270px;
+    min-width: 270px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    padding: 0 0 40px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+
+  .sidebar-logo h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .nav-section {
+    padding: 6px 12px 4px;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 8px 4px;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .nav-link .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN ── */
+  main {
+    flex: 1;
+    padding: 48px 60px;
+    max-width: 900px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 72px;
+    scroll-margin-top: 32px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-header .badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+  }
+
+  .subsection { margin-bottom: 40px; }
+
+  .subsection h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .subsection h3::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .subsection h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--yellow);
+    margin: 18px 0 8px;
+    letter-spacing: 0.5px;
+  }
+
+  p { color: #a6adc8; line-height: 1.8; margin-bottom: 12px; }
+
+  /* ── INFO BOXES ── */
+  .info-box {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    border-left: 3px solid;
+  }
+
+  .info-box.tip    { background: #1e3a2f; border-color: var(--green);  color: #b7e4c7; }
+  .info-box.warn   { background: #3a2a1e; border-color: var(--orange); color: #f4c38c; }
+  .info-box.rule   { background: #1e2a3a; border-color: var(--accent); color: #a8c8fa; }
+  .info-box.error  { background: #3a1e23; border-color: var(--red);    color: #f4a8b4; }
+
+  .info-box strong { display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; opacity: 0.7; }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #1a1a2b;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .code-header {
+    background: #13131f;
+    border-bottom: 1px solid var(--border);
+    padding: 9px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+  }
+  .code-dots .d1 { background: #ff5f57; }
+  .code-dots .d2 { background: #febc2e; }
+  .code-dots .d3 { background: #28c840; }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+    letter-spacing: 0.5px;
+  }
+
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    padding: 20px 22px;
+    overflow-x: auto;
+    color: var(--c-punct);
+    tab-size: 2;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  /* syntax tokens */
+  .kw  { color: var(--c-keyword); }
+  .ty  { color: var(--c-type); }
+  .st  { color: var(--c-string); }
+  .nm  { color: var(--c-number); }
+  .cm  { color: var(--c-comment); font-style: italic; }
+  .fn  { color: var(--c-func); }
+  .vr  { color: var(--c-var); }
+  .op  { color: var(--c-operator); }
+  .cl  { color: var(--c-class); }
+  .pr  { color: var(--c-prop); }
+  .bl  { color: var(--c-bool); }
+
+  /* output block */
+  .output-block {
+    background: #0d0d1a;
+    border: 1px solid #2a2a40;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    margin: 10px 0 20px;
+  }
+
+  .output-block::before {
+    content: '// Output';
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 16px 0;
+  }
+
+  th {
+    background: var(--surface2);
+    color: var(--accent);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--border);
+  }
+
+  td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+
+  tr:nth-child(even) td { background: var(--surface); }
+
+  .tick { color: var(--green); }
+  .cross { color: var(--red); }
+
+  /* ── INLINE CODE ── */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: var(--surface2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--teal);
+    border: 1px solid var(--border);
+  }
+
+  /* ── PAGE TITLE ── */
+  .page-title {
+    margin-bottom: 52px;
+  }
+
+  .page-title .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  .page-title h1 {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.2;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-title p {
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc-card {
+    background: var(--sidebar-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--teal));
+  }
+
+  .toc-card h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 24px;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 13.5px;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+
+  .toc-item:hover {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--accent);
+  }
+
+  .toc-item .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 22px;
+  }
+
+  .toc-item .toc-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .toc-item .toc-label { flex: 1; }
+
+  .toc-item .toc-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 800px) {
+    .sidebar { display: none; }
+    main { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+<nav class="sidebar">
+ 
+
+  <div class="nav-section">
+    <div class="nav-section-label">Sections</div>
+
+    <a class="nav-link" href="#enum">
+      <span class="dot" style="background:#89b4fa"></span>Enum
+    </a>
+    <a class="nav-link" href="#numeric-enum">
+      <span class="dot" style="background:#a6e3a1"></span>Numeric Enum
+    </a>
+    <a class="nav-link" href="#string-enum">
+      <span class="dot" style="background:#f9e2af"></span>String Enum
+    </a>
+    <a class="nav-link" href="#heterogeneous-enum">
+      <span class="dot" style="background:#fab387"></span>Heterogeneous Enum
+    </a>
+    <a class="nav-link" href="#literal-types">
+      <span class="dot" style="background:#cba6f7"></span>Literal Types
+    </a>
+    <a class="nav-link" href="#string-literal">
+      <span class="dot" style="background:#f5c2e7"></span>String Literal
+    </a>
+    <a class="nav-link" href="#numeric-literal">
+      <span class="dot" style="background:#94e2d5"></span>Numeric Literal
+    </a>
+    <a class="nav-link" href="#boolean-literal">
+      <span class="dot" style="background:#f38ba8"></span>Boolean Literal
+    </a>
+    <a class="nav-link" href="#union-intersection">
+      <span class="dot" style="background:#89b4fa"></span>Union & Intersection
+    </a>
+    <a class="nav-link" href="#union-to-intersection">
+      <span class="dot" style="background:#cba6f7"></span>Union → Intersection
+    </a>
+    <a class="nav-link" href="#type-alias">
+      <span class="dot" style="background:#a6e3a1"></span>Type Alias
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ MAIN ═══════════════════════ -->
+<main>
+
+  <div class="page-title">
+    <div class="eyebrow">// typescript · complete notes</div>
+    <h1>Enum, Literal Types,<br>Union & Type Alias</h1>
+    <p>Step-by-step with VS Code syntax highlighting and clear examples.</p>
+  </div>
+
+  <!-- ══════════════ TABLE OF CONTENTS ══════════════ -->
+  <div class="toc-card" id="toc">
+    <h2>📋 &nbsp;Table of Contents</h2>
+    <div class="toc-grid">
+      <a class="toc-item" href="#enum">
+        <span class="toc-num">01</span>
+        <span class="toc-dot" style="background:#89b4fa"></span>
+        <span class="toc-label">Enum (Enumeration)</span>
+        <span class="toc-tag">CORE</span>
+      </a>
+      <a class="toc-item" href="#numeric-enum">
+        <span class="toc-num">02</span>
+        <span class="toc-dot" style="background:#a6e3a1"></span>
+        <span class="toc-label">Numeric Enum</span>
+        <span class="toc-tag">DEFAULT</span>
+      </a>
+      <a class="toc-item" href="#string-enum">
+        <span class="toc-num">03</span>
+        <span class="toc-dot" style="background:#f9e2af"></span>
+        <span class="toc-label">String Enum</span>
+        <span class="toc-tag">TEXT</span>
+      </a>
+      <a class="toc-item" href="#heterogeneous-enum">
+        <span class="toc-num">04</span>
+        <span class="toc-dot" style="background:#fab387"></span>
+        <span class="toc-label">Heterogeneous Enum</span>
+        <span class="toc-tag">MIXED</span>
+      </a>
+      <a class="toc-item" href="#literal-types">
+        <span class="toc-num">05</span>
+        <span class="toc-dot" style="background:#cba6f7"></span>
+        <span class="toc-label">Literal Types</span>
+        <span class="toc-tag">SAFETY</span>
+      </a>
+      <a class="toc-item" href="#string-literal">
+        <span class="toc-num">06</span>
+        <span class="toc-dot" style="background:#f5c2e7"></span>
+        <span class="toc-label">String Literal Types</span>
+        <span class="toc-tag">STRING</span>
+      </a>
+      <a class="toc-item" href="#numeric-literal">
+        <span class="toc-num">07</span>
+        <span class="toc-dot" style="background:#94e2d5"></span>
+        <span class="toc-label">Numeric Literal Types</span>
+        <span class="toc-tag">NUMBER</span>
+      </a>
+      <a class="toc-item" href="#boolean-literal">
+        <span class="toc-num">08</span>
+        <span class="toc-dot" style="background:#f38ba8"></span>
+        <span class="toc-label">Boolean Literal Types</span>
+        <span class="toc-tag">BOOL</span>
+      </a>
+      <a class="toc-item" href="#union-intersection">
+        <span class="toc-num">09</span>
+        <span class="toc-dot" style="background:#89b4fa"></span>
+        <span class="toc-label">Union &amp; Intersection</span>
+        <span class="toc-tag">TYPES</span>
+      </a>
+      <a class="toc-item" href="#union-to-intersection">
+        <span class="toc-num">10</span>
+        <span class="toc-dot" style="background:#cba6f7"></span>
+        <span class="toc-label">Union → Intersection</span>
+        <span class="toc-tag">ADVANCED</span>
+      </a>
+      <a class="toc-item" href="#type-alias">
+        <span class="toc-num">11</span>
+        <span class="toc-dot" style="background:#a6e3a1"></span>
+        <span class="toc-label">Type Alias</span>
+        <span class="toc-tag">NAMING</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ══════════════ ENUM ══════════════ -->
+  <section class="section" id="enum">
+    <div class="section-header">
+      <div class="section-icon" style="background:#1e2d4a">🔷</div>
+      <h2>Enum (Enumeration)</h2>
+      <span class="badge" style="background:#1e2d4a; color:#89b4fa">CORE</span>
+    </div>
+
+    <p>An <strong>Enum</strong> is used to create a group of fixed constant values with meaningful names. It helps improve readability, avoids magic numbers or strings, and keeps related values together.</p>
+
+    <div class="subsection">
+      <h3>Basic Syntax</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">enum</span> <span class="cl">EnumName</span> <span class="op">{</span>
+  <span class="vr">Member1</span><span class="op">,</span>
+  <span class="vr">Member2</span>
+<span class="op">}</span>
+
+<span class="cm">// How to access</span>
+<span class="kw">let</span> <span class="vr">variableName</span><span class="op">:</span> <span class="cl">EnumName</span> <span class="op">=</span> <span class="cl">EnumName</span><span class="op">.</span><span class="pr">MemberName</span><span class="op">;</span></pre>
+      </div>
+
+      <div class="info-box rule">
+        <strong>Syntax breakdown</strong>
+        <code>enum</code> → keyword &nbsp;|&nbsp; <code>EnumName</code> → PascalCase name &nbsp;|&nbsp; <code>{ }</code> → member block &nbsp;|&nbsp; <code>.</code> → access operator
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ NUMERIC ENUM ══════════════ -->
+  <section class="section" id="numeric-enum">
+    <div class="section-header">
+      <div class="section-icon" style="background:#1a3028">🟢</div>
+      <h2>Numeric Enum</h2>
+      <span class="badge" style="background:#1a3028; color:#a6e3a1">DEFAULT</span>
+    </div>
+
+    <p>If no value is assigned, TypeScript automatically assigns numbers starting from <code>0</code> and auto-increments each member.</p>
+
+    <!-- Default -->
+    <div class="subsection">
+      <h3>Default Numeric Enum</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">enum</span> <span class="cl">Direction</span> <span class="op">{</span>
+  <span class="vr">Up</span><span class="op">,</span>     <span class="cm">// 0</span>
+  <span class="vr">Down</span><span class="op">,</span>   <span class="cm">// 1</span>
+  <span class="vr">Left</span><span class="op">,</span>   <span class="cm">// 2</span>
+  <span class="vr">Right</span>   <span class="cm">// 3</span>
+<span class="op">}</span>
+
+<span class="kw">let</span> <span class="vr">move</span><span class="op">:</span> <span class="cl">Direction</span> <span class="op">=</span> <span class="cl">Direction</span><span class="op">.</span><span class="pr">Up</span><span class="op">;</span>
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="vr">move</span><span class="op">);</span></pre>
+      </div>
+      <div class="output-block">0</div>
+      <div class="info-box rule"><strong>Rule</strong>First value = 0, each next auto-increments by 1.</div>
+    </div>
+
+    <!-- Initialized -->
+    <div class="subsection">
+      <h3>Initialized Numeric Enum</h3>
+      <p>Set a custom starting value and the rest auto-increment from it.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">enum</span> <span class="cl">Direction</span> <span class="op">{</span>
+  <span class="vr">Up</span>    <span class="op">=</span> <span class="nm">1</span><span class="op">,</span>  <span class="cm">// 1</span>
+  <span class="vr">Down</span><span class="op">,</span>         <span class="cm">// 2</span>
+  <span class="vr">Left</span><span class="op">,</span>         <span class="cm">// 3</span>
+  <span class="vr">Right</span>         <span class="cm">// 4</span>
+<span class="op">}</span>
+
+<span class="kw">let</span> <span class="vr">move</span><span class="op">:</span> <span class="cl">Direction</span> <span class="op">=</span> <span class="cl">Direction</span><span class="op">.</span><span class="pr">Down</span><span class="op">;</span>
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="vr">move</span><span class="op">);</span></pre>
+      </div>
+      <div class="output-block">2</div>
+    </div>
+
+    <!-- Fully Initialized -->
+    <div class="subsection">
+      <h3>Fully Initialized Numeric Enum</h3>
+      <p>Manually assign every value — no auto-increment happens.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">enum</span> <span class="cl">Direction</span> <span class="op">{</span>
+  <span class="vr">Up</span>    <span class="op">=</span> <span class="nm">10</span><span class="op">,</span>
+  <span class="vr">Down</span>  <span class="op">=</span> <span class="nm">20</span><span class="op">,</span>
+  <span class="vr">Left</span>  <span class="op">=</span> <span class="nm">30</span><span class="op">,</span>
+  <span class="vr">Right</span> <span class="op">=</span> <span class="nm">40</span>
+<span class="op">}</span>
+
+<span class="kw">let</span> <span class="vr">move</span><span class="op">:</span> <span class="cl">Direction</span> <span class="op">=</span> <span class="cl">Direction</span><span class="op">.</span><span class="pr">Left</span><span class="op">;</span>
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="vr">move</span><span class="op">);</span></pre>
+      </div>
+      <div class="output-block">30</div>
+    </div>
+  </section>
+
+  <!-- ══════════════ STRING ENUM ══════════════ -->
+  <section class="section" id="string-enum">
+    <div class="section-header">
+      <div class="section-icon" style="background:#3a2e1a">🟡</div>
+      <h2>String Enum</h2>
+      <span class="badge" style="background:#3a2e1a; color:#f9e2af">TEXT VALUES</span>
+    </div>
+
+    <p>String enums store text values instead of numbers. Every member must be explicitly assigned a string value — there is no auto-increment.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">TypeScript</span>
+      </div>
+      <pre><span class="kw">enum</span> <span class="cl">Direction</span> <span class="op">{</span>
+  <span class="vr">Up</span>    <span class="op">=</span> <span class="st">"UP"</span><span class="op">,</span>
+  <span class="vr">Down</span>  <span class="op">=</span> <span class="st">"DOWN"</span><span class="op">,</span>
+  <span class="vr">Left</span>  <span class="op">=</span> <span class="st">"LEFT"</span><span class="op">,</span>
+  <span class="vr">Right</span> <span class="op">=</span> <span class="st">"RIGHT"</span>
+<span class="op">}</span>
+
+<span class="kw">let</span> <span class="vr">move</span><span class="op">:</span> <span class="cl">Direction</span> <span class="op">=</span> <span class="cl">Direction</span><span class="op">.</span><span class="pr">Up</span><span class="op">;</span>
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="vr">move</span><span class="op">);</span></pre>
+    </div>
+    <div class="output-block">UP</div>
+
+    <div class="info-box tip">
+      <strong>Important Rules</strong>
+      Every member must have a value assigned · No automatic numbering · More readable than numeric enums
+    </div>
+  </section>
+
+  <!-- ══════════════ HETEROGENEOUS ENUM ══════════════ -->
+  <section class="section" id="heterogeneous-enum">
+    <div class="section-header">
+      <div class="section-icon" style="background:#3a2510">🟠</div>
+      <h2>Heterogeneous Enum</h2>
+      <span class="badge" style="background:#3a2510; color:#fab387">MIXED · AVOID</span>
+    </div>
+
+    <p>A mix of numbers and strings in the same enum. While valid TypeScript, this reduces consistency and makes code harder to maintain.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">TypeScript</span>
+      </div>
+      <pre><span class="kw">enum</span> <span class="cl">Status</span> <span class="op">{</span>
+  <span class="vr">Active</span>    <span class="op">=</span> <span class="nm">1</span><span class="op">,</span>
+  <span class="vr">Inactive</span>  <span class="op">=</span> <span class="st">"INACTIVE"</span><span class="op">,</span>
+  <span class="vr">Pending</span>   <span class="op">=</span> <span class="nm">2</span><span class="op">,</span>
+  <span class="vr">Cancelled</span> <span class="op">=</span> <span class="st">"CANCELLED"</span>
+<span class="op">}</span>
+
+<span class="kw">let</span> <span class="vr">s1</span><span class="op">:</span> <span class="cl">Status</span> <span class="op">=</span> <span class="cl">Status</span><span class="op">.</span><span class="pr">Active</span><span class="op">;</span>
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="vr">s1</span><span class="op">);</span>   <span class="cm">// 1</span>
+
+<span class="kw">let</span> <span class="vr">s2</span><span class="op">:</span> <span class="cl">Status</span> <span class="op">=</span> <span class="cl">Status</span><span class="op">.</span><span class="pr">Cancelled</span><span class="op">;</span>
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="vr">s2</span><span class="op">);</span>   <span class="cm">// CANCELLED</span></pre>
+    </div>
+    <div class="output-block">1
+CANCELLED</div>
+    <div class="info-box warn"><strong>Warning</strong>Mixing types reduces consistency and makes code harder to maintain. Avoid this pattern.</div>
+
+    <!-- Comparison table -->
+    <div class="subsection" style="margin-top:32px">
+      <h3>Enum Types — Quick Comparison</h3>
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Value Type</th><th>Auto Increment</th><th>Recommended</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Numeric Enum</td><td>Number</td><td>✅ Yes</td><td><span class="tick">✅ Yes</span></td></tr>
+          <tr><td>String Enum</td><td>String</td><td>❌ No</td><td><span class="tick">✅ Yes</span></td></tr>
+          <tr><td>Heterogeneous</td><td>Mixed</td><td>Partial</td><td><span class="cross">❌ Avoid</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════ LITERAL TYPES ══════════════ -->
+  <section class="section" id="literal-types">
+    <div class="section-header">
+      <div class="section-icon" style="background:#2d1e4a">🟣</div>
+      <h2>Literal Types</h2>
+      <span class="badge" style="background:#2d1e4a; color:#cba6f7">TYPE SAFETY</span>
+    </div>
+
+    <p>Literal Types allow variables to store <em>exact specific values only</em>, instead of any value of a given type. They restrict values, improve type safety, and catch errors at compile time.</p>
+
+    <!-- String Literal -->
+    <div class="subsection" id="string-literal">
+      <h3>String Literal Types</h3>
+      <h4>Syntax</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="cl">TypeName</span> <span class="op">=</span> <span class="st">"Value1"</span> <span class="op">|</span> <span class="st">"Value2"</span> <span class="op">|</span> <span class="st">"Value3"</span><span class="op">;</span></pre>
+      </div>
+
+      <h4>Example</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="cl">Direction</span> <span class="op">=</span> <span class="st">"Up"</span> <span class="op">|</span> <span class="st">"Down"</span> <span class="op">|</span> <span class="st">"Left"</span> <span class="op">|</span> <span class="st">"Right"</span><span class="op">;</span>
+
+<span class="kw">let</span> <span class="vr">move</span><span class="op">:</span> <span class="cl">Direction</span><span class="op">;</span>
+
+<span class="vr">move</span> <span class="op">=</span> <span class="st">"Up"</span><span class="op">;</span>       <span class="cm">// ✅ Valid</span>
+<span class="vr">move</span> <span class="op">=</span> <span class="st">"Down"</span><span class="op">;</span>     <span class="cm">// ✅ Valid</span>
+<span class="cm">// move = "Forward"; ❌ Error — not in the union</span></pre>
+      </div>
+      <div class="info-box error"><strong>Compile-time error</strong>Type '"Forward"' is not assignable to type 'Direction'</div>
+    </div>
+
+    <!-- Numeric Literal -->
+    <div class="subsection" id="numeric-literal">
+      <h3>Numeric Literal Types</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="cl">DiceRoll</span> <span class="op">=</span> <span class="nm">1</span> <span class="op">|</span> <span class="nm">2</span> <span class="op">|</span> <span class="nm">3</span> <span class="op">|</span> <span class="nm">4</span> <span class="op">|</span> <span class="nm">5</span> <span class="op">|</span> <span class="nm">6</span><span class="op">;</span>
+
+<span class="kw">function</span> <span class="fn">rollDice</span><span class="op">():</span> <span class="cl">DiceRoll</span> <span class="op">{</span>
+  <span class="kw">return</span> <span class="nm">4</span><span class="op">;</span>    <span class="cm">// ✅ Valid</span>
+  <span class="cm">// return 7;  ❌ Error</span>
+<span class="op">}</span>
+
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="fn">rollDice</span><span class="op">());</span></pre>
+      </div>
+      <div class="output-block">4</div>
+      <div class="info-box error"><strong>Error</strong>Type '7' is not assignable to type 'DiceRoll'</div>
+    </div>
+
+    <!-- Boolean Literal -->
+    <div class="subsection" id="boolean-literal">
+      <h3>Boolean Literal Types</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="cl">Success</span> <span class="op">=</span> <span class="bl">true</span><span class="op">;</span>
+
+<span class="kw">function</span> <span class="fn">operation</span><span class="op">():</span> <span class="cl">Success</span> <span class="op">{</span>
+  <span class="kw">return</span> <span class="bl">true</span><span class="op">;</span>    <span class="cm">// ✅ Valid</span>
+  <span class="cm">// return false; ❌ Error</span>
+<span class="op">}</span>
+
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="fn">operation</span><span class="op">());</span></pre>
+      </div>
+      <div class="output-block">true</div>
+      <div class="info-box error"><strong>Error</strong>Type 'false' is not assignable to type 'Success'</div>
+    </div>
+
+    <!-- Literal types table -->
+    <div class="subsection">
+      <h3>Quick Summary</h3>
+      <table>
+        <thead><tr><th>Type</th><th>Example</th><th>Allowed Values Only</th></tr></thead>
+        <tbody>
+          <tr><td>String</td><td><code>"Up" | "Down"</code></td><td>Exact strings</td></tr>
+          <tr><td>Number</td><td><code>1 | 2 | 3</code></td><td>Exact numbers</td></tr>
+          <tr><td>Boolean</td><td><code>true</code></td><td>true or false</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════ UNION & INTERSECTION ══════════════ -->
+  <section class="section" id="union-intersection">
+    <div class="section-header">
+      <div class="section-icon" style="background:#1e2d4a">⚡</div>
+      <h2>Union &amp; Intersection Types</h2>
+      <span class="badge" style="background:#1e2d4a; color:#89b4fa">FUNDAMENTAL</span>
+    </div>
+
+    <!-- Union -->
+    <div class="subsection">
+      <h3>Union Type <code>|</code> → OR</h3>
+      <p>A Union Type allows a variable to store <em>one of many types</em>.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="cl">Animal</span> <span class="op">=</span> <span class="st">"Dog"</span> <span class="op">|</span> <span class="st">"Cat"</span> <span class="op">|</span> <span class="st">"Bird"</span><span class="op">;</span>
+
+<span class="kw">let</span> <span class="vr">pet</span><span class="op">:</span> <span class="cl">Animal</span><span class="op">;</span>
+
+<span class="vr">pet</span> <span class="op">=</span> <span class="st">"Dog"</span><span class="op">;</span>   <span class="cm">// ✅ allowed</span>
+<span class="vr">pet</span> <span class="op">=</span> <span class="st">"Cat"</span><span class="op">;</span>   <span class="cm">// ✅ allowed</span>
+<span class="cm">// pet = "Lion"; ❌ Error — not in union</span></pre>
+      </div>
+    </div>
+
+    <!-- Intersection -->
+    <div class="subsection">
+      <h3>Intersection Type <code>&amp;</code> → AND</h3>
+      <p>An Intersection Type combines multiple types. The object must satisfy <em>all</em> of them.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="cl">NameType</span> <span class="op">=</span> <span class="op">{</span> <span class="pr">name</span><span class="op">:</span> <span class="ty">string</span> <span class="op">};</span>
+<span class="kw">type</span> <span class="cl">AgeType</span>  <span class="op">=</span> <span class="op">{</span> <span class="pr">age</span><span class="op">:</span> <span class="ty">number</span> <span class="op">};</span>
+
+<span class="cm">// Intersection — must have BOTH properties</span>
+<span class="kw">type</span> <span class="cl">Person</span> <span class="op">=</span> <span class="cl">NameType</span> <span class="op">&amp;</span> <span class="cl">AgeType</span><span class="op">;</span>
+
+<span class="kw">let</span> <span class="vr">user</span><span class="op">:</span> <span class="cl">Person</span> <span class="op">=</span> <span class="op">{</span>
+  <span class="pr">name</span><span class="op">:</span> <span class="st">"Deepak"</span><span class="op">,</span>
+  <span class="pr">age</span><span class="op">:</span> <span class="nm">22</span>
+<span class="op">};</span></pre>
+      </div>
+      <div class="info-box rule"><strong>Remember</strong><code>|</code> = OR (any one) &nbsp;·&nbsp; <code>&amp;</code> = AND (all required)</div>
+    </div>
+  </section>
+
+  <!-- ══════════════ UNION TO INTERSECTION ══════════════ -->
+  <section class="section" id="union-to-intersection">
+    <div class="section-header">
+      <div class="section-icon" style="background:#2d1e4a">🔀</div>
+      <h2>Union → Intersection</h2>
+      <span class="badge" style="background:#2d1e4a; color:#cba6f7">ADVANCED</span>
+    </div>
+
+    <p>Using <strong>Distributive Conditional Types</strong> we can convert a Union type into an Intersection type.</p>
+
+    <div class="subsection">
+      <h3>The Pattern</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="cm">// Generic utility type</span>
+<span class="kw">type</span> <span class="cl">UnionToIntersection</span><span class="op">&lt;</span><span class="ty">U</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">(</span>
+  <span class="cm">// Step 1: Distribute — wrap each union member in a function</span>
+  <span class="ty">U</span> <span class="kw">extends</span> <span class="ty">any</span> <span class="op">?</span> <span class="op">(</span><span class="vr">k</span><span class="op">:</span> <span class="ty">U</span><span class="op">)</span> <span class="op">=&gt;</span> <span class="ty">void</span> <span class="op">:</span> <span class="kw">never</span>
+<span class="op">)</span> <span class="kw">extends</span> <span class="op">(</span><span class="vr">k</span><span class="op">:</span> <span class="kw">infer</span> <span class="ty">I</span><span class="op">)</span> <span class="op">=&gt;</span> <span class="ty">void</span>
+  <span class="cm">// Step 2: Infer the parameter — TypeScript intersects them</span>
+  <span class="op">?</span> <span class="ty">I</span>
+  <span class="op">:</span> <span class="kw">never</span><span class="op">;</span></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>How It Works — Step by Step</h3>
+
+      <h4>Step 1 — Distribute over union members</h4>
+      <p>Since every type extends <code>any</code>, the conditional always runs. For each member of the union, a function type is created:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">Result after Step 1</span>
+        </div>
+        <pre><span class="cm">// Given union:</span>
+<span class="op">{</span> <span class="pr">a</span><span class="op">:</span> <span class="ty">number</span> <span class="op">}</span> <span class="op">|</span> <span class="op">{</span> <span class="pr">b</span><span class="op">:</span> <span class="ty">string</span> <span class="op">}</span>
+
+<span class="cm">// Becomes:</span>
+<span class="op">(</span><span class="vr">k</span><span class="op">:</span> <span class="op">{</span> <span class="pr">a</span><span class="op">:</span> <span class="ty">number</span> <span class="op">})</span> <span class="op">=&gt;</span> <span class="ty">void</span>
+<span class="op">|</span> <span class="op">(</span><span class="vr">k</span><span class="op">:</span> <span class="op">{</span> <span class="pr">b</span><span class="op">:</span> <span class="ty">string</span>  <span class="op">})</span> <span class="op">=&gt;</span> <span class="ty">void</span></pre>
+      </div>
+
+      <h4>Step 2 — The magic: <code>infer I</code></h4>
+      <p>TypeScript's type inference coerces a union of function parameter types into an <em>intersection</em>. This is a special property of <strong>contravariant</strong> positions.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">Result after Step 2</span>
+        </div>
+        <pre><span class="cm">// Inferred I becomes:</span>
+<span class="op">{</span> <span class="pr">a</span><span class="op">:</span> <span class="ty">number</span> <span class="op">}</span> <span class="op">&amp;</span> <span class="op">{</span> <span class="pr">b</span><span class="op">:</span> <span class="ty">string</span> <span class="op">}</span></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Complete Working Example</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <span class="code-lang">TypeScript</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="cl">UnionToIntersection</span><span class="op">&lt;</span><span class="ty">U</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">(</span>
+  <span class="ty">U</span> <span class="kw">extends</span> <span class="ty">any</span> <span class="op">?</span> <span class="op">(</span><span class="vr">k</span><span class="op">:</span> <span class="ty">U</span><span class="op">)</span> <span class="op">=&gt;</span> <span class="ty">void</span> <span class="op">:</span> <span class="kw">never</span>
+<span class="op">)</span> <span class="kw">extends</span> <span class="op">(</span><span class="vr">k</span><span class="op">:</span> <span class="kw">infer</span> <span class="ty">I</span><span class="op">)</span> <span class="op">=&gt;</span> <span class="ty">void</span>
+  <span class="op">?</span> <span class="ty">I</span>
+  <span class="op">:</span> <span class="kw">never</span><span class="op">;</span>
+
+<span class="cm">// Input: Union of three object types</span>
+<span class="kw">type</span> <span class="cl">UnionType</span> <span class="op">=</span>
+  <span class="op">{</span> <span class="pr">a</span><span class="op">:</span> <span class="ty">number</span>  <span class="op">}</span> <span class="op">|</span>
+  <span class="op">{</span> <span class="pr">b</span><span class="op">:</span> <span class="ty">string</span>  <span class="op">}</span> <span class="op">|</span>
+  <span class="op">{</span> <span class="pr">c</span><span class="op">:</span> <span class="ty">boolean</span> <span class="op">};</span>
+
+<span class="cm">// Output: Intersection — object must have ALL properties</span>
+<span class="kw">type</span> <span class="cl">IntersectionType</span> <span class="op">=</span> <span class="cl">UnionToIntersection</span><span class="op">&lt;</span><span class="cl">UnionType</span><span class="op">&gt;;</span>
+
+<span class="kw">const</span> <span class="vr">myObject</span><span class="op">:</span> <span class="cl">IntersectionType</span> <span class="op">=</span> <span class="op">{</span>
+  <span class="pr">a</span><span class="op">:</span> <span class="nm">42</span><span class="op">,</span>
+  <span class="pr">b</span><span class="op">:</span> <span class="st">"hello"</span><span class="op">,</span>
+  <span class="pr">c</span><span class="op">:</span> <span class="bl">true</span>
+<span class="op">};</span>
+
+<span class="fn">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="vr">myObject</span><span class="op">);</span></pre>
+      </div>
+      <div class="output-block">{ a: 42, b: "hello", c: true }</div>
+    </div>
+  </section>
+
+  <!-- ══════════════ TYPE ALIAS ══════════════ -->
+ <section class="section" id="type-alias">
+  <div class="section-header">
+    <div class="section-icon" style="background:#1a3028">📌</div>
+    <h2>Type Alias (Complete Guide - Hinglish)</h2>
+    <span class="badge" style="background:#1a3028; color:#a6e3a1">CUSTOM TYPES</span>
+  </div>
+
+  <p>
+    <strong>Type Alias</strong> ka use hum TypeScript me kisi bhi type ko 
+    <strong>ek naya naam dene ke liye</strong> karte hain.
+    Ye koi naya type create nahi karta, bas ek shortcut bana deta hai.
+  </p>
+
+  <div class="info-box">
+    <strong>Syntax:</strong>
+    <code>type TypeName = SomeType;</code>
+  </div>
+
+  <!-- Example 1 -->
+  <div class="subsection">
+    <h3>Example 1 — Object Type Alias</h3>
+    <div class="code-block">
+<pre>
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  discount: number;
+};
+
+let item: Product = {
+  id: 1,
+  name: "Laptop",
+  price: 50000,
+  discount: 10
+};
+</pre>
+    </div>
+    <p>
+      ✔ Ye ensure karta hai ki object ka structure same rahe <br>
+      ✔ Galat data type dene par error aayega <br>
+      ✔ Reusable hai (baar-baar use kar sakte ho)
+    </p>
+  </div>
+
+  <!-- Example 2 -->
+  <div class="subsection">
+    <h3>Example 2 — Union Type Alias</h3>
+    <div class="code-block">
+<pre>
+type ID = number | string;
+
+let userId: ID;
+
+userId = 101;        // ✅ allowed
+userId = "A102";     // ✅ allowed
+// userId = true;    ❌ Error
+</pre>
+    </div>
+    <p>
+      <strong>Union (|)</strong> ka matlab hai OR — value in types me se koi ek ho sakti hai.
+    </p>
+  </div>
+
+  <!-- Example 3 -->
+  <div class="subsection">
+    <h3>Example 3 — Literal Type Alias</h3>
+    <div class="code-block">
+<pre>
+type Status = "success" | "error" | "loading";
+
+let apiStatus: Status;
+
+apiStatus = "success";   // ✅
+// apiStatus = "done";   ❌ Error
+</pre>
+    </div>
+    <p>
+      Ye tab use hota hai jab tum chahte ho variable sirf kuch fixed values hi accept kare.
+    </p>
+  </div>
+
+  <!-- Example 4 -->
+  <div class="subsection">
+    <h3>Example 4 — Function Type Alias</h3>
+    <div class="code-block">
+<pre>
+type AddFunction = (a: number, b: number) => number;
+
+const add: AddFunction = (x, y) => {
+  return x + y;
+};
+</pre>
+    </div>
+    <p>
+      Yaha hum function ka structure define kar rahe hain.
+      Matlab function ka input aur return type fix hai.
+    </p>
+  </div>
+
+  <!-- Example 5 -->
+  <div class="subsection">
+    <h3>Example 5 — Intersection Type</h3>
+    <div class="code-block">
+<pre>
+type Person = { name: string };
+type Employee = { employeeId: number };
+
+type Staff = Person & Employee;
+
+let staffMember: Staff = {
+  name: "Deepak",
+  employeeId: 101
+};
+</pre>
+    </div>
+    <p>
+      <strong>Intersection (&)</strong> ka matlab AND — object me dono types ki properties honi chahiye.
+    </p>
+  </div>
+
+  <!-- Advanced -->
+  <div class="subsection">
+    <h3>Advanced — Conditional Type</h3>
+    <div class="code-block">
+<pre>
+type IsString<T> = T extends string ? "Yes" : "No";
+
+type Check1 = IsString<string>;   // "Yes"
+type Check2 = IsString<number>;   // "No"
+</pre>
+    </div>
+    <p>
+      Ye type level par if-else logic lagata hai.
+      Ye thoda advanced concept hai.
+    </p>
+  </div>
+
+  <!-- Difference -->
+  <div class="subsection" style="margin-top:32px">
+    <h3>Type vs Interface (Short Difference)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Type</th>
+          <th>Interface</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Object define kar sakte hain?</td>
+          <td>✅ Yes</td>
+          <td>✅ Yes</td>
+        </tr>
+        <tr>
+          <td>Union bana sakte hain?</td>
+          <td>✅ Yes</td>
+          <td>❌ No</td>
+        </tr>
+        <tr>
+          <td>Function define kar sakte hain?</td>
+          <td>✅ Yes</td>
+          <td>Limited</td>
+        </tr>
+        <tr>
+          <td>Mostly use hota hai</td>
+          <td>Complex types ke liye</td>
+          <td>Object structure ke liye</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Final Cheat Sheet -->
+  <div class="subsection" style="margin-top:32px">
+    <h3>Final Cheat Sheet</h3>
+    <table>
+      <thead>
+        <tr><th>Concept</th><th>Symbol</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Union Type</td><td><code>|</code></td><td>OR — koi ek type</td></tr>
+        <tr><td>Intersection Type</td><td><code>&</code></td><td>AND — sabhi types required</td></tr>
+        <tr><td>Type Alias</td><td><code>type</code></td><td>Custom naam dena kisi type ko</td></tr>
+        <tr><td>Conditional Type</td><td><code>T extends U ? X : Y</code></td><td>Type level par if-else</td></tr>
+        <tr><td>Literal Type</td><td><code>"value"</code></td><td>Exact value restriction</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+</main>
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('.section, .subsection[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => s.id && observer.observe(s));
+</script>
+</body>
+</html>

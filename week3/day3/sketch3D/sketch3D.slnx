@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="sketch3D/sketch3D.vcxproj" Id="ac7c7215-ea1d-4790-b3fb-5dc6b8e65c80" />
+</Solution>
