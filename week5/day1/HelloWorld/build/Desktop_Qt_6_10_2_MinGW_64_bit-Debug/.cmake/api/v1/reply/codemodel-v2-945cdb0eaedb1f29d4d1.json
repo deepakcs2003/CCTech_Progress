@@ -1,0 +1,205 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-187d073c6d8c9be9b67e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "HelloWorld",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "all_aotstats::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_aotstats-Debug-20996e8859f5b515eb4e.json",
+					"name" : "all_aotstats",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint-Debug-41bd0dbcd5fe094c6e54.json",
+					"name" : "all_qmllint",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint_json::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint_json-Debug-f0e2ffd89948ad71c615.json",
+					"name" : "all_qmllint_json",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint_module::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint_module-Debug-b01785e58cbeea43b524.json",
+					"name" : "all_qmllint_module",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmltyperegistrations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmltyperegistrations-Debug-b15302b28d4efe6d5e75.json",
+					"name" : "all_qmltyperegistrations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld-Debug-9058fd9afa585fc59351.json",
+					"name" : "appHelloWorld",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_autogen-Debug-a637790412795f5e272c.json",
+					"name" : "appHelloWorld_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_autogen_timestamp_deps-Debug-4e255364e5a56eb2b276.json",
+					"name" : "appHelloWorld_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_copy_qml::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_copy_qml-Debug-8ef6c755bcf6b93dcdc4.json",
+					"name" : "appHelloWorld_copy_qml",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_copy_res::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_copy_res-Debug-3b1f8b5aedf13edd95a8.json",
+					"name" : "appHelloWorld_copy_res",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_qmlimportscan::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_qmlimportscan-Debug-2aba9b3c4f72d16c99e9.json",
+					"name" : "appHelloWorld_qmlimportscan",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_qmllint::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_qmllint-Debug-7ad73b0a16017c9d221e.json",
+					"name" : "appHelloWorld_qmllint",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_qmllint_json::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_qmllint_json-Debug-d7219fc66601912b6686.json",
+					"name" : "appHelloWorld_qmllint_json",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_qmllint_module::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_qmllint_module-Debug-79286a78cb9fb7a8f82b.json",
+					"name" : "appHelloWorld_qmllint_module",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "appHelloWorld_qmltyperegistration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-appHelloWorld_qmltyperegistration-Debug-8481e22763224ae3b0d5.json",
+					"name" : "appHelloWorld_qmltyperegistration",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "generate_qmlls_build_ini_file::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-generate_qmlls_build_ini_file-Debug-37a5a5f1f5190a9f7d9c.json",
+					"name" : "generate_qmlls_build_ini_file",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "module_appHelloWorld_aotstats_target::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-module_appHelloWorld_aotstats_target-Debug-2481690e5b2cf63413ca.json",
+					"name" : "module_appHelloWorld_aotstats_target",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/guddi/OneDrive/Desktop/cctech_progress/week5/day1/HelloWorld/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug",
+		"source" : "C:/Users/guddi/OneDrive/Desktop/cctech_progress/week5/day1/HelloWorld"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

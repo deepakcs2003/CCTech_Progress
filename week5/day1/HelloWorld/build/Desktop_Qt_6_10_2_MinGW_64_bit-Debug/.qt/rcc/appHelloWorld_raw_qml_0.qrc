@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/HelloWorld/">
+    <file alias="Main.qml">C:/Users/guddi/OneDrive/Desktop/cctech_progress/week5/day1/HelloWorld/Main.qml</file>
+  </qresource>
+</RCC>
+
