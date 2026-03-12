@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="MiniCad/MiniCad.vcxproj" Id="6376d4ee-cd1e-47cc-9604-8b2b2d76d427" />
+</Solution>

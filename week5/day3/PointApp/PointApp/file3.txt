@@ -1,0 +1,9 @@
+Canvas Arear
+color Selected: cyan
+color Selected: yellow
+color Selected: gray
+color Selected: orange
+color Selected: purple
+color Selected: brown
+color Selected: yellow
+color Selected: blue

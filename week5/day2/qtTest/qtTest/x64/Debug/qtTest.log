@@ -1,0 +1,6 @@
+﻿   Qt/MSBuild: 3.4.1.0
+   Qt: 6.11.0
+  main.cpp
+  qtTest.cpp
+  moc_qtTest.cpp
+  qtTest.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day2\qtTest\x64\Debug\qtTest.exe

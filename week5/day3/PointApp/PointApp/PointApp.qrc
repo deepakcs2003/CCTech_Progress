@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/PointApp"/>
+    <qresource prefix="/icons">
+        <file>icons/brush.svg</file>
+        <file>icons/circle.svg</file>
+        <file>icons/fill.svg</file>
+        <file>icons/line.svg</file>
+        <file>icons/pencil.svg</file>
+        <file>icons/rectangle.svg</file>
+        <file>icons/select.svg</file>
+        <file>icons/text.svg</file>
+    </qresource>
+</RCC>

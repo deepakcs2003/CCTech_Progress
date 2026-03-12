@@ -1,0 +1,7 @@
+﻿   Qt/MSBuild: 3.4.1.0
+   Qt: 6.11.0
+  moc Signal_And_slot.h
+  Signal_And_slot.cpp
+  main.cpp
+  moc_Signal_And_slot.cpp
+  Signal_And_slot.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day2\Signal_And_slot\x64\Debug\Signal_And_slot.exe

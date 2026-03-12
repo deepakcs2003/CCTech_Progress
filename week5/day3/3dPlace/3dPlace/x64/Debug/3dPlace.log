@@ -1,0 +1,7 @@
+﻿   Qt/MSBuild: 3.4.1.0
+  Reading Qt configuration (C:/Qt/6.11.0/msvc2022_64/bin/qmake)
+3dPlace.vcxproj : error : ERROR running qmake: "C:/Qt/6.11.0/msvc2022_64/bin/qmake"  -tp vc -early "CONFIG -= debug release debug_and_release" "CONFIG += debug warn_off"  qtvars.pro
+3dPlace.vcxproj : error : qmake: (C:/Qt/6.11.0/msvc2022_64/bin/qmake)
+3dPlace.vcxproj : error : qmake: $PWD=C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\3dPlace\3dPlace\x64\Debug\qt\qmake
+3dPlace.vcxproj : error : qmake: Project ERROR: Unknown module(s) in QT: 3dcore 3danimation 3dextras 3dinput 3dlogic 3drender
+3dPlace.vcxproj : error : qmake: Error creating .vcxproj file

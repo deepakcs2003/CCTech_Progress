@@ -1,0 +1,15 @@
+﻿   Qt/MSBuild: 3.4.1.0
+   Qt: 6.11.0
+  moc Canvas.h
+  moc ColorBar.h
+  moc ToolBox.h
+  Canvas.cpp
+  ColorBar.cpp
+  PointApp.cpp
+  ToolBox.cpp
+  main.cpp
+  moc_Canvas.cpp
+  moc_ColorBar.cpp
+  moc_PointApp.cpp
+  moc_ToolBox.cpp
+  PointApp.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\PointApp\x64\Debug\PointApp.exe
