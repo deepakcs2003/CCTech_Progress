@@ -2,5 +2,5 @@
   <Configurations>
     <Platform Name="x64" />
   </Configurations>
-  <Project Path="OpenGlShape/OpenGlShape.vcxproj" />
+  <Project Path="OpenGlShape/OpenGlShape.vcxproj" Id="288aa725-fff7-4f27-94ad-8d1983643e2b" />
 </Solution>
