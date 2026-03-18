@@ -1,7 +1,11 @@
 #pragma once
-#include <QTextEdit>
+#include <Sphere.h>
+#include <QWidget>
+#include <Cuboid.h>
 
-class Canvas : public QTextEdit
+#include <Qt3DExtras/qt3dwindow.h>
+
+class Canvas : public QWidget
 {
     Q_OBJECT
 
@@ -11,6 +15,15 @@ public:
 
 public slots:
     void showTool(QString tool);
-    void showColor(QString color);
+
+private:
+
+    Qt3DExtras::Qt3DWindow* view;
+    QWidget* container;
+
+    Qt3DCore::QEntity* rootEntity;
+
+    Cuboid* cuboid;
+    Sphere* sphere;
 };
 

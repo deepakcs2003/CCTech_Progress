@@ -46,6 +46,12 @@
     <ClCompile Include="Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Cuboid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ToolBox.h">
@@ -55,6 +61,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ColorBar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Cuboid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Sphere.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

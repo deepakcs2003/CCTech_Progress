@@ -61,11 +61,9 @@ void PointApp::newFile()
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
     );
     if (reply == QMessageBox::Yes) {
-        saveFile();
-        canvas->clear();
+        saveSTL();
     }
     else if (reply == QMessageBox::No) {
-        canvas->clear();
     }
     
 }
@@ -84,14 +82,13 @@ void PointApp::openFile()
     QFile file(filename);
     if (file.open(QIODevice::ReadOnly| QIODevice::Text)) {
         QTextStream in(&file);
-        canvas->setText(in.readAll());
         file.close();
 
         currentFile = filename;
     }
 }
 
-void PointApp::saveFile()
+void PointApp::saveSTL()
 {
     QString filename;
     if (currentFile.isEmpty()) {
@@ -113,7 +110,6 @@ void PointApp::saveFile()
     if (file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QTextStream out(&file);
-        out << canvas->toPlainText();
         file.close();
 
         currentFile = filename;
@@ -139,10 +135,10 @@ void PointApp::createMenu()
     QAction* saveAct = file->addAction("Save");
     file->addAction("Print");
     QAction* exitAct = file->addAction("Exit");
-
+        
     connect(newAct, &QAction::triggered, this, &PointApp::newFile);
     connect(openAct, &QAction::triggered, this, &PointApp::openFile);
-    connect(saveAct, &QAction::triggered, this, &PointApp::saveFile);
+    connect(saveAct, &QAction::triggered, this, &PointApp::saveSTL);
     connect(exitAct, &QAction::triggered, this, &PointApp::exitApp);
 
     QMenu* edit = menuBar()->addMenu("edit");
@@ -177,11 +173,11 @@ void PointApp::createLayout()
     colorBar = new ColorBar;
 
     mainLayout->addLayout(workspaceLayout);
-    mainLayout->addWidget(colorBar);
+    //mainLayout->addWidget(colorBar);
 
     central->setLayout(mainLayout);
 
-    connect(colorBar, &ColorBar::colorSelected, canvas, &Canvas::showColor);
+    //connect(colorBar, &ColorBar::colorSelected, canvas, &Canvas::setColor);
     connect(toolBox, &ToolBox::toolSelected,canvas, &Canvas::showTool);
     statusBar()->showMessage("Ready");
 

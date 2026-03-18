@@ -17,7 +17,7 @@ private slots:
 
     void newFile();
     void openFile();
-    void saveFile();
+    void saveSTL();
     void exitApp();
 
 private:

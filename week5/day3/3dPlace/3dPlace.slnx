@@ -2,5 +2,5 @@
   <Configurations>
     <Platform Name="x64" />
   </Configurations>
-  <Project Path="3dPlace/3dPlace.vcxproj" />
+  <Project Path="3dPlace/3dPlace.vcxproj" Id="66c41f0c-7462-4c09-a634-dd0a844e668d" />
 </Solution>

@@ -30,7 +30,10 @@ void ToolBox::createTools()
         {"Text", ":/icons/icons/text.svg"},
         {"Line", ":/icons/icons/line.svg"},
         {"Rectangle", ":/icons/icons/rectangle.svg"},
-        {"Circle", ":/icons/icons/circle.svg"}
+        {"Circle", ":/icons/icons/circle.svg"},
+        { "Cuboid", ":/icons/icons/Cuboid.svg" },
+         { "Sphere", ":/icons/icons/Sphere.svg" }
+
     };
     for (auto tool : tools) {
         QToolButton* btn = new QToolButton;

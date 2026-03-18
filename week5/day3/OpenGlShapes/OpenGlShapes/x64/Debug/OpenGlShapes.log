@@ -1,0 +1,18 @@
+﻿   Qt/MSBuild: 3.4.1.0
+  Reading Qt configuration (C:/Qt/6.11.0/msvc2022_64/bin/qmake)
+   Qt: 6.11.0
+  GenerateCirclePoint.cpp
+  GenerateEllipsePoint.cpp
+  GenerateLinePoint.cpp
+  OpenGlShapes.cpp
+  main.cpp
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\OpenGlShapes\GenerateEllipsePoint.cpp(16,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\OpenGlShapes\GenerateEllipsePoint.cpp(17,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\OpenGlShapes\GenerateEllipsePoint.cpp(18,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\OpenGlShapes\GenerateCirclePoint.cpp(16,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\OpenGlShapes\GenerateLinePoint.cpp(16,8): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\OpenGlShapes\main.cpp(11,48): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\OpenGlShapes\main.cpp(11,43): warning C4305: 'argument': truncation from 'double' to 'float'
+  qrc_OpenGlShapes.cpp
+  moc_OpenGlShapes.cpp
+  OpenGlShapes.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week5\day3\OpenGlShapes\x64\Debug\OpenGlShapes.exe
