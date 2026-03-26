@@ -1,4 +1,6 @@
 ﻿   Qt/MSBuild: 3.4.1.0
    Qt: 6.11.0
+  GenerateSpherePoint.cpp
   main.cpp
-  OpenGlShape.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week6\day1\OpenGlShape\x64\Debug\OpenGlShape.exe
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week6\day3\OpenGlShape\OpenGlShape\main.cpp(93,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  OpenGlShape.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week6\day3\OpenGlShape\x64\Debug\OpenGlShape.exe

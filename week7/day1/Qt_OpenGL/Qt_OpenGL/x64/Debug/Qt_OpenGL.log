@@ -1,0 +1,11 @@
+﻿   Qt/MSBuild: 3.4.1.0
+  Reading Qt configuration (C:/Qt/6.11.0/msvc2022_64/bin/qmake)
+   Qt: 6.11.0
+  moc GLWidget.h
+  GLWidget.cpp
+  Qt_OpenGL.cpp
+  main.cpp
+  qrc_Qt_OpenGL.cpp
+  moc_Qt_OpenGL.cpp
+  moc_GLWidget.cpp
+  Qt_OpenGL.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week7\day1\Qt_OpenGL\x64\Debug\Qt_OpenGL.exe
