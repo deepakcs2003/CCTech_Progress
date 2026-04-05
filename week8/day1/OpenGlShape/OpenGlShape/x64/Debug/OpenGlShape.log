@@ -1,0 +1,5 @@
+﻿   Qt/MSBuild: 3.4.1.0
+   Qt: 6.11.0
+  DataClass.cpp
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week8\day1\OpenGlShape\OpenGlShape\DataClass.cpp(26,24): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  OpenGlShape.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week8\day1\OpenGlShape\x64\Debug\OpenGlShape.exe

@@ -61,6 +61,9 @@
     <ClCompile Include="STL_ASCII.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="STL_Binary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fibonacci.h">
@@ -82,6 +85,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="STL_ASCII.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="STL_Binary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

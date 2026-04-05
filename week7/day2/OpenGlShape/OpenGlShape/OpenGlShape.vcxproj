@@ -98,6 +98,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="STL_ASCII.cpp" />
+    <ClCompile Include="STL_Binary.cpp" />
     <QtRcc Include="OpenGlShape.qrc" />
     <QtUic Include="OpenGlShape.ui" />
     <QtMoc Include="OpenGlShape.h" />
@@ -118,6 +119,7 @@
     <ClInclude Include="GenerateLinePoint.h" />
     <ClInclude Include="GenerateSpherePoint.h" />
     <ClInclude Include="STL_ASCII.h" />
+    <ClInclude Include="STL_Binary.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\block100.stl" />

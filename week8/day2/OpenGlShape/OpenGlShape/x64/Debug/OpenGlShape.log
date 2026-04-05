@@ -1,0 +1,7 @@
+﻿   Qt/MSBuild: 3.4.1.0
+   Qt: 6.11.0
+  DataClass.cpp
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week8\day2\OpenGlShape\OpenGlShape\DataClass.cpp(70,24): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  qrc_OpenGlShape.cpp
+  moc_OpenGlShape.cpp
+  OpenGlShape.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week8\day2\OpenGlShape\x64\Debug\OpenGlShape.exe
