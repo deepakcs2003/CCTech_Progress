@@ -15,17 +15,17 @@ static const char* FRAG =
 
 // constructor
 GLCanvas::GLCanvas(QWidget* p) : QOpenGLWidget(p) {
-    setMouseTracking(true); // track mouse
+    setMouseTracking(true);
 }
 
 // destructor
 GLCanvas::~GLCanvas() {
-    makeCurrent(); // activate context
+    makeCurrent(); 
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteProgram(prog);
     delete shape;
-    doneCurrent(); // release context
+    doneCurrent(); 
 }
 
 // set shape
@@ -139,7 +139,7 @@ void GLCanvas::paintGL()
 
     if (!shape) return;
 
-    // 🔷 3D MODE
+    // 3D MODE
     if (show3D)
     {
         std::vector<float> v = shape->getVertices3D(30.0f);
@@ -150,11 +150,11 @@ void GLCanvas::paintGL()
         return;
     }
 
-    // 🔷 2D MODE
-    std::vector<float> v = shape->getVertices();  // ❌ flaot → ✔ float
+    // 2D MODE
+    std::vector<float> v = shape->getVertices(); 
     draw(v, GL_LINES, 1.0f, 1.0f, 1.0f);
 
-    // 🔷 EDIT MODE
+    // EDIT MODE
     if (mode == Mode::EDIT)
     {
         auto pts = shape->getControlPoints();

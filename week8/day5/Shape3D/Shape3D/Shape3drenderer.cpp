@@ -4,7 +4,6 @@
 
 static const float PI = 3.14159265f;
 
-// simple shaders (same as GLCanvas)
 static const char* VERT3D =
 "#version 330 core\n"
 "layout(location=0) in vec2 p;\n"
@@ -16,9 +15,7 @@ static const char* FRAG3D =
 "out vec4 F;\n"
 "void main(){ F = uC; }\n";
 
-// ─────────────────────────────────────────────
-// init: OpenGL objects banao
-// ─────────────────────────────────────────────
+
 void Shape3DRenderer::init() {
     initializeOpenGLFunctions();
 
@@ -47,9 +44,7 @@ void Shape3DRenderer::init() {
     colorLoc = glGetUniformLocation(prog, "uC");
 }
 
-// ─────────────────────────────────────────────
-// render: shape dekho, 3D banao same jagah
-// ─────────────────────────────────────────────
+
 void Shape3DRenderer::render(const Shape* shape, float rotY, int winW, int winH) {
     if (!shape) return;
 
@@ -57,7 +52,6 @@ void Shape3DRenderer::render(const Shape* shape, float rotY, int winW, int winH)
     auto cpts = shape->getControlPoints();
 
     if (nm == "Square") {
-        // square ki 4 corners se center aur side nikalo
         float cx = (cpts[0].x() + cpts[2].x()) / 2.0f;
         float cy = (cpts[0].y() + cpts[2].y()) / 2.0f;
         float side = std::abs((float)(cpts[1].x() - cpts[0].x())); // width = height
@@ -65,7 +59,6 @@ void Shape3DRenderer::render(const Shape* shape, float rotY, int winW, int winH)
         drawCube(cx, cy, side, rotY, winW, winH);
     }
     else if (nm == "Rectangle") {
-        // rectangle ka center aur W/H
         float cx = (cpts[0].x() + cpts[2].x()) / 2.0f;
         float cy = (cpts[0].y() + cpts[2].y()) / 2.0f;
         float w = std::abs((float)(cpts[1].x() - cpts[0].x()));
@@ -74,7 +67,6 @@ void Shape3DRenderer::render(const Shape* shape, float rotY, int winW, int winH)
         drawCuboid(cx, cy, w, h, rotY, winW, winH);
     }
     else if (nm == "Circle") {
-        // circle ka center aur radius
         float cx = (float)cpts[0].x();
         float cy = (float)cpts[0].y();
         float r = std::abs((float)(cpts[1].x() - cpts[0].x()));
@@ -83,9 +75,7 @@ void Shape3DRenderer::render(const Shape* shape, float rotY, int winW, int winH)
     }
 }
 
-// ─────────────────────────────────────────────
-// project: 3D → 2D (isometric, Y-axis rotation)
-// ─────────────────────────────────────────────
+
 void Shape3DRenderer::project(float x, float y, float z, float rotY,
     float& ox, float& oy) {
     float rad = rotY * PI / 180.0f;
@@ -101,9 +91,7 @@ void Shape3DRenderer::project(float x, float y, float z, float rotY,
     oy = y - rz * 0.5f;
 }
 
-// ─────────────────────────────────────────────
-// boxEdges: 8 corners se 12 edges ki line list
-// ─────────────────────────────────────────────
+
 std::vector<float> Shape3DRenderer::boxEdges(float verts[8][3], float rotY,
     float cx, float cy) {
     // project all 8 corners
@@ -130,16 +118,12 @@ std::vector<float> Shape3DRenderer::boxEdges(float verts[8][3], float rotY,
     return lines;
 }
 
-// ─────────────────────────────────────────────
-// drawCube: Square → Cube
-// center = 2D shape ka center, side = 2D side length
-// ─────────────────────────────────────────────
+
 void Shape3DRenderer::drawCube(float cx, float cy, float side,
     float rotY, int w, int h) {
-    float s = side * 0.5f;  // half-side
-    float d = s * 0.6f;     // depth (thoda kam rakha dikh sake)
+    float s = side * 0.5f; 
+    float d = s * 0.6f;    
 
-    // 8 corners: front face (z=+d), back face (z=-d)
     float v[8][3] = {
         {-s, -s, -d}, { s, -s, -d}, { s,  s, -d}, {-s,  s, -d},  // back
         {-s, -s,  d}, { s, -s,  d}, { s,  s,  d}, {-s,  s,  d}   // front
@@ -147,8 +131,6 @@ void Shape3DRenderer::drawCube(float cx, float cy, float side,
 
     auto lines = boxEdges(v, rotY, cx, cy);
 
-    // back face = dark, front+edges = cyan
-    // pehle back (first 8 floats = 4 back edges)
     std::vector<float> back(lines.begin(), lines.begin() + 8 * 2);
     std::vector<float> front(lines.begin() + 8 * 2, lines.end());
 
@@ -156,10 +138,7 @@ void Shape3DRenderer::drawCube(float cx, float cy, float side,
     drawLines(front, 0.2f, 0.85f, 1.0f, w, h);  // cyan
 }
 
-// ─────────────────────────────────────────────
-// drawCuboid: Rectangle → Cuboid
-// same W and H as 2D rectangle, depth = average
-// ─────────────────────────────────────────────
+
 void Shape3DRenderer::drawCuboid(float cx, float cy, float ww, float hh,
     float rotY, int w, int h) {
     float hw = ww * 0.5f;
@@ -180,10 +159,7 @@ void Shape3DRenderer::drawCuboid(float cx, float cy, float ww, float hh,
     drawLines(front, 1.0f, 0.6f, 0.2f, w, h);  // orange
 }
 
-// ─────────────────────────────────────────────
-// drawSphere: Circle → Sphere (3 rings)
-// same center, same radius as 2D circle
-// ─────────────────────────────────────────────
+
 void Shape3DRenderer::drawSphere(float cx, float cy, float r,
     float rotY, int w, int h) {
     int SEG = 48;
@@ -231,9 +207,7 @@ void Shape3DRenderer::drawSphere(float cx, float cy, float r,
     }
 }
 
-// ─────────────────────────────────────────────
-// drawLines: pixel coords → NDC → OpenGL draw
-// ─────────────────────────────────────────────
+
 void Shape3DRenderer::drawLines(const std::vector<float>& pts,
     float r, float g, float b,
     int winW, int winH) {

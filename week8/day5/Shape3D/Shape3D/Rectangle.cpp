@@ -64,19 +64,19 @@ std::vector<float> Rectangle::getVertices3D(float rotY) const
         pz[i] = rz;
     }
 
-    //  TRIANGLE INDICES
+    //  triangle indices
     int idx[] = {
-        0,1,2, 0,2,3,   // front
-        4,5,6, 4,6,7,   // back
-        0,3,7, 0,7,4,   // left
-        1,2,6, 1,6,5,   // right
-        3,2,6, 3,6,7,   // top
-        0,1,5, 0,5,4    // bottom
+        0,1,2, 0,2,3,  
+        4,5,6, 4,6,7, 
+        0,3,7, 0,7,4,  
+        1,2,6, 1,6,5,  
+        3,2,6, 3,6,7, 
+        0,1,5, 0,5,4  
     };
 
     std::vector<float> mesh;
 
-    for (int i = 0; i < 36; i++) // 12 triangles × 3 vertices
+    for (int i = 0; i < 36; i++)
     {
         int id = idx[i];
 
