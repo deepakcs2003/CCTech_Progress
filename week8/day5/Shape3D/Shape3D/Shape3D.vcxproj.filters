@@ -55,9 +55,6 @@
     <ClCompile Include="Square.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shape3drenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rectangle.h">
@@ -70,9 +67,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Square.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shape3drenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
