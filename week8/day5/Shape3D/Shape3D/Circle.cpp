@@ -23,7 +23,8 @@ void Circle::moveControlPoint(int i, QPoint p) {
         pts[1] += diff;
     }
     else {
-        int dx = p.x() - pts[0].x(), dy = p.y() - pts[0].y();
+        int dx = p.x() - pts[0].x();
+        int dy = p.y() - pts[0].y();
         int r = std::max(1, (int)std::sqrt(dx * dx + dy * dy));
         pts[1] = QPoint(pts[0].x() + r, pts[0].y());
     }
@@ -48,21 +49,10 @@ std::vector<float> Circle::getVertices3D(float rotY) const
     float cy = pts[0].y();
     float r = pts[1].x() - pts[0].x();
 
-    float rad = rotY * PI / 180.0f;
-    float cosA = cosf(rad), sinA = sinf(rad);
-
-    // projection
-    auto proj = [&](float x, float y, float z, float& ox, float& oy) {
-        float rx = x * cosA - z * sinA;
-        float rz = x * sinA + z * cosA;
-        ox = cx + rx;
-        oy = cy + y - rz * 0.5f;
-        };
-
-    const int LAT = 50;   // horizontal divisions
-    const int LON = 50;   // vertical divisions
-
     std::vector<float> mesh;
+
+    const int LAT = 30;
+    const int LON = 30;
 
     for (int i = 0; i < LAT; i++)
     {
@@ -74,7 +64,7 @@ std::vector<float> Circle::getVertices3D(float rotY) const
             float p1 = 2 * PI * j / LON;
             float p2 = 2 * PI * (j + 1) / LON;
 
-            // 4 points (quad)
+            // 4 points
             float x1 = r * cosf(t1) * cosf(p1);
             float y1 = r * sinf(t1);
             float z1 = r * cosf(t1) * sinf(p1);
@@ -91,19 +81,24 @@ std::vector<float> Circle::getVertices3D(float rotY) const
             float y4 = r * sinf(t2);
             float z4 = r * cosf(t2) * sinf(p2);
 
-            float ox1, oy1, ox2, oy2, ox3, oy3, ox4, oy4;
+            //  projection
+            float ox1 = cx + x1;
+            float oy1 = cy + y1 - z1 * 0.5f;
 
-            proj(x1, y1, z1, ox1, oy1);
-            proj(x2, y2, z2, ox2, oy2);
-            proj(x3, y3, z3, ox3, oy3);
-            proj(x4, y4, z4, ox4, oy4);
+            float ox2 = cx + x2;
+            float oy2 = cy + y2 - z2 * 0.5f;
 
-            // triangle 1
+            float ox3 = cx + x3;
+            float oy3 = cy + y3 - z3 * 0.5f;
+
+            float ox4 = cx + x4;
+            float oy4 = cy + y4 - z4 * 0.5f;
+
+            // triangles
             mesh.push_back(ox1); mesh.push_back(oy1);
             mesh.push_back(ox2); mesh.push_back(oy2);
             mesh.push_back(ox3); mesh.push_back(oy3);
 
-            //  triangle 2
             mesh.push_back(ox2); mesh.push_back(oy2);
             mesh.push_back(ox4); mesh.push_back(oy4);
             mesh.push_back(ox3); mesh.push_back(oy3);

@@ -1,8 +1,7 @@
 ﻿   Qt/MSBuild: 3.4.1.0
-  Reading Qt configuration (C:/Qt/6.11.0/msvc2022_64/bin/qmake)
    Qt: 6.11.0
-  moc Shape3D.h
-  moc GLCanvas.h
+  GLCanvas.cpp
+C:\Users\guddi\OneDrive\Desktop\cctech_progress\week8\day5\Shape3D\Shape3D\GLCanvas.cpp(132,37): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   moc_GLCanvas.cpp
   moc_Shape3D.cpp
   Shape3D.vcxproj -> C:\Users\guddi\OneDrive\Desktop\cctech_progress\week8\day5\Shape3D\x64\Debug\Shape3D.exe

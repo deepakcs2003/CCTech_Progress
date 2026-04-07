@@ -92,7 +92,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataClass.cpp" />
     <ClCompile Include="Square.cpp" />
+    <ClCompile Include="STL.cpp" />
+    <ClCompile Include="TriangleClass.cpp" />
+    <ClCompile Include="VertexClass.cpp" />
     <QtRcc Include="Shape3D.qrc" />
     <QtUic Include="Shape3D.ui" />
     <QtMoc Include="Shape3D.h" />
@@ -104,7 +108,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataClass.h" />
     <ClInclude Include="Square.h" />
+    <ClInclude Include="STL.h" />
+    <ClInclude Include="TriangleClass.h" />
+    <ClInclude Include="VertexClass.h" />
     <QtMoc Include="GLCanvas.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Circle.h" />

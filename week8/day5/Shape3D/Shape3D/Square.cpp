@@ -1,6 +1,7 @@
 #include "Square.h"
 #include <algorithm>
 #include <cmath>
+#include <QDebug>
 
 static const float PI = 3.14159265f;
 
@@ -81,6 +82,8 @@ std::vector<float> Square::getVertices3D(float rotY) const
         mesh.push_back(px[id]);
         mesh.push_back(py[id] - pz[id] * 0.5f); // pseudo 3D projection
     }
-
+    for (int i = 0;i < mesh.size();i+=3) {
+        qDebug() << mesh[i]<<mesh[i+1]<<mesh[i+2];
+    }
     return mesh;
 }

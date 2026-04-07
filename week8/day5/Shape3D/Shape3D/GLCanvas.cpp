@@ -145,7 +145,7 @@ void GLCanvas::paintGL()
         std::vector<float> v = shape->getVertices3D(30.0f);
 
         // triangles draw
-        draw(v, GL_TRIANGLES, 0.2f, 0.8f, 1.0f);
+        draw(v, GL_TRIANGLES, 1.0f, 0.0f, 1.0f);
 
         return;
     }
@@ -159,25 +159,23 @@ void GLCanvas::paintGL()
     {
         auto pts = shape->getControlPoints();
 
-        for (int i = 0; i < (int)pts.size(); i++)
+        for (int i = 0; i < pts.size(); i++)
         {
             float x = pts[i].x();
             float y = pts[i].y();
             float d = 6.0f;
 
-            std::vector<float> cross = {
-                x - d, y, x + d, y,
-                x, y - d, x, y + d
-            };
+            float r, g, b;
 
-            bool sel = (i == selected);
+            if (i == selected) {
+                r = 1.0f; g = 1.0f; b = 0.0f;   // selected color
+            }
+            else {
+                r = 0.0f; g = 1.0f; b = 0.0f;   // normal color
+            }
 
-            // cross lines
-            draw(cross, GL_LINES, sel ? 1.0f : 0.0f, 1.0f, 0.0f);
-
-            // point
-            std::vector<float> pt = { x, y };
-            draw(pt, GL_POINTS, sel ? 1.0f : 0.0f, 1.0f, 0.0f);
+            draw({ x - d, y, x + d, y,  x, y - d, x, y + d }, GL_LINES, r, g, b);
+            draw({ x, y }, GL_POINTS, r, g, b);
         }
     }
 }
